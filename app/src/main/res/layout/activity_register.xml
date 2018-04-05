@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ru.strcss.projects.moneycalc.moneycalcandroid.activities.RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvRegister"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/title_activity_register" />
+
+        <EditText
+            android:id="@+id/etRegisterLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/register_prompt_login"
+            android:inputType="text" />
+
+        <EditText
+            android:id="@+id/etRegisterEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/register_prompt_email"
+            android:inputType="textEmailAddress" />
+
+        <EditText
+            android:id="@+id/etRegisterPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/register_prompt_password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/etRegisterName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/register_prompt_name"
+            android:inputType="text" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fabRegisterDone"
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_check_white_24dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

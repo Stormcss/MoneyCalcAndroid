@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -19,6 +21,10 @@ android {
 }
 
 dependencies {
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:1.0-SNAPSHOT'
+
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
