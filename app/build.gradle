@@ -11,6 +11,12 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath false
+            }
+        }
     }
     buildTypes {
         release {
@@ -21,9 +27,17 @@ android {
 }
 
 dependencies {
+    implementation 'org.projectlombok:lombok:1.16.18'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
-    implementation 'ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:1.0-SNAPSHOT'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
+    implementation('ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:1.0-SNAPSHOT'){
+        transitive = false
+    }
 
+    implementation 'com.google.dagger:dagger-android:2.11'
+    implementation 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
+    annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:27.1.0'
