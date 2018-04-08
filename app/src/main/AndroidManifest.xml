@@ -26,7 +26,7 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.activities.LoginActivity"
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
