@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -19,12 +18,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import javax.inject.Inject;
+
+import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends DaggerAppCompatActivity {
+
+
+    @Inject
+    LoginPresenter loginPresenter;
+    @Inject
+    LoginFragment loginFragment;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -48,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
+
+        getSupportActionBar().hide();
 
         //fragments setup
         TabLayout tabLayout = (TabLayout) findViewById(R.id.login_tab_layout);

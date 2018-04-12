@@ -14,7 +14,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:name="ru.strcss.projects.moneycalc.moneycalcandroid.App">
         <activity
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.activities.MainActivity"
             android:label="@string/app_name"
@@ -34,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="ru.strcss.projects.moneycalc.moneycalcandroid.activities.RegisterActivity" />
     </application>
 
 </manifest>
