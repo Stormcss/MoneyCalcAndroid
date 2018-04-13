@@ -120,7 +120,6 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            if (loginPresenter != null) {
                 Access access = Access.builder()
                         .login(login)
                         .password(password)
@@ -130,9 +129,6 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
                 showProgress(true);
                 // perform the user login attempt.
                 loginPresenter.attemptLogin(access);
-            } else {
-                System.out.println("loginPresenter is null!");
-            }
         }
     }
 
