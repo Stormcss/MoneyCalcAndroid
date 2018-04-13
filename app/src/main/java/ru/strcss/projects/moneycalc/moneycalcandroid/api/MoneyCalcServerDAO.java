@@ -33,7 +33,7 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
     }
 
     @Override
-    public Observable<String> login(Access access) {
+    public Observable<Void> login(Access access) {
         System.out.println("in MoneyCalcServerDAO: access = " + access);
         return client.login(access);
     }

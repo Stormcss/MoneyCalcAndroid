@@ -3,6 +3,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.login;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,6 +24,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.Access;
+import ru.strcss.projects.moneycalc.moneycalcandroid.activities.MainActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
 
 @ActivityScoped
@@ -134,7 +136,8 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
 
     @Override
     public void showMainActivity() {
-
+        Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+        startActivity(mainActivityIntent);
     }
 
     @Override

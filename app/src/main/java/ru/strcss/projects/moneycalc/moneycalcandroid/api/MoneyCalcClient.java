@@ -13,5 +13,5 @@ public interface MoneyCalcClient {
     Observable<AjaxRs<Person>> registerPerson(@Body Credentials credentials);
 
     @POST("/login")
-    Observable<String> login(@Body Access access);
+    Observable<Void> login(@Body Access access);
 }

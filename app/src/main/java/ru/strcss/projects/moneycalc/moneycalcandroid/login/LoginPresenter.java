@@ -30,9 +30,10 @@ public class LoginPresenter implements LoginContract.Presenter {
         moneyCalcServerDAO.login(access)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<String>() {
+                .subscribe(new Observer<Void>() {
                     @Override
                     public void onCompleted() {
+                        loginView.showMainActivity();
                         System.out.println("completed");
                     }
 
@@ -44,7 +45,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(String s) {
+                    public void onNext(Void s) {
                         System.out.println("onNext" + s);
                     }
                 });
