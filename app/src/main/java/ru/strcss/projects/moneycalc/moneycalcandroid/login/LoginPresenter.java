@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
+import retrofit2.Response;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import rx.Observer;
@@ -24,16 +25,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void attemptLogin(Access access) {
-        if (loginView == null)
-            System.out.println("loginView is null !!!!!!!!!!!!!!!!!!!");
-
         moneyCalcServerDAO.login(access)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Void>() {
+                .subscribe(new Observer<Response<Void>>() {
                     @Override
                     public void onCompleted() {
-                        loginView.showMainActivity();
                         System.out.println("completed");
                     }
 
@@ -45,8 +42,16 @@ public class LoginPresenter implements LoginContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(Void s) {
-                        System.out.println("onNext" + s);
+                    public void onNext(Response<Void> rs) {
+                        if (rs.isSuccessful()) {
+                            String token = rs.headers().get("Authorization");
+                            moneyCalcServerDAO.setToken(token);
+                            System.out.println("token = " + token);
+                            loginView.showMainActivity();
+                        } else {
+                            loginView.showErrorMessage(rs.message());
+                        }
+                        loginView.hideSpinner();
                     }
                 });
     }

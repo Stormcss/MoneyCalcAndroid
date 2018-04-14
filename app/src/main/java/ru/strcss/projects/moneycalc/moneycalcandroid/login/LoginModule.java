@@ -16,7 +16,15 @@ public abstract class LoginModule {
     @ContributesAndroidInjector
     abstract LoginFragment loginFragment();
 
+    @FragmentScoped
+    @ContributesAndroidInjector
+    abstract RegisterFragment registerFragment();
+
     @ActivityScoped
     @Binds
     abstract LoginContract.Presenter loginPresenter(LoginPresenter presenter);
+
+    @ActivityScoped
+    @Binds
+    abstract RegisterContract.Presenter registerPresenter(RegisterPresenter presenter);
 }

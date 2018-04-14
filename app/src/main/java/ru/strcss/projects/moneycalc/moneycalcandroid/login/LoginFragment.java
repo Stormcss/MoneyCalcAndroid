@@ -1,10 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.login;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -17,6 +13,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import javax.inject.Inject;
@@ -27,6 +24,8 @@ import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.activities.MainActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
+
 @ActivityScoped
 public class LoginFragment extends DaggerFragment implements LoginContract.View {
     @Inject
@@ -36,10 +35,10 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
     public LoginFragment() {
     }
 
-    // UI references.
+    // UI references
     private AutoCompleteTextView mLoginView;
     private EditText mPasswordView;
-    private View mProgressView;
+    private ProgressBar progressView;
     private View mLoginFormView;
 
     @Override
@@ -47,9 +46,9 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
         View root = inflater.inflate(R.layout.login_frag, container, false);
 
         // Set up the login form.
-        mLoginView = (AutoCompleteTextView) root.findViewById(R.id.etLoginLogin);
+        mLoginView = root.findViewById(R.id.etLoginLogin);
 
-        mPasswordView = (EditText) root.findViewById(R.id.etLoginPassword);
+        mPasswordView = root.findViewById(R.id.etLoginPassword);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -61,7 +60,7 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             }
         });
 
-        Button btnLoginSignIn = (Button) root.findViewById(R.id.btnLoginSignIn);
+        Button btnLoginSignIn = root.findViewById(R.id.btnLoginSignIn);
         btnLoginSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,7 +69,7 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
         });
 
         mLoginFormView = root.findViewById(R.id.login_form);
-        mProgressView = root.findViewById(R.id.login_progress);
+        progressView = root.findViewById(R.id.login_progress);
 
         return root;
     }
@@ -122,21 +121,23 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             // form field with an error.
             focusView.requestFocus();
         } else {
-                Access access = Access.builder()
-                        .login(login)
-                        .password(password)
-                        .build();
+            Access access = Access.builder()
+                    .login(login)
+                    .password(password)
+                    .build();
 
-                // Show a progress spinner, and kick off a background task to
-                showProgress(true);
-                // perform the user login attempt.
-                loginPresenter.attemptLogin(access);
+            // Show a progress spinner, and kick off a background task to
+            showSpinner();
+            // perform the user login attempt.
+            loginPresenter.attemptLogin(access);
         }
     }
 
     @Override
     public void showMainActivity() {
         Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+        mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        mainActivityIntent.setFlags(mainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(mainActivityIntent);
     }
 
@@ -148,57 +149,59 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
 
     @Override
     public void showSpinner() {
-        showProgress(true);
+        int animTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+        showProgress(true, mLoginFormView, progressView, animTime);
     }
 
     @Override
     public void hideSpinner() {
-        showProgress(false);
+        int animTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
+        showProgress(false, mLoginFormView, progressView, animTime);
     }
 
     private boolean isLoginValid(String login) {
         //TODO: Replace this with your own logic
-        return login.length() > 3;
+        return login.length() > 2;
     }
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 3;
     }
 
     /**
      * Shows the progress UI and hides the login form.
      */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
-
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
+//    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+//    private void showProgress(final boolean show) {
+//        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+//        // for very easy animations. If available, use these APIs to fade-in
+//        // the progress spinner.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+//            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//                }
+//            });
+//
+//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mProgressView.animate().setDuration(shortAnimTime).alpha(
+//                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+//                @Override
+//                public void onAnimationEnd(Animator animation) {
+//                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//                }
+//            });
+//        } else {
+//            // The ViewPropertyAnimator APIs are not available, so simply show
+//            // and hide the relevant UI components.
+//            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+//            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//        }
+//    }
 }

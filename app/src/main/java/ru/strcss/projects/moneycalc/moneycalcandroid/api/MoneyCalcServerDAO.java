@@ -2,18 +2,21 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.api;
 
 import javax.inject.Singleton;
 
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.strcss.projects.moneycalc.dto.AjaxRs;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.enitities.Access;
-import ru.strcss.projects.moneycalc.enitities.Person;
+import ru.strcss.projects.moneycalc.enitities.Settings;
 import rx.Observable;
 
 @Singleton
 public class MoneyCalcServerDAO implements MoneyCalcClient {
     static final String BASE_URL = "http://192.168.1.100:8080";
+
+    private String token;
 
     MoneyCalcClient client;
 
@@ -28,13 +31,25 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
     }
 
     @Override
-    public Observable<AjaxRs<Person>> registerPerson(Credentials credentials) {
-        return null;
+    public Observable<AjaxRs<Void>> registerPerson(Credentials credentials) {
+        return client.registerPerson(credentials);
     }
 
     @Override
-    public Observable<Void> login(Access access) {
-        System.out.println("in MoneyCalcServerDAO: access = " + access);
+    public Observable<Response<Void>> login(Access access) {
         return client.login(access);
+    }
+
+    @Override
+    public Observable<AjaxRs<Settings>> getSettings(String token) {
+        return client.getSettings(token);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
