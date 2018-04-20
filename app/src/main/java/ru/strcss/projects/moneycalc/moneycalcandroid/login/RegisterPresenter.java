@@ -4,11 +4,14 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
+import retrofit2.Response;
 import ru.strcss.projects.moneycalc.dto.AjaxRs;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
@@ -24,14 +27,23 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void attemptRegister(Credentials credentials) {
+    public void attemptRegister(final Credentials credentials) {
         moneyCalcServerDAO.registerPerson(credentials)
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<AjaxRs<Void>, Observable<Response<Void>>>() {
+                    @Override
+                    public Observable<Response<Void>> call(AjaxRs<Void> loginRs) {
+                        if (loginRs.isSuccessful()) {
+                            return moneyCalcServerDAO.login(credentials.getAccess());
+                        } else {
+                            throw new RuntimeException(loginRs.getMessage());
+                        }
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<Void>>() {
+                .subscribe(new Observer<Response<Void>>() {
                     @Override
                     public void onCompleted() {
-
                     }
 
                     @Override
@@ -41,14 +53,15 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(AjaxRs<Void> rs) {
+                    public void onNext(Response<Void> rs) {
                         if (rs.isSuccessful()) {
-//                            String token = rs.headers().get("Authorization");
-//                            moneyCalcServerDAO.setToken(token);
-//                            System.out.println("token = " + token);
+                            String token = rs.headers().get("Authorization");
+                            moneyCalcServerDAO.setToken(token);
+                            System.out.println("token = " + token);
                             registerView.showMainActivity();
                         } else {
-                            registerView.showErrorMessage(rs.getMessage());
+                            System.out.println("rs = " + rs);
+                            registerView.showErrorMessage(rs.message());
                         }
                         registerView.hideSpinner();
                     }

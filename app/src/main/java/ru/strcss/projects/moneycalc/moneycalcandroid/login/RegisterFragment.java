@@ -137,7 +137,6 @@ public class RegisterFragment extends DaggerFragment implements RegisterContract
 
     @Override
     public void showErrorMessage(String msg) {
-        System.out.println("showErrorMessage!");
         Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
     }
 
