@@ -48,12 +48,12 @@ public class LoginActivity extends DaggerAppCompatActivity implements OnKeyboard
         signInLogoTargetSize = signInLogo.getMaxHeight();
 
         //fragments setup
-        TabLayout tabLayout = findViewById(R.id.login_tab_layout);
+        TabLayout tabLayout = findViewById(R.id.login_tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.title_activity_login)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.title_activity_register)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = findViewById(R.id.pager);
+        final ViewPager viewPager = findViewById(R.id.login_viewPager);
         final LoginPagerAdapter adapter = new LoginPagerAdapter
                 (getSupportFragmentManager(), tabLayout.getTabCount());
         viewPager.setAdapter(adapter);

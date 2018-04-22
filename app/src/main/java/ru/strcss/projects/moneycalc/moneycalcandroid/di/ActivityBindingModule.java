@@ -2,6 +2,8 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
+import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginModule;
 
@@ -17,4 +19,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = LoginModule.class)
     abstract LoginActivity loginActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = HomeModule.class)
+    abstract HomeActivity mainActivity();
 }

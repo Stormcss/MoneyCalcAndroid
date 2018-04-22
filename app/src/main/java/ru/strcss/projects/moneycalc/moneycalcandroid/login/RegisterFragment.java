@@ -19,14 +19,14 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.Identifications;
-import ru.strcss.projects.moneycalc.moneycalcandroid.activities.MainActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
 
 public class RegisterFragment extends DaggerFragment implements RegisterContract.View {
 
     @Inject
-    RegisterContract.Presenter registerPresenter;
+    RegisterContract.Presenter presenter;
 
     // UI references.
     private View registerFormView;
@@ -111,7 +111,7 @@ public class RegisterFragment extends DaggerFragment implements RegisterContract
             // Show a progress spinner, and kick off a background task to
 //            showProgress(true);
             // perform the user login attempt.
-            registerPresenter.attemptRegister(new Credentials(access, Identifications.builder().name(name).build()));
+            presenter.attemptRegister(new Credentials(access, Identifications.builder().name(name).build()));
             showSpinner();
         }
     }
@@ -119,18 +119,18 @@ public class RegisterFragment extends DaggerFragment implements RegisterContract
     @Override
     public void onResume() {
         super.onResume();
-        registerPresenter.takeView(this);
+        presenter.takeView(this);
     }
 
     @Override
     public void onDestroy() {
-        registerPresenter.dropView();
+        presenter.dropView();
         super.onDestroy();
     }
 
     @Override
     public void showMainActivity() {
-        Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+        Intent mainActivityIntent = new Intent(getActivity(), HomeActivity.class);
         mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivityForResult(mainActivityIntent, 0);
     }

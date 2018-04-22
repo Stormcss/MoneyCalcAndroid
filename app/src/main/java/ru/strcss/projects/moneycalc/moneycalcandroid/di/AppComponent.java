@@ -10,6 +10,7 @@ import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.App;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 @Singleton
 @Component(modules = {AppModule.class,
@@ -19,6 +20,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 public interface AppComponent extends AndroidInjector<App> {
 
     MoneyCalcServerDAO getMoneyCalcServerDAO();
+
+    DataStorage getDataStorage();
 
     // Gives us syntactic sugar. we can then do DaggerAppComponent.builder().application(this).build().inject(this);
     // never having to instantiate any modules or say which module we are passing the application to.

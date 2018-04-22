@@ -21,15 +21,15 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.Access;
-import ru.strcss.projects.moneycalc.moneycalcandroid.activities.MainActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
+import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
 
 @ActivityScoped
 public class LoginFragment extends DaggerFragment implements LoginContract.View {
     @Inject
-    LoginContract.Presenter loginPresenter;
+    LoginContract.Presenter presenter;
 
     @Inject
     public LoginFragment() {
@@ -77,12 +77,12 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
     @Override
     public void onResume() {
         super.onResume();
-        loginPresenter.takeView(this);
+        presenter.takeView(this);
     }
 
     @Override
     public void onDestroy() {
-        loginPresenter.dropView();
+        presenter.dropView();
         super.onDestroy();
     }
 
@@ -129,13 +129,13 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             // Show a progress spinner, and kick off a background task to
             showSpinner();
             // perform the user login attempt.
-            loginPresenter.attemptLogin(access);
+            presenter.attemptLogin(access);
         }
     }
 
     @Override
     public void showMainActivity() {
-        Intent mainActivityIntent = new Intent(getActivity(), MainActivity.class);
+        Intent mainActivityIntent = new Intent(getActivity(), HomeActivity.class);
         mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //        mainActivityIntent.setFlags(mainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(mainActivityIntent);

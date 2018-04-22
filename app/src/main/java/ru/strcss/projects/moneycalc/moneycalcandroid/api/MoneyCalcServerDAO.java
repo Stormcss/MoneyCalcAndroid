@@ -14,11 +14,10 @@ import rx.Observable;
 
 @Singleton
 public class MoneyCalcServerDAO implements MoneyCalcClient {
-    static final String BASE_URL = "http://192.168.1.100:8080";
+    static final String BASE_URL = "http://192.168.1.102:8080";
 
     private String token;
-
-    MoneyCalcClient client;
+    private MoneyCalcClient client;
 
     public MoneyCalcServerDAO() {
         Retrofit retrofit = new Retrofit.Builder()

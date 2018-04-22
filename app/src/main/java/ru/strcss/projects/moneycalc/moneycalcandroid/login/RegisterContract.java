@@ -5,7 +5,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 
 /**
- * This specifies the contract between the view and the loginPresenter.
+ * This specifies the contract between the view and the RegisterPresenter.
  */
 public interface RegisterContract {
     interface View extends BaseView<Presenter> {

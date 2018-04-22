@@ -46,7 +46,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         if (rs.isSuccessful()) {
                             String token = rs.headers().get("Authorization");
                             moneyCalcServerDAO.setToken(token);
-                            System.out.println("token = " + token);
+                            System.out.println("token = " + moneyCalcServerDAO.getToken());
                             loginView.showMainActivity();
                         } else {
                             loginView.showErrorMessage(rs.message());
