@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.home;
+package ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,24 +15,23 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections.SpendingSectionsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
-public class HomeActivity extends DaggerAppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class SpendingSectionsActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
-    HomePresenter homePresenter;
+    SpendingSectionsPresenter presenter;
 //    @Inject
 //    HomeFragment homeFragment;
 
     @Inject
-    Lazy<HomeFragment> homeFragmentProvider;
+    Lazy<SpendingSectionsFragment> spendingSectionsFragmentProvider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home_activity);
+        setContentView(R.layout.spendingsections_activity);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,13 +45,13 @@ public class HomeActivity extends DaggerAppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        HomeFragment homeFragment =
-                (HomeFragment) getSupportFragmentManager().findFragmentById(R.id.home_contentFrame);
-        if (homeFragment == null) {
+        SpendingSectionsFragment spendingSectionsFragment =
+                (SpendingSectionsFragment) getSupportFragmentManager().findFragmentById(R.id.spendingSections_contentFrame);
+        if (spendingSectionsFragment == null) {
             // Get the fragment from dagger
-            homeFragment = homeFragmentProvider.get();
+            spendingSectionsFragment = spendingSectionsFragmentProvider.get();
             ActivityUtils.addFragmentToActivity(
-                    getSupportFragmentManager(), homeFragment, R.id.home_contentFrame);
+                    getSupportFragmentManager(), spendingSectionsFragment, R.id.spendingSections_contentFrame);
         }
 
 
@@ -87,7 +86,6 @@ public class HomeActivity extends DaggerAppCompatActivity
             case R.id.menu_settings:
                 break;
             case R.id.menu_refresh:
-                homePresenter.requestSettings();
                 break;
             default:
                 break;
@@ -102,18 +100,13 @@ public class HomeActivity extends DaggerAppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-
-        } else if (id == R.id.nav_history) {
-
+            startActivity(new Intent(SpendingSectionsActivity.this, HomeActivity.class));
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         } else if (id == R.id.nav_stats) {
 
         } else if (id == R.id.nav_finance) {
 
         } else if (id == R.id.nav_spending_sections) {
-            Intent intent =
-                    new Intent(HomeActivity.this, SpendingSectionsActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

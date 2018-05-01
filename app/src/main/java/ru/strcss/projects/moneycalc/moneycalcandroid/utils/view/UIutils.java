@@ -19,14 +19,16 @@ public class UIutils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
 //            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-            formView.setVisibility(show ? View.GONE : View.VISIBLE);
-            formView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    formView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+            if (formView != null) {
+                formView.setVisibility(show ? View.GONE : View.VISIBLE);
+                formView.animate().setDuration(shortAnimTime).alpha(
+                        show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        formView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    }
+                });
+            }
 
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
             progressBar.animate().setDuration(shortAnimTime).alpha(
@@ -40,7 +42,9 @@ public class UIutils {
             // The ViewPropertyAnimator APIs are not available, so simply show
             // and hide the relevant UI components.
             progressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-            formView.setVisibility(show ? View.GONE : View.VISIBLE);
+            if (formView != null) {
+                formView.setVisibility(show ? View.GONE : View.VISIBLE);
+            }
         }
     }
 

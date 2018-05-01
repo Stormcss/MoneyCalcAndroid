@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:spending_section_cardview="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/spending_section_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/card_spendingsection_margin"
+        android:elevation="3dp"
+        spending_section_cardview:cardCornerRadius="@dimen/card_spendingsection_radius">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spending_section_logo"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spending_section_name"
+                android:layout_toRightOf="@+id/spending_section_logo"
+                android:layout_alignParentTop="true"
+                android:textSize="30sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/spending_section_finance"
+                android:layout_toRightOf="@+id/spending_section_logo"
+                android:layout_below="@+id/spending_section_name"
+                android:text="" />
+
+            <ImageView
+                android:id="@+id/spending_section_menu"
+                android:layout_width="@dimen/ic_spendingsection_overflow_width"
+                android:layout_height="@dimen/ic_spendingsection_overflow_height"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="@dimen/ic_spendingsection_overflow_margin_top"
+                android:src="@drawable/ic_settings_black_24dp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>

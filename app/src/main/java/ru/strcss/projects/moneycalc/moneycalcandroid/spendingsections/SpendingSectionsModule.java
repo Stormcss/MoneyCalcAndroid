@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.home;
+package ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections;
 
 import dagger.Binds;
 import dagger.Module;
@@ -8,19 +8,15 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.di.FragmentScoped;
 
 /**
  * This is a Dagger module. We use this to pass in the View dependency to the
- * {@link HomePresenter}.
+ * {@link SpendingSectionsPresenter}.
  */
 @Module
-public abstract class HomeModule {
+public abstract class SpendingSectionsModule {
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract HomeFragment homeFragment();
+    abstract SpendingSectionsFragment sectionsFragment();
 
     @ActivityScoped
     @Binds
-    abstract HomeContract.Presenter homePresenter(HomePresenter presenter);
-
-//    @ActivityScoped
-//    @Binds
-//    abstract HomeStatsContract.Presenter homeStatsPresenter(HomeStatsPresenter presenter);
+    abstract SpendingSectionsContract.Presenter spendingSectionsPresenter(SpendingSectionsPresenter presenter);
 }

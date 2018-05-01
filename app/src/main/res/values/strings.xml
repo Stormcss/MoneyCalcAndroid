@@ -7,14 +7,16 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
 
-    <string name="main">Главная</string>
-    <string name="history">История</string>
-    <string name="stats">Статистика</string>
-    <string name="finance">Финансы</string>
 
     <!-- Menu titles -->
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
+    <string name="menu_finance">Финансы</string>
+    <string name="menu_stats">Статистика</string>
+    <string name="menu_history">История</string>
+    <string name="menu_main">Главная</string>
+    <string name="menu_control">Управление</string>
+    <string name="menu_spending_sections">Статьи расхода</string>
 
     <!-- Activity titles -->
     <string name="title_activity_login">Войти</string>
@@ -43,4 +45,10 @@
 
     <!-- Home Activity -->
     <string name="home_dates_range_desc">Диапазон:</string>
+
+    <!-- SpendingSection Activity -->
+    <string name="ss_turnOff_ss">Отключить</string>
+    <string name="ss_turnOn_ss">Активировать</string>
+    <string name="ss_update_ss">Редактировать</string>
+    <string name="ss_delete_ss">Удалить</string>
 </resources>
