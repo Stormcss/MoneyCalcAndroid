@@ -21,6 +21,8 @@ public interface HomeContract {
 //        void setSections(List<SpendingSection> sections);
 
         void setStatisticsSections(List<SpendingSection> spendingSections, List<FinanceSummaryBySection> financeSummary);
+
+        void showAddTransaction();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -30,6 +32,7 @@ public interface HomeContract {
 
         void requestSectionStatistics(String from, String to, List<Integer> sections);
 
+        void addTransaction();
 
         //Stats
 //        void saveStatsFragmentState(int sectionId, android.view.View view);

@@ -21,16 +21,6 @@
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <!--<meta-data-->
-            <!--android:name="android.support.PARENT_ACTIVITY"-->
-            <!--android:value=".home.HomeActivity" />-->
-
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginActivity"
@@ -44,6 +34,9 @@
         <activity
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections.SpendingSectionsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.transactions.addtransaction.AddEditTransactionActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

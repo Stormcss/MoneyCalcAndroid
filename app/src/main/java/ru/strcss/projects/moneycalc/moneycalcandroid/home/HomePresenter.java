@@ -119,6 +119,13 @@ public class HomePresenter implements HomeContract.Presenter {
 
     }
 
+    @Override
+    public void addTransaction() {
+        if (homeView != null) {
+            homeView.showAddTransaction();
+        }
+    }
+
     private List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
         List<Integer> ids = new ArrayList<>();
         for (SpendingSection section : sections) {

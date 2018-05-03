@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcandroid.transactions.addtransaction.AddEditTransactionActivity;
 
 public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
@@ -45,50 +47,23 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Transaction will be added.. maybe!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                presenter.addTransaction();
             }
         });
 
         tvDatesRange = root.findViewById(R.id.home_dates_range);
 
-
         //preparing up section fragments
         viewPager = root.findViewById(R.id.home_sections_viewPager);
-        setupViewPager(viewPager);
-//        setupViewPager(viewPager, Arrays.asList(SpendingSection.builder().id(1).name("A").budget(100).build(),
-//                SpendingSection.builder().id(2).name("B").budget(200).build()));
+        adapter = new HomePagerAdapter(getActivity().getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
 
         tabLayout = root.findViewById(R.id.home_sections_tabLayout);
-
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_CENTER);
-//
         tabLayout.setupWithViewPager(viewPager);
-//        final HomePagerAdapter adapter = new HomePagerAdapter
-//                (getFragmentManager(), tabLayout.getTabCount());
-//        viewPager.setAdapter(adapter);
-//        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-//        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-//            @Override
-//            public void onTabSelected(TabLayout.Tab tab) {
-//                viewPager.setCurrentItem(tab.getPosition());
-//            }
-//
-//            @Override
-//            public void onTabUnselected(TabLayout.Tab tab) {
-//
-//            }
-//
-//            @Override
-//            public void onTabReselected(TabLayout.Tab tab) {
-//
-//            }
-//        });
 
         // TODO: 22.04.2018 show spinner
-
         presenter.requestSettings();
         return root;
     }
@@ -105,29 +80,6 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         // FIXME: 29.04.2018 this should be done using RxJava
         presenter.requestSectionStatistics(from, to, spendingSectionsIds);
     }
-
-//    @Override
-//    public void setSections(List<SpendingSection> sections) {
-//        System.out.println("setSections!");
-//
-//        System.out.println("adapter.getCount() = " + adapter.getCount());
-//        System.out.println("sections.size() = " + sections.size());
-//
-//        fillAdapterWithFragments(sections);
-//
-////        for (int i = 0; i < sections.size(); i++) {
-////            System.out.println("i = " + i);
-////            HomeStatsFragment statsFragment = (HomeStatsFragment) adapter.getItem(i);
-////            statsFragment.setTodayBalance(sections.get(i).getId());
-////        }
-//
-//
-////        setupViewPager(viewPager, sections);
-//    }
-
-//    public void requestStatisticsSectionUpdate(Integer id){
-//        presenter.updateStatisticsSection(id);
-//    }
 
     @Override
     public void setStatisticsSections(List<SpendingSection> spendingSections, List<FinanceSummaryBySection> financeSummary) {
@@ -153,8 +105,12 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         adapter.notifyDataSetChanged();
 
 //        getChildFragmentManager().getFragments().clear();
+    }
 
-
+    @Override
+    public void showAddTransaction() {
+        Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
+        startActivityForResult(intent, AddEditTransactionActivity.REQUEST_ADD_TRANSACTION);
     }
 
     @Override
@@ -169,12 +125,6 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         super.onDestroy();
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        adapter = new HomePagerAdapter(getActivity().getSupportFragmentManager());
-
-        viewPager.setAdapter(adapter);
-    }
-
     private SpendingSection findSpendingSectionById(List<SpendingSection> spendingSections, int id) {
         for (SpendingSection spendingSection : spendingSections) {
             if (spendingSection.getId() == id)
@@ -182,15 +132,4 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         }
         return null;
     }
-
-//    private void setupViewPager(ViewPager viewPager, List<SpendingSection> spendingSections) {
-//        adapter = new HomePagerAdapter(getActivity().getSupportFragmentManager());
-//
-//        for (SpendingSection spendingSection : spendingSections) {
-//            HomeStatsFragment fView = HomeStatsFragment.newInstance(spendingSection.getId());
-//            adapter.addFrag(fView, spendingSection.getName());
-//        }
-//
-//        viewPager.setAdapter(adapter);
-//    }
 }

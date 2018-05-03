@@ -57,8 +57,6 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
         tvSummaryBalance.setText(String.valueOf(getArguments().getDouble(ARG_SUMMARY_BALANCE)));
         tvSpendAll.setText(String.valueOf(getArguments().getInt(ARG_SPEND_ALL)));
         tvLeftAll.setText(String.valueOf(getArguments().getInt(ARG_LEFT_ALL)));
-
-        System.out.println("_____________sectionId: " + sectionId);
         return root;
     }
 

@@ -51,4 +51,13 @@
     <string name="ss_turnOn_ss">Активировать</string>
     <string name="ss_update_ss">Редактировать</string>
     <string name="ss_delete_ss">Удалить</string>
+
+    <!-- AddEditTransaction Activity -->
+    <string name="transaction_sum">Сумма</string>
+    <string name="transaction_desc">Описание</string>
+    <string name="transaction_section">Категория</string>
+    <string name="transaction_date">Дата</string>
+    <string name="transaction_add">Добавить транзакцию</string>
+    <string name="transaction_edit">Редактировать транзакцию</string>
+    <string name="transaction_cancel">Отменить</string>
 </resources>
