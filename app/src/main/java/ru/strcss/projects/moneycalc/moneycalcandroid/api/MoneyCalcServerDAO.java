@@ -14,6 +14,7 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummary
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainer;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.Settings;
@@ -36,6 +37,14 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
                 .build();
 
         client = retrofit.create(MoneyCalcClient.class);
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
@@ -69,6 +78,11 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
     }
 
     @Override
+    public Observable<AjaxRs<List<Transaction>>> getTransactions(String token, TransactionsSearchContainer container) {
+        return client.getTransactions(token, container);
+    }
+
+    @Override
     public Observable<AjaxRs<Void>> deleteTransaction(String token, TransactionDeleteContainer transactionContainer) {
         return client.deleteTransaction(token, transactionContainer);
     }
@@ -76,13 +90,5 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
     @Override
     public Observable<AjaxRs<Transaction>> updateTransaction(String token, TransactionUpdateContainer transactionUpdateContainer) {
         return client.updateTransaction(token, transactionUpdateContainer);
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 }

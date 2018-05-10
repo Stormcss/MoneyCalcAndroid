@@ -58,6 +58,7 @@
     <string name="transaction_section">Категория</string>
     <string name="transaction_date">Дата</string>
     <string name="transaction_add">Добавить транзакцию</string>
+    <string name="transaction_added">Успешно сохранено</string>
     <string name="transaction_edit">Редактировать транзакцию</string>
     <string name="transaction_cancel">Отменить</string>
 </resources>

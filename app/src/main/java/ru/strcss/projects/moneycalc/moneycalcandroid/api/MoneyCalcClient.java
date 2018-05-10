@@ -13,6 +13,7 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummary
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainer;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.Settings;
@@ -47,13 +48,17 @@ public interface MoneyCalcClient {
     Observable<AjaxRs<Transaction>> addTransaction(@Header("Authorization") String token,
                                                    @Body TransactionAddContainer transactionContainer);
 
-    @POST("/api/finance/transactions/deleteTransaction")
-    Observable<AjaxRs<Void>> deleteTransaction(@Header("Authorization") String token,
-                                               @Body TransactionDeleteContainer transactionContainer);
+    @POST("/api/finance/transactions/getTransactions")
+    Observable<AjaxRs<List<Transaction>>> getTransactions(@Header("Authorization") String token,
+                                                          @Body TransactionsSearchContainer container);
 
     @POST("/api/finance/transactions/updateTransaction")
     Observable<AjaxRs<Transaction>> updateTransaction(@Header("Authorization") String token,
                                                       @Body TransactionUpdateContainer transactionUpdateContainer);
+
+    @POST("/api/finance/transactions/deleteTransaction")
+    Observable<AjaxRs<Void>> deleteTransaction(@Header("Authorization") String token,
+                                               @Body TransactionDeleteContainer transactionContainer);
 }
 
 

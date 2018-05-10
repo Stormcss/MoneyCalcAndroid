@@ -2,14 +2,16 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity;
-import ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeModule;
-import ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginActivity;
-import ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginModule;
-import ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections.SpendingSectionsActivity;
-import ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections.SpendingSectionsModule;
-import ru.strcss.projects.moneycalc.moneycalcandroid.transactions.addtransaction.AddEditTransactionActivity;
-import ru.strcss.projects.moneycalc.moneycalcandroid.transactions.addtransaction.AddEditTransactionModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsModule;
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module ActivityBindingModule is on,
@@ -35,4 +37,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = AddEditTransactionModule.class)
     abstract AddEditTransactionActivity addEditTransactionActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = HistoryModule.class)
+    abstract HistoryActivity addHistoryActivity();
 }

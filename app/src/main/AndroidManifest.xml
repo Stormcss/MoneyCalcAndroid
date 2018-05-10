@@ -18,25 +18,27 @@
         android:theme="@style/AppTheme"
         android:name="ru.strcss.projects.moneycalc.moneycalcandroid.App">
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity"
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.login.LoginActivity"
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity"
             android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.spendingsections.SpendingSectionsActivity"
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.transactions.addtransaction.AddEditTransactionActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
