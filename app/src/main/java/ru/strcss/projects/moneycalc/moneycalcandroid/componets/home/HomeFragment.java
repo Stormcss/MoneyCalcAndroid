@@ -20,11 +20,11 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponetsUtils.findSpendingSectionById;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponetsUtils.getSpendingSectionIds;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.findSpendingSectionById;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionIds;
 
 public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
@@ -124,7 +124,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     @Override
     public void showAddTransaction() {
         Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
-        startActivityForResult(intent, AddEditTransactionActivity.REQUEST_ADD_TRANSACTION);
+        startActivityForResult(intent, 0);
     }
 
     @Override

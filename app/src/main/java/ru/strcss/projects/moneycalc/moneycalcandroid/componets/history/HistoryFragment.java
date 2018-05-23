@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
 
@@ -47,13 +49,13 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
         progressView = root.findViewById(R.id.history_progress);
 
         transactionList = new ArrayList<>();
-        adapter = new HistoryAdapter(getContext(), transactionList);
+        adapter = new HistoryAdapter(getContext(), presenter, transactionList);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         rvTransactions.setLayoutManager(mLayoutManager);
-//        rvTransactions.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
         rvTransactions.setItemAnimator(new DefaultItemAnimator());
         rvTransactions.setAdapter(adapter);
+
 
         presenter.requestTransactions();
 
@@ -61,8 +63,17 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Transaction will be added.. maybe!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+        rvTransactions.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0)
+                    fabAddTransaction.hide();
+                else if (dy < 0)
+                    fabAddTransaction.show();
             }
         });
 
@@ -78,6 +89,11 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     public void showErrorMessage(String msg) {
         System.out.println("showErrorMessage! " + msg);
         Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDeleteSuccess() {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.transaction_delete_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

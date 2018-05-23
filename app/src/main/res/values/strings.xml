@@ -39,9 +39,6 @@
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">Обязательное поле</string>
     <string name="login_register_here">Зарегистрироваться</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
 
     <!-- Home Activity -->
     <string name="home_dates_range_desc">Диапазон:</string>
@@ -60,5 +57,15 @@
     <string name="transaction_add">Добавить транзакцию</string>
     <string name="transaction_added">Успешно сохранено</string>
     <string name="transaction_edit">Редактировать транзакцию</string>
+    <string name="transaction_edited">Успешно отредактировано</string>
     <string name="transaction_cancel">Отменить</string>
+
+    <!-- History Activity -->
+    <string name="transaction_delete_title">Удалить транзакцию</string>
+    <string name="transaction_delete_confirmation">Вы уверены?</string>
+    <string name="transaction_delete_ok">Да</string>
+    <string name="transaction_delete_cancel">Нет</string>
+    <string name="transaction_delete_success">Транзакция успешно удалена</string>
+
+
 </resources>

@@ -27,6 +27,7 @@ android {
 }
 
 dependencies {
+
     implementation 'io.reactivex:rxandroid:1.0.1'
     implementation 'io.reactivex:rxjava:1.0.14'
 
@@ -34,12 +35,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    implementation('ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:0.0.1'){
+    implementation('ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:0.0.3') {
         transitive = false
     }
 
     implementation 'com.google.dagger:dagger-android:2.11'
-    implementation 'com.google.dagger:dagger-android-support:2.11' // if you use the support libraries
+    implementation 'com.google.dagger:dagger-android-support:2.11'
     annotationProcessor 'com.google.dagger:dagger-android-processor:2.11'
     annotationProcessor 'com.google.dagger:dagger-compiler:2.11'
 

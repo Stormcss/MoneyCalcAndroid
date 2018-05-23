@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction;
 
 import dagger.Binds;
 import dagger.Module;

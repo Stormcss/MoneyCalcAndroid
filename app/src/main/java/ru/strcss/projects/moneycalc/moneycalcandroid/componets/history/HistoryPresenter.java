@@ -8,7 +8,8 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.AjaxRs;
+import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.Transaction;
@@ -54,7 +55,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
         moneyCalcServerDAO.getTransactions(moneyCalcServerDAO.getToken(), searchContainer)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<List<Transaction>>>() {
+                .subscribe(new Observer<MoneyCalcRs<List<Transaction>>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -66,7 +67,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(AjaxRs<List<Transaction>> rs) {
+                    public void onNext(MoneyCalcRs<List<Transaction>> rs) {
                         System.out.println("requestTransactions. rs = " + rs);
                         if (rs.isSuccessful()) {
                             dataStorage.setTransactionList(rs.getPayload());
@@ -77,6 +78,39 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                         view.hideSpinner();
                     }
                 });
+    }
+
+    @Override
+    public void deleteTransaction(String id) {
+
+        moneyCalcServerDAO.deleteTransaction(moneyCalcServerDAO.getToken(), new TransactionDeleteContainer(id))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MoneyCalcRs<Void>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("requestTransactions onError!!!!! " + e.getMessage());
+                        view.showErrorMessage(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(MoneyCalcRs<Void> rs) {
+                        System.out.println("requestTransactions. rs = " + rs);
+                        if (rs.isSuccessful()) {
+                            dataStorage.getTransactionList().clear();
+                            view.showDeleteSuccess();
+//                            view.showDeleteSuccess(getContext().getString(R.string.transaction_delete_success));
+                        } else {
+                            view.showErrorMessage(rs.getMessage());
+                        }
+                        view.hideSpinner();
+                    }
+                });
+
     }
 
     private List<Integer> getSpendingSectionIds(List<SpendingSection> spendingSections) {

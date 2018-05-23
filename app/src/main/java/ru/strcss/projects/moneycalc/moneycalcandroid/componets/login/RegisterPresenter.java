@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import retrofit2.Response;
-import ru.strcss.projects.moneycalc.dto.AjaxRs;
 import ru.strcss.projects.moneycalc.dto.Credentials;
+import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import rx.Observable;
 import rx.Observer;
@@ -30,9 +30,9 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     public void attemptRegister(final Credentials credentials) {
         moneyCalcServerDAO.registerPerson(credentials)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<AjaxRs<Void>, Observable<Response<Void>>>() {
+                .flatMap(new Func1<MoneyCalcRs<Void>, Observable<Response<Void>>>() {
                     @Override
-                    public Observable<Response<Void>> call(AjaxRs<Void> loginRs) {
+                    public Observable<Response<Void>> call(MoneyCalcRs<Void> loginRs) {
                         if (loginRs.isSuccessful()) {
                             return moneyCalcServerDAO.login(credentials.getAccess());
                         } else {

@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction;
 
 import android.app.Activity;
 import android.content.Context;

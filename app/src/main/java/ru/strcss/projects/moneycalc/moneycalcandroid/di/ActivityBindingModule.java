@@ -2,8 +2,8 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.di;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
-import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionActivity;
-import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;

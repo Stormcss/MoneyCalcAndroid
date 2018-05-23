@@ -7,13 +7,16 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.AjaxRs;
+import retrofit2.HttpException;
+import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
 public class SpendingSectionsPresenter implements SpendingSectionsContract.Presenter {
@@ -46,25 +49,25 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
         moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<List<SpendingSection>>>() {
+                .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
                     @Override
                     public void onCompleted() {
-                        System.out.println("requestSpendingSections completed");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("requestSpendingSections onError!!!!! " + e.getMessage());
-                        view.showErrorMessage(e.getMessage());
+                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
+                        System.out.println("requestSpendingSections onError!!!!! " + errorBodyMessage);
+                        view.showErrorMessage(errorBodyMessage);
                     }
 
                     @Override
-                    public void onNext(AjaxRs<List<SpendingSection>> rs) {
-                        System.out.println("requestSpendingSections. rs = " + rs);
-                        if (rs.isSuccessful()) {
-                            view.showSpendingSections(rs.getPayload());
+                    public void onNext(MoneyCalcRs<List<SpendingSection>> getSpendingSectionsRs) {
+                        System.out.println("getSpendingSectionsRs = " + getSpendingSectionsRs);
+                        if (getSpendingSectionsRs.isSuccessful()) {
+                            view.showSpendingSections(getSpendingSectionsRs.getPayload());
                         } else {
-                            view.showErrorMessage(rs.getMessage());
+                            view.showErrorMessage(getSpendingSectionsRs.getMessage());
                         }
                         view.hideSpinner();
                     }

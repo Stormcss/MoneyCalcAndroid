@@ -31,11 +31,11 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
 
         SpendingSectionViewHolder(View view) {
             super(view);
-            cv = (CardView) view.findViewById(R.id.spending_section_cardview);
-            logo = (ImageView) view.findViewById(R.id.spending_section_logo);
-            menu = (ImageView) view.findViewById(R.id.spending_section_menu);
-            name = (TextView) view.findViewById(R.id.spending_section_name);
-            finance = (TextView) view.findViewById(R.id.spending_section_finance);
+            cv = view.findViewById(R.id.spending_section_cardview);
+            logo = view.findViewById(R.id.spending_section_logo);
+            menu = view.findViewById(R.id.spending_section_menu);
+            name = view.findViewById(R.id.spending_section_name);
+            finance = view.findViewById(R.id.spending_section_finance);
         }
     }
 
@@ -57,7 +57,7 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
     public void onBindViewHolder(@NonNull final SpendingSectionViewHolder holder, int position) {
         SpendingSection spendingSection = sectionList.get(position);
         holder.name.setText(spendingSection.getName());
-        holder.finance.setText("" + spendingSection.getBudget());
+        holder.finance.setText(String.valueOf(spendingSection.getBudget()));
 
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override

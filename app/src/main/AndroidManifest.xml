@@ -34,7 +34,7 @@
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction.AddEditTransactionActivity"
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity"

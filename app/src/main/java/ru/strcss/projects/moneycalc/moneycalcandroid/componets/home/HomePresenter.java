@@ -7,7 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.AjaxRs;
+import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.Settings;
@@ -17,7 +17,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponetsUtils.getSpendingSectionIds;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionIds;
 
 @Singleton
 public class HomePresenter implements HomeContract.Presenter {
@@ -53,7 +53,7 @@ public class HomePresenter implements HomeContract.Presenter {
         moneyCalcServerDAO.getSettings(moneyCalcServerDAO.getToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<Settings>>() {
+                .subscribe(new Observer<MoneyCalcRs<Settings>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -65,7 +65,7 @@ public class HomePresenter implements HomeContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(AjaxRs<Settings> settingsRs) {
+                    public void onNext(MoneyCalcRs<Settings> settingsRs) {
                         if (settingsRs.isSuccessful()) {
                             dataStorage.setSettings(settingsRs.getPayload());
 
@@ -86,7 +86,7 @@ public class HomePresenter implements HomeContract.Presenter {
         moneyCalcServerDAO.getFinanceSummaryBySection(moneyCalcServerDAO.getToken(), getContainer)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<List<FinanceSummaryBySection>>>() {
+                .subscribe(new Observer<MoneyCalcRs<List<FinanceSummaryBySection>>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -98,7 +98,7 @@ public class HomePresenter implements HomeContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(AjaxRs<List<FinanceSummaryBySection>> statsRs) {
+                    public void onNext(MoneyCalcRs<List<FinanceSummaryBySection>> statsRs) {
                         if (statsRs.isSuccessful()) {
                             dataStorage.setFinanceSummary(statsRs.getPayload());
                             homeView.setStatisticsSections(dataStorage.getSettings().getSections(),

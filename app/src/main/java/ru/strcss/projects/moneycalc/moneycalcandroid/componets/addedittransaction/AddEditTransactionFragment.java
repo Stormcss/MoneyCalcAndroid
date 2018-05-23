@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -29,6 +29,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 
 public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View {
 
@@ -52,7 +53,18 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        Bundle bundle = this.getArguments();
+
+        final Transaction updatedTransactionData = (Transaction) bundle.get(TRANSACTION);
         FloatingActionButton fabAddTransaction = getActivity().findViewById(R.id.fab_addEditTransaction_done);
+
+        final boolean isEditingTransaction = updatedTransactionData != null;
+
+        if (isEditingTransaction) {
+            setUpdatedTransactionData(updatedTransactionData);
+            fabAddTransaction.setImageResource(R.drawable.ic_edit_white_24dp);
+        }
+
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,7 +78,11 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
                             .description(description)
                             .sectionID(selectedSection.getId())
                             .build();
-                    presenter.addTransaction(transaction);
+                    if (isEditingTransaction) {
+                        presenter.editTransaction(updatedTransactionData.get_id(), transaction);
+                    } else {
+                        presenter.addTransaction(transaction);
+                    }
                     hideSoftKeyboard();
                     getActivity().finish();
                 }
@@ -80,7 +96,6 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         lvTransactionSection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("SELECTED_IS: " + parent.getItemAtPosition(position));
                 selectedSection = (SpendingSection) parent.getItemAtPosition(position);
             }
         });
@@ -99,6 +114,11 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         return root;
     }
 
+    private void setUpdatedTransactionData(Transaction transaction) {
+        etTransactionSum.setText(String.valueOf(transaction.getSum()));
+        etTransactionDesc.setText(transaction.getDescription());
+    }
+
     @Override
     public void showErrorMessage(String msg) {
         System.out.println("showErrorMessage! " + msg);
@@ -109,7 +129,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     public void showAddSuccess() {
         final Context context = getActivity().getApplicationContext();
         final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
-                getContext().getText(R.string.transaction_added), 5000);
+                getContext().getText(R.string.transaction_added), 3000);
 
         snackbarWrapper.setAction(getContext().getText(R.string.transaction_cancel),
                 new View.OnClickListener() {
@@ -125,8 +145,20 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
     @Override
     public void showEditSuccess() {
-        Snackbar.make(getActivity().findViewById(android.R.id.home), "Edited successfully!", Snackbar.LENGTH_LONG)
-                .show();
+        final Context context = getActivity().getApplicationContext();
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
+                getContext().getText(R.string.transaction_edited), 3000);
+
+        snackbarWrapper.setAction(getContext().getText(R.string.transaction_cancel),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "CANCEL!!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        snackbarWrapper.show();
     }
 
     @Override

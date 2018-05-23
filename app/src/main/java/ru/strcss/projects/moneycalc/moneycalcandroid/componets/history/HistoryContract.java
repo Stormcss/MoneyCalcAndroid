@@ -16,6 +16,8 @@ public interface HistoryContract {
 
         void showErrorMessage(String msg);
 
+        void showDeleteSuccess();
+
         void showSpinner();
 
         void hideSpinner();
@@ -23,5 +25,7 @@ public interface HistoryContract {
 
     interface Presenter extends BasePresenter<View> {
         void requestTransactions();
+
+        void deleteTransaction(String id);
     }
 }

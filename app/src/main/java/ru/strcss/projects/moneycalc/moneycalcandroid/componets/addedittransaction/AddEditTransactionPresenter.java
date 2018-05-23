@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addtransaction;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction;
 
 import android.support.annotation.Nullable;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.AjaxRs;
+import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
@@ -48,7 +48,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
         moneyCalcServerDAO.addTransaction(moneyCalcServerDAO.getToken(), container)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<Transaction>>() {
+                .subscribe(new Observer<MoneyCalcRs<Transaction>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -60,11 +60,11 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onNext(AjaxRs<Transaction> transactionAjaxRs) {
-                        if (transactionAjaxRs.isSuccessful()) {
+                    public void onNext(MoneyCalcRs<Transaction> transactionRs) {
+                        if (transactionRs.isSuccessful()) {
                             view.showAddSuccess();
                         } else {
-                            view.showErrorMessage(transactionAjaxRs.getMessage());
+                            view.showErrorMessage(transactionRs.getMessage());
                         }
                     }
                 });
@@ -76,7 +76,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
         moneyCalcServerDAO.updateTransaction(moneyCalcServerDAO.getToken(), container)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<Transaction>>() {
+                .subscribe(new Observer<MoneyCalcRs<Transaction>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -88,11 +88,11 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onNext(AjaxRs<Transaction> transactionAjaxRs) {
-                        if (transactionAjaxRs.isSuccessful()) {
+                    public void onNext(MoneyCalcRs<Transaction> transactionRs) {
+                        if (transactionRs.isSuccessful()) {
                             view.showEditSuccess();
                         } else {
-                            view.showErrorMessage(transactionAjaxRs.getMessage());
+                            view.showErrorMessage(transactionRs.getMessage());
                         }
                     }
                 });
@@ -104,7 +104,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
         moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AjaxRs<List<SpendingSection>>>() {
+                .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -116,7 +116,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onNext(AjaxRs<List<SpendingSection>> sectionsRs) {
+                    public void onNext(MoneyCalcRs<List<SpendingSection>> sectionsRs) {
                         if (sectionsRs.isSuccessful()) {
                             view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
                         } else {

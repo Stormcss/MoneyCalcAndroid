@@ -1,7 +1,10 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +15,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private Context mContext;
     private List<Transaction> transactionList;
+    private HistoryContract.Presenter historyPresenter;
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -40,8 +44,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         }
     }
 
-    public HistoryAdapter(Context mContext, List<Transaction> transactionList) {
+    public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<Transaction> transactionList) {
         this.mContext = mContext;
+        this.historyPresenter = historyPresenter;
         this.transactionList = transactionList;
     }
 
@@ -64,7 +69,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.menu);
+                showPopupMenu(holder.menu, holder.getAdapterPosition());
             }
         });
     }
@@ -78,31 +83,56 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view, int adapterPosition) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_spending_section, popup.getMenu());
-        popup.setOnMenuItemClickListener(new SpendingSectionMenuItemClickListener());
+        popup.setOnMenuItemClickListener(new SpendingSectionMenuItemClickListener(adapterPosition));
         popup.show();
     }
 
     /**
      * Click listener for popup menu items
      */
-    class SpendingSectionMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
+    public class SpendingSectionMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
-        public SpendingSectionMenuItemClickListener() {
+        private int adapterPosition;
+
+        public SpendingSectionMenuItemClickListener(int adapterPosition) {
+            this.adapterPosition = adapterPosition;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.spendingsection_menu_update:
-                    Toast.makeText(mContext, "Update", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, AddEditTransactionActivity.class);
+                    intent.putExtra("transaction", transactionList.get(adapterPosition));
+
+                    mContext.startActivity(intent);
+
                     return true;
                 case R.id.spendingsection_menu_delete:
-                    Toast.makeText(mContext, "Delete", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+
+                    alertDialogBuilder.setTitle(R.string.transaction_delete_title)
+                            .setMessage(R.string.transaction_delete_confirmation)
+                            .setIcon(R.drawable.ic_warning_red_24dp)
+                            .setPositiveButton(R.string.transaction_delete_ok, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    historyPresenter.deleteTransaction(transactionList.get(adapterPosition).get_id());
+                                }
+                            })
+                            .setNegativeButton(R.string.transaction_delete_cancel, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog dialog = alertDialogBuilder.create();
+                    dialog.show();
+
                     return true;
                 default:
             }
@@ -114,5 +144,4 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public int getItemCount() {
         return transactionList.size();
     }
-
 }
