@@ -12,6 +12,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivi
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionModule;
 
 /**
  * We want Dagger.Android to create a Subcomponent which has a parent Component of whichever module ActivityBindingModule is on,
@@ -37,6 +39,10 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = AddEditTransactionModule.class)
     abstract AddEditTransactionActivity addEditTransactionActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules = AddEditSpendingSectionModule.class)
+    abstract AddEditSpendingSectionActivity addEditSpendingSectionActivity();
 
     @ActivityScoped
     @ContributesAndroidInjector(modules = HistoryModule.class)

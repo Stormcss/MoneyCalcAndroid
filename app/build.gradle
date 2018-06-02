@@ -35,7 +35,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
-    implementation('ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:0.0.3') {
+    implementation('ru.strcss.projects.moneycalc.dto:MoneyCalcDTO:0.0.5') {
         transitive = false
     }
 

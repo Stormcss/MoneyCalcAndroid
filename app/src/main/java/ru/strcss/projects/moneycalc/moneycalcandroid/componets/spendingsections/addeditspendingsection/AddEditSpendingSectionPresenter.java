@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection;
 
 import android.support.annotation.Nullable;
 
@@ -7,37 +7,32 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static ru.strcss.projects.moneycalc.dto.crudcontainers.SpendingSectionSearchType.BY_ID;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
-public class SpendingSectionsPresenter implements SpendingSectionsContract.Presenter {
+public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
-    private final DataStorage dataStorage;
 
     @Nullable
-    private SpendingSectionsContract.View view;
+    private AddEditSpendingSectionContract.View view;
 
     @Inject
-    SpendingSectionsPresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage) {
+    AddEditSpendingSectionPresenter(MoneyCalcServerDAO moneyCalcServerDAO) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
-        this.dataStorage = dataStorage;
     }
 
-
     @Override
-    public void takeView(SpendingSectionsContract.View view) {
+    public void takeView(AddEditSpendingSectionContract.View view) {
         this.view = view;
     }
 
@@ -47,9 +42,10 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
     }
 
     @Override
-    public void requestSpendingSections() {
-        moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
-                .subscribeOn(Schedulers.newThread())
+    public void addSpendingSection(SpendingSection spendingSection) {
+        SpendingSectionAddContainer container = new SpendingSectionAddContainer(spendingSection);
+        moneyCalcServerDAO.addSpendingSection(moneyCalcServerDAO.getToken(), container)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
                     @Override
@@ -58,28 +54,26 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
-                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
-                        System.out.println("requestSpendingSections onError!!!!! " + errorBodyMessage);
-                        view.showErrorMessage(errorBodyMessage);
+                        view.showErrorMessage(e.getMessage());
+                        e.printStackTrace();
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<List<SpendingSection>> getSpendingSectionsRs) {
-                        System.out.println("getSpendingSectionsRs = " + getSpendingSectionsRs);
-                        if (getSpendingSectionsRs.isSuccessful()) {
-                            view.showSpendingSections(getSpendingSectionsRs.getPayload());
+                    public void onNext(MoneyCalcRs<List<SpendingSection>> addSectionRs) {
+                        if (addSectionRs.isSuccessful()) {
+                            view.showAddSuccess();
                         } else {
-                            view.showErrorMessage(getSpendingSectionsRs.getMessage());
+                            view.showErrorMessage(addSectionRs.getMessage());
                         }
-                        view.hideSpinner();
                     }
                 });
     }
 
     @Override
-    public void deleteSpendingSection(String id) {
-        SpendingSectionDeleteContainer container = new SpendingSectionDeleteContainer(id, BY_ID);
-        moneyCalcServerDAO.deleteSpendingSection(moneyCalcServerDAO.getToken(), container)
+    public void editSpendingSection(String id, SpendingSection spendingSection) {
+        SpendingSectionUpdateContainer container =
+                new SpendingSectionUpdateContainer(id, spendingSection, BY_ID);
+        moneyCalcServerDAO.updateSpendingSection(moneyCalcServerDAO.getToken(), container)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -96,7 +90,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionRs) {
                         if (sectionRs.isSuccessful()) {
-                            view.showDeleteSuccess();
+                            view.showEditSuccess();
                         } else {
                             view.showErrorMessage(sectionRs.getMessage());
                         }

@@ -60,12 +60,25 @@
     <string name="transaction_edited">Успешно отредактировано</string>
     <string name="transaction_cancel">Отменить</string>
 
+    <!-- AddEditSpendingSection Activity -->
+    <string name="spending_section_name">Имя</string>
+    <string name="spending_section_budget">Бюджет</string>
+    <string name="spending_section_title">Удалить статью расхода</string>
+    <string name="spending_section_add">Добавить статью расхода</string>
+    <string name="spending_section_delete">Удалить статью расхода</string>
+    <string name="spending_section_delete_success">Статья расхода успешно удалена</string>
+    <string name="spending_section_edit">Редактировать статью расхода</string>
+    <string name="spending_section_edit_success">Статья расхода успешно отредактирована</string>
+
     <!-- History Activity -->
     <string name="transaction_delete_title">Удалить транзакцию</string>
-    <string name="transaction_delete_confirmation">Вы уверены?</string>
-    <string name="transaction_delete_ok">Да</string>
-    <string name="transaction_delete_cancel">Нет</string>
     <string name="transaction_delete_success">Транзакция успешно удалена</string>
 
+    <!--  -->
+    <string name="cancel">Отмена</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="saving_success">Успешно сохранено</string>
+    <string name="are_you_sure">Вы уверены?</string>
 
 </resources>

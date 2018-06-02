@@ -8,7 +8,6 @@ import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -28,8 +27,9 @@ import ru.strcss.projects.moneycalc.enitities.Transaction;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
 
 public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View {
 
@@ -83,7 +83,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
                     } else {
                         presenter.addTransaction(transaction);
                     }
-                    hideSoftKeyboard();
+                    hideSoftKeyboard(getActivity());
                     getActivity().finish();
                 }
             }
@@ -127,20 +127,22 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
     @Override
     public void showAddSuccess() {
-        final Context context = getActivity().getApplicationContext();
-        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
-                getContext().getText(R.string.transaction_added), 3000);
+        snackBarAction(getActivity().getApplicationContext(), R.string.transaction_added, R.string.transaction_cancel);
 
-        snackbarWrapper.setAction(getContext().getText(R.string.transaction_cancel),
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(context, "CANCEL!!!",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-        snackbarWrapper.show();
+        //        final Context context = getActivity().getApplicationContext();
+//        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
+//                getContext().getText(R.string.transaction_added), 3000);
+//
+//        snackbarWrapper.setAction(getContext().getText(R.string.transaction_cancel),
+//                new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Toast.makeText(context, "CANCEL!!!",
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//        snackbarWrapper.show();
     }
 
     @Override
@@ -180,13 +182,13 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         super.onDestroy();
     }
 
-    /**
-     * Hides the soft keyboard
-     */
-    public void hideSoftKeyboard() {
-        if (getActivity().getCurrentFocus() != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-        }
-    }
+//    /**
+//     * Hides the soft keyboard
+//     */
+//    public void hideSoftKeyboard() {
+//        if (getActivity().getCurrentFocus() != null) {
+//            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+//            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+//        }
+//    }
 }

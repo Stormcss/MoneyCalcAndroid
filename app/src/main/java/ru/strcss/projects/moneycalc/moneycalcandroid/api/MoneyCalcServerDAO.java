@@ -10,6 +10,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
@@ -24,7 +27,8 @@ import rx.Observable;
 
 @Singleton
 public class MoneyCalcServerDAO implements MoneyCalcClient {
-    static final String BASE_URL = "http://192.168.1.101:8080";
+    static final String BASE_URL = "http://62.181.41.23:8080";
+//    static final String BASE_URL = "http://192.168.1.100:8080";
 
     private String token;
     private MoneyCalcClient client;
@@ -65,6 +69,21 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
     @Override
     public Observable<MoneyCalcRs<List<SpendingSection>>> getSpendingSections(String token) {
         return client.getSpendingSections(token);
+    }
+
+    @Override
+    public Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(String token, SpendingSectionAddContainer spendingSectionContainer) {
+        return client.addSpendingSection(token, spendingSectionContainer);
+    }
+
+    @Override
+    public Observable<MoneyCalcRs<List<SpendingSection>>> updateSpendingSection(String token, SpendingSectionUpdateContainer updateContainer) {
+        return client.updateSpendingSection(token, updateContainer);
+    }
+
+    @Override
+    public Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(String token, SpendingSectionDeleteContainer deleteContainer) {
+        return client.deleteSpendingSection(token, deleteContainer);
     }
 
     @Override

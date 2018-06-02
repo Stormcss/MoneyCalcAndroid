@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
 
@@ -47,7 +49,7 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
         progressView = root.findViewById(R.id.spending_section_progress);
 
         sectionList = new ArrayList<>();
-        adapter = new SpendingSectionsAdapter(getContext(), sectionList);
+        adapter = new SpendingSectionsAdapter(getContext(), sectionList, presenter);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         rvSpendingSections.setLayoutManager(mLayoutManager);
@@ -61,8 +63,8 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
         fabAddSpendingSection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "SpendingSection will be added.. maybe!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent intent = new Intent(getContext(), AddEditSpendingSectionActivity.class);
+                startActivityForResult(intent, 0);
             }
         });
         rvSpendingSections.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -98,6 +100,16 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
     public void hideSpinner() {
         int animTime = getResources().getInteger(android.R.integer.config_mediumAnimTime);
         showProgress(false, null, progressView, animTime);
+    }
+
+    @Override
+    public void showUpdateSuccess() {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.spending_section_edit_success, Snackbar.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showDeleteSuccess() {
+        Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.spending_section_delete_success, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

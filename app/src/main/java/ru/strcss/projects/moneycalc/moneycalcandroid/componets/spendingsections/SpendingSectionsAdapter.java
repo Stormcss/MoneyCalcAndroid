@@ -1,7 +1,10 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -12,17 +15,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
 
 public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectionsAdapter.SpendingSectionViewHolder> {
 
     private Context mContext;
     private List<SpendingSection> sectionList;
+    private SpendingSectionsContract.Presenter presenter;
 
     public static class SpendingSectionViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -39,9 +44,10 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
         }
     }
 
-    public SpendingSectionsAdapter(Context mContext, List<SpendingSection> sectionList) {
+    public SpendingSectionsAdapter(Context mContext, List<SpendingSection> sectionList, SpendingSectionsContract.Presenter presenter) {
         this.mContext = mContext;
         this.sectionList = sectionList;
+        this.presenter = presenter;
     }
 
     @NonNull
@@ -62,7 +68,7 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopupMenu(holder.menu);
+                showPopupMenu(holder.menu, holder.getAdapterPosition());
             }
         });
     }
@@ -76,12 +82,12 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
     /**
      * Showing popup menu when tapping on 3 dots
      */
-    private void showPopupMenu(View view) {
+    private void showPopupMenu(View view, int adapterPosition) {
         // inflate menu
         PopupMenu popup = new PopupMenu(mContext, view);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.menu_spending_section, popup.getMenu());
-        popup.setOnMenuItemClickListener(new SpendingSectionMenuItemClickListener());
+        popup.setOnMenuItemClickListener(new SpendingSectionMenuItemClickListener(adapterPosition));
         popup.show();
     }
 
@@ -90,17 +96,41 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
      */
     class SpendingSectionMenuItemClickListener implements PopupMenu.OnMenuItemClickListener {
 
-        public SpendingSectionMenuItemClickListener() {
+        private int adapterPosition;
+
+        public SpendingSectionMenuItemClickListener(int adapterPosition) {
+            this.adapterPosition = adapterPosition;
         }
 
         @Override
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.spendingsection_menu_update:
-                    Toast.makeText(mContext, "Update", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, AddEditSpendingSectionActivity.class);
+                    intent.putExtra(AppConstants.SPENDING_SECTION, sectionList.get(adapterPosition));
+
+                    mContext.startActivity(intent);
                     return true;
+
                 case R.id.spendingsection_menu_delete:
-                    Toast.makeText(mContext, "Delete", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+
+                    alertDialogBuilder.setTitle(R.string.spending_section_delete)
+                            .setMessage(R.string.are_you_sure)
+                            .setIcon(R.drawable.ic_warning_red_24dp)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    presenter.deleteSpendingSection(String.valueOf(sectionList.get(adapterPosition).getId()));
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+
+                    AlertDialog dialog = alertDialogBuilder.create();
+                    dialog.show();
                     return true;
                 default:
             }

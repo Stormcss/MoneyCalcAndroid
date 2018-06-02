@@ -16,11 +16,19 @@
 
 package ru.strcss.projects.moneycalc.moneycalcandroid.utils;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 import static dagger.internal.Preconditions.checkNotNull;
 
 /**
@@ -41,4 +49,29 @@ public class ActivityUtils {
         transaction.commit();
     }
 
+    /**
+     * Hides the soft keyboard
+     */
+    public static void hideSoftKeyboard(FragmentActivity activity) {
+        if (activity.getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    public static void snackBarAction(final Context context, int messageRes, int doCancelRes) {
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
+                context.getText(messageRes), 3000);
+
+        snackbarWrapper.setAction(context.getText(doCancelRes),
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(context, "CANCEL!!!",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+        snackbarWrapper.show();
+    }
 }

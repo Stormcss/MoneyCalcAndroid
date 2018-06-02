@@ -117,14 +117,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
 
                     alertDialogBuilder.setTitle(R.string.transaction_delete_title)
-                            .setMessage(R.string.transaction_delete_confirmation)
+                            .setMessage(R.string.are_you_sure)
                             .setIcon(R.drawable.ic_warning_red_24dp)
-                            .setPositiveButton(R.string.transaction_delete_ok, new DialogInterface.OnClickListener() {
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     historyPresenter.deleteTransaction(transactionList.get(adapterPosition).get_id());
                                 }
                             })
-                            .setNegativeButton(R.string.transaction_delete_cancel, new DialogInterface.OnClickListener() {
+                            .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }

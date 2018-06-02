@@ -9,6 +9,9 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
@@ -31,8 +34,24 @@ public interface MoneyCalcClient {
     @GET("/api/settings/getSettings")
     Observable<MoneyCalcRs<Settings>> getSettings(@Header("Authorization") String token);
 
+    /**
+     * Spending Sections
+     */
+
     @GET("/api/settings/getSpendingSections")
     Observable<MoneyCalcRs<List<SpendingSection>>> getSpendingSections(@Header("Authorization") String token);
+
+    @POST("/api/settings/addSpendingSection")
+    Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(@Header("Authorization") String token,
+                                                                      @Body SpendingSectionAddContainer spendingSectionContainer);
+
+    @POST("/api/settings/updateSpendingSection")
+    Observable<MoneyCalcRs<List<SpendingSection>>> updateSpendingSection(@Header("Authorization") String token,
+                                                                         @Body SpendingSectionUpdateContainer updateContainer);
+
+    @POST("/api/settings/deleteSpendingSection")
+    Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(@Header("Authorization") String token,
+                                                                         @Body SpendingSectionDeleteContainer deleteContainer);
 
     /**
      * Statistics

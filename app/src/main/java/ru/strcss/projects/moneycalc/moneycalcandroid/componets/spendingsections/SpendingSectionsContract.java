@@ -19,9 +19,15 @@ public interface SpendingSectionsContract {
         void showSpinner();
 
         void hideSpinner();
+
+        void showUpdateSuccess();
+
+        void showDeleteSuccess();
     }
 
     interface Presenter extends BasePresenter<View> {
         void requestSpendingSections();
+
+        void deleteSpendingSection(String id);
     }
 }
