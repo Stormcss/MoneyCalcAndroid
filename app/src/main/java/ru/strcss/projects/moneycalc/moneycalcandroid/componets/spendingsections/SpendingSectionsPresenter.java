@@ -67,6 +67,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     public void onNext(MoneyCalcRs<List<SpendingSection>> getSpendingSectionsRs) {
                         System.out.println("getSpendingSectionsRs = " + getSpendingSectionsRs);
                         if (getSpendingSectionsRs.isSuccessful()) {
+                            dataStorage.getSettings().setSections(getSpendingSectionsRs.getPayload());
                             view.showSpendingSections(getSpendingSectionsRs.getPayload());
                         } else {
                             view.showErrorMessage(getSpendingSectionsRs.getMessage());
@@ -96,6 +97,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionRs) {
                         if (sectionRs.isSuccessful()) {
+                            System.out.println("deleteSpendingSection! sectionRs.getPayload() = " + sectionRs.getPayload());
                             view.showDeleteSuccess();
                         } else {
                             view.showErrorMessage(sectionRs.getMessage());

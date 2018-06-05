@@ -131,6 +131,8 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
+        presenter.requestSettings();
+        System.out.println("HomeFragment onResume");
     }
 
     @Override

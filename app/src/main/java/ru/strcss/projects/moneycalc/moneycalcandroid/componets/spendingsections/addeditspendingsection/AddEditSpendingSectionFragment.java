@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsContract;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.SPENDING_SECTION;
@@ -25,6 +26,9 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
 
     @Inject
     AddEditSpendingSectionContract.Presenter presenter;
+
+    @Inject
+    SpendingSectionsContract.Presenter spendingSectionsPresenter;
 
     @Inject
     public AddEditSpendingSectionFragment() {
@@ -99,6 +103,8 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
 
     @Override
     public void showAddSuccess() {
+        spendingSectionsPresenter.requestSpendingSections();
+
         final Context context = getActivity().getApplicationContext();
         final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
                 getContext().getText(R.string.transaction_added), 3000);
@@ -117,6 +123,8 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
 
     @Override
     public void showEditSuccess() {
+        spendingSectionsPresenter.requestSpendingSections();
+
         final Context context = getActivity().getApplicationContext();
         final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
                 getContext().getText(R.string.spending_section_edit_success), 3000);

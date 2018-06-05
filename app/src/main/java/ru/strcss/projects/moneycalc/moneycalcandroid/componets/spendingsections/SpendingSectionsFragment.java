@@ -105,17 +105,23 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
     @Override
     public void showUpdateSuccess() {
         Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.spending_section_edit_success, Snackbar.LENGTH_LONG).show();
+        // TODO: 05.06.2018 show mini spinner here
+        presenter.requestSpendingSections();
     }
 
     @Override
     public void showDeleteSuccess() {
         Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.spending_section_delete_success, Snackbar.LENGTH_LONG).show();
+        // TODO: 05.06.2018 show mini spinner here
+        presenter.requestSpendingSections();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
+//        presenter.requestSpendingSections();
+//        System.out.println("SpendingSectionsFragment onResume");
     }
 
     @Override
