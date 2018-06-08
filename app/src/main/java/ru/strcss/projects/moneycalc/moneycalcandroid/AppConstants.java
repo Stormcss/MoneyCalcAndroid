@@ -2,8 +2,9 @@ package ru.strcss.projects.moneycalc.moneycalcandroid;
 
 public class AppConstants {
     /**
-     * Being used as a String keys for passing Transaction and SpendingSection objects via Intent and Bundle parameters
+     * Being used as a String keys for passing objects via Intent and Bundle parameters
      */
-    public static String TRANSACTION = "transaction";
-    public static String SPENDING_SECTION = "spending section";
+    public static final String TRANSACTION = "transaction";
+    public static final String SPENDING_SECTION = "spending section";
+    public static final String FINANCE_SUMMARY_BY_SECTION = "FinanceSummaryBySection";
 }

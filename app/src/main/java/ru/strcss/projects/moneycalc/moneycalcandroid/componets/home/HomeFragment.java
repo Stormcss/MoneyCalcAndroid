@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,8 +25,9 @@ import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.findSpendingSectionById;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionIds;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getFinanceSummaryBySectionById;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionById;
 
 public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
@@ -75,8 +78,9 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
             String periodFrom = dataStorage.getSettings().getPeriodFrom();
             String periodTo = dataStorage.getSettings().getPeriodTo();
             List<SpendingSection> sections = dataStorage.getSettings().getSections();
-            if (periodFrom != null && periodTo != null && sections != null)
-                setDatesRange(periodFrom, periodTo, getSpendingSectionIds(sections));
+//            if (periodFrom != null && periodTo != null && sections != null);
+            // FIXME: 08.06.2018 fuck, setting DatesRange also causes request for statistics calculation!
+            //                setDatesRange(periodFrom, periodTo, getSpendingSectionIds(sections));
         }
         presenter.requestSettings();
         return root;
@@ -97,28 +101,30 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
     @Override
     public void setStatisticsSections(List<SpendingSection> spendingSections, List<FinanceSummaryBySection> financeSummary) {
-        System.out.println("setStatisticsSection!");
+        System.out.println("setStatisticsSection! financeSummary=" + financeSummary);
 
-//        FragmentTransaction fragTransaction = getChildFragmentManager().beginTransaction();
-//        for (int i = 0; i < adapter.getCount(); i++) {
-//            fragTransaction.remove(adapter.getItem(i));
-//        }
-//        fragTransaction.addToBackStack(null);
-//        fragTransaction.commitAllowingStateLoss();
-
-//        for (Fragment fragment : getChildFragmentManager().f) {
-//            getActivity().getSupportFragmentManager().beginTransaction().remove(R.layout.home_stats_frag).commit();
-//        }
         adapter.clearFragments();
 
         for (FinanceSummaryBySection finSumBySec : financeSummary) {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
-            adapter.addFrag(fView, findSpendingSectionById(spendingSections, finSumBySec.getSectionID()).getName());
+            if (!fView.isAdded()) {
+                adapter.addFrag(fView, getSpendingSectionById(spendingSections, finSumBySec.getSectionID()).getName());
+            }
         }
-//        adapter.refreshFragments(getActivity());
         adapter.notifyDataSetChanged();
 
-//        getChildFragmentManager().getFragments().clear();
+        FragmentManager fragmentManager = getFragmentManager();
+
+        for (Fragment fragment : fragmentManager.getFragments()) {
+            if (fragment.getClass().equals(HomeStatsFragment.class)) {
+                FinanceSummaryBySection oldSBS = (FinanceSummaryBySection)
+                        fragment.getArguments().getSerializable(FINANCE_SUMMARY_BY_SECTION);
+
+                fragment.getArguments().putSerializable(FINANCE_SUMMARY_BY_SECTION,
+                        getFinanceSummaryBySectionById(financeSummary, oldSBS.getSectionID()));
+                fragmentManager.beginTransaction().detach(fragment).attach(fragment).commit();
+            }
+        }
     }
 
     @Override
@@ -132,7 +138,6 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         super.onResume();
         presenter.takeView(this);
         presenter.requestSettings();
-        System.out.println("HomeFragment onResume");
     }
 
     @Override
@@ -140,5 +145,4 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         presenter.dropView();
         super.onDestroy();
     }
-
 }

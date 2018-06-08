@@ -12,14 +12,9 @@ import android.widget.TextView;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 
-public class HomeStatsFragment extends Fragment implements HomeStatsContract.View {
+import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
 
-    private static final String ARG_SECTION_ID = "section_id";
-    private static final String ARG_TODAY_BALANCE = "today_balance";
-    private static final String ARG_SUMMARY_BALANCE = "summary_balance";
-    private static final String ARG_SPEND_ALL = "spend_all";
-    private static final String ARG_LEFT_ALL = "left_all";
-    private int sectionId;
+public class HomeStatsFragment extends Fragment implements HomeStatsContract.View {
 
     // UI references
     private TextView tvDayBalance;
@@ -32,13 +27,11 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
 
     public static HomeStatsFragment newInstance(FinanceSummaryBySection financeSummary) {
         HomeStatsFragment fragment = new HomeStatsFragment();
+
         Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_ID, financeSummary.getSectionID());
-        args.putDouble(ARG_TODAY_BALANCE, financeSummary.getTodayBalance());
-        args.putDouble(ARG_SUMMARY_BALANCE, financeSummary.getSummaryBalance());
-        args.putInt(ARG_SPEND_ALL, financeSummary.getMoneySpendAll());
-        args.putInt(ARG_LEFT_ALL, financeSummary.getMoneyLeftAll());
+        args.putSerializable(FINANCE_SUMMARY_BY_SECTION, financeSummary);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -46,17 +39,17 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_stats_frag, container, false);
 
-        sectionId = getArguments().getInt(ARG_SECTION_ID);
+        FinanceSummaryBySection financeSummary = (FinanceSummaryBySection) getArguments().getSerializable(FINANCE_SUMMARY_BY_SECTION);
 
         tvDayBalance = root.findViewById(R.id.home_stats_day_balance);
         tvSummaryBalance = root.findViewById(R.id.home_stats_summaryBalance);
         tvSpendAll = root.findViewById(R.id.home_stats_spend);
         tvLeftAll = root.findViewById(R.id.home_stats_left);
 
-        tvDayBalance.setText(String.valueOf(getArguments().getDouble(ARG_TODAY_BALANCE)));
-        tvSummaryBalance.setText(String.valueOf(getArguments().getDouble(ARG_SUMMARY_BALANCE)));
-        tvSpendAll.setText(String.valueOf(getArguments().getInt(ARG_SPEND_ALL)));
-        tvLeftAll.setText(String.valueOf(getArguments().getInt(ARG_LEFT_ALL)));
+        tvDayBalance.setText(String.valueOf(financeSummary.getTodayBalance()));
+        tvSummaryBalance.setText(String.valueOf(financeSummary.getSummaryBalance()));
+        tvSpendAll.setText(String.valueOf(financeSummary.getMoneySpendAll()));
+        tvLeftAll.setText(String.valueOf(financeSummary.getMoneyLeftAll()));
         return root;
     }
 

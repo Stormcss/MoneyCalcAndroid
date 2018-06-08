@@ -55,8 +55,8 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
                         e.printStackTrace();
+                        view.showErrorMessage(e.getMessage());
                     }
 
                     @Override

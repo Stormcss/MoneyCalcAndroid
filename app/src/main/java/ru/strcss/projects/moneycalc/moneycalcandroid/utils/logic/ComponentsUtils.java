@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.HttpException;
+import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 
 public class ComponentsUtils {
@@ -15,16 +16,23 @@ public class ComponentsUtils {
 
     public static List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
         List<Integer> ids = new ArrayList<>();
-        for (SpendingSection section : sections) {
+        for (SpendingSection section : sections)
             ids.add(section.getId());
-        }
         return ids;
     }
 
-    public static SpendingSection findSpendingSectionById(List<SpendingSection> spendingSections, int id) {
+    public static SpendingSection getSpendingSectionById(List<SpendingSection> spendingSections, int id) {
         for (SpendingSection spendingSection : spendingSections) {
             if (spendingSection.getId() == id)
                 return spendingSection;
+        }
+        return null;
+    }
+
+    public static FinanceSummaryBySection getFinanceSummaryBySectionById(List<FinanceSummaryBySection> FinanceList, int id) {
+        for (FinanceSummaryBySection financeSummaryBySection : FinanceList) {
+            if (financeSummaryBySection.getSectionID() == id)
+                return financeSummaryBySection;
         }
         return null;
     }
