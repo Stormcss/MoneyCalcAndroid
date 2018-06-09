@@ -128,21 +128,6 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     @Override
     public void showAddSuccess() {
         snackBarAction(getActivity().getApplicationContext(), R.string.transaction_added, R.string.transaction_cancel);
-
-        //        final Context context = getActivity().getApplicationContext();
-//        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
-//                getContext().getText(R.string.transaction_added), 3000);
-//
-//        snackbarWrapper.setAction(getContext().getText(R.string.transaction_cancel),
-//                new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Toast.makeText(context, "CANCEL!!!",
-//                                Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//        snackbarWrapper.show();
     }
 
     @Override
@@ -181,14 +166,4 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         presenter.dropView();
         super.onDestroy();
     }
-
-//    /**
-//     * Hides the soft keyboard
-//     */
-//    public void hideSoftKeyboard() {
-//        if (getActivity().getCurrentFocus() != null) {
-//            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-//            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-//        }
-//    }
 }

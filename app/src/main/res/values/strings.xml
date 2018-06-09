@@ -54,11 +54,14 @@
     <string name="transaction_desc">Описание</string>
     <string name="transaction_section">Категория</string>
     <string name="transaction_date">Дата</string>
-    <string name="transaction_add">Добавить транзакцию</string>
+    <string name="transaction_add">Добавить операцию</string>
     <string name="transaction_added">Успешно сохранено</string>
-    <string name="transaction_edit">Редактировать транзакцию</string>
+    <string name="transaction_edit">Редактировать операцию</string>
     <string name="transaction_edited">Успешно отредактировано</string>
     <string name="transaction_cancel">Отменить</string>
+    <string name="transaction_delete_part1">Удалить операцию в </string>
+    <string name="transaction_delete_part3">рублей</string>
+    <string name="transaction_delete_part4">и описанием </string>
 
     <!-- AddEditSpendingSection Activity -->
     <string name="spending_section_name">Имя</string>
@@ -71,8 +74,8 @@
     <string name="spending_section_edit_success">Статья расхода успешно отредактирована</string>
 
     <!-- History Activity -->
-    <string name="transaction_delete_title">Удалить транзакцию</string>
-    <string name="transaction_delete_success">Транзакция успешно удалена</string>
+    <string name="transaction_delete_title">Удалить операцию</string>
+    <string name="transaction_delete_success">Операция успешно удалена</string>
 
     <!--  -->
     <string name="cancel">Отмена</string>

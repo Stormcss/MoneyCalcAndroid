@@ -31,16 +31,17 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
         ImageView logo, menu;
-        TextView name, sum, date;
+        TextView name, sum, date, description;
 
         HistoryViewHolder(View view) {
             super(view);
             cv = view.findViewById(R.id.transaction_cardview);
             logo = view.findViewById(R.id.transaction_spending_section_logo);
             menu = view.findViewById(R.id.transaction_menu);
-            name = view.findViewById(R.id.transaction_name);
+//            name = view.findViewById(R.id.transaction_name);
             sum = view.findViewById(R.id.transaction_sum);
             date = view.findViewById(R.id.transaction_date);
+            description = view.findViewById(R.id.transaction_desc);
         }
     }
 
@@ -62,10 +63,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public void onBindViewHolder(@NonNull final HistoryViewHolder holder, int position) {
         Transaction transaction = transactionList.get(position);
-        holder.name.setText(transaction.getDescription());
+        holder.description.setText(transaction.getDescription());
         holder.date.setText(transaction.getDate());
         holder.sum.setText(String.valueOf(transaction.getSum()));
-
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,7 +81,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     /**
-     * Showing popup menu when tapping on 3 dots
+     * Showing popup menu when tapping on settings icon
      */
     private void showPopupMenu(View view, int adapterPosition) {
         // inflate menu
@@ -117,7 +117,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
 
                     alertDialogBuilder.setTitle(R.string.transaction_delete_title)
-                            .setMessage(R.string.are_you_sure)
+                            .setMessage(getMergedDescription(mContext, transactionList.get(adapterPosition)))
                             .setIcon(R.drawable.ic_warning_red_24dp)
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
@@ -143,5 +143,21 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public int getItemCount() {
         return transactionList.size();
+    }
+
+    private String getMergedDescription(Context context, Transaction transaction) {
+        StringBuilder stringBuilder = new StringBuilder(context.getText(R.string.transaction_delete_part1));
+        stringBuilder.append(" ")
+                .append(transaction.getSum())
+                .append(" ")
+                .append(context.getText(R.string.transaction_delete_part3));
+        if (transaction.getDescription() != null && !transaction.getDescription().isEmpty()) {
+            stringBuilder.append(" ")
+                    .append(context.getText(R.string.transaction_delete_part4))
+                    .append(" \"")
+                    .append(transaction.getDescription())
+                    .append("\"");
+        }
+        return stringBuilder.append("?").toString();
     }
 }
