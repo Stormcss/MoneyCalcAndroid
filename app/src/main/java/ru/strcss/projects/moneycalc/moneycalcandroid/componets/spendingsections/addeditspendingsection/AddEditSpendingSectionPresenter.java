@@ -43,8 +43,7 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
 
     @Override
     public void addSpendingSection(SpendingSection spendingSection) {
-        SpendingSectionAddContainer container = new SpendingSectionAddContainer(spendingSection);
-        moneyCalcServerDAO.addSpendingSection(moneyCalcServerDAO.getToken(), container)
+        moneyCalcServerDAO.addSpendingSection(new SpendingSectionAddContainer(spendingSection))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -71,9 +70,7 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
 
     @Override
     public void editSpendingSection(String id, SpendingSection spendingSection) {
-        SpendingSectionUpdateContainer container =
-                new SpendingSectionUpdateContainer(id, spendingSection, BY_ID);
-        moneyCalcServerDAO.updateSpendingSection(moneyCalcServerDAO.getToken(), container)
+        moneyCalcServerDAO.updateSpendingSection(new SpendingSectionUpdateContainer(id, spendingSection, BY_ID))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {

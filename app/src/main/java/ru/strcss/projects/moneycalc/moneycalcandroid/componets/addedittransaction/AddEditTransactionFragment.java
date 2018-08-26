@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +22,7 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
@@ -55,7 +54,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
         Bundle bundle = this.getArguments();
 
-        final Transaction updatedTransactionData = (Transaction) bundle.get(TRANSACTION);
+        final TransactionLegacy updatedTransactionData = (TransactionLegacy) bundle.get(TRANSACTION);
         FloatingActionButton fabAddTransaction = getActivity().findViewById(R.id.fab_addEditTransaction_done);
 
         final boolean isEditingTransaction = updatedTransactionData != null;
@@ -72,14 +71,14 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
                 String description = etTransactionDesc.getText().toString();
 
                 if (!sum.isEmpty() && selectedSection != null) {
-                    Transaction transaction = Transaction.builder()
+                    TransactionLegacy transaction = TransactionLegacy.builder()
                             .date(DatesUtils.formatDateToString(new Date()))
                             .sum(Integer.parseInt(sum))
                             .description(description)
-                            .sectionID(selectedSection.getId())
+                            .sectionId(selectedSection.getSectionId())
                             .build();
                     if (isEditingTransaction) {
-                        presenter.editTransaction(updatedTransactionData.get_id(), transaction);
+                        presenter.editTransaction(updatedTransactionData.getId(), transaction);
                     } else {
                         presenter.addTransaction(transaction);
                     }
@@ -114,7 +113,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         return root;
     }
 
-    private void setUpdatedTransactionData(Transaction transaction) {
+    private void setUpdatedTransactionData(TransactionLegacy transaction) {
         etTransactionSum.setText(String.valueOf(transaction.getSum()));
         etTransactionDesc.setText(transaction.getDescription());
     }
@@ -122,7 +121,8 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     @Override
     public void showErrorMessage(String msg) {
         System.out.println("showErrorMessage! " + msg);
-        Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
+        snackBarAction(getActivity().getApplicationContext(), msg);
+//        Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
     }
 
     @Override

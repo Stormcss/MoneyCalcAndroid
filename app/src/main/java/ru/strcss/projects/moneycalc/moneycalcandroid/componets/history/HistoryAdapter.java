@@ -19,13 +19,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
 
     private Context mContext;
-    private List<Transaction> transactionList;
+    private List<TransactionLegacy> transactionList;
     private HistoryContract.Presenter historyPresenter;
 
     public static class HistoryViewHolder extends RecyclerView.ViewHolder {
@@ -45,7 +45,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         }
     }
 
-    public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<Transaction> transactionList) {
+    public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<TransactionLegacy> transactionList) {
         this.mContext = mContext;
         this.historyPresenter = historyPresenter;
         this.transactionList = transactionList;
@@ -62,7 +62,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     @Override
     public void onBindViewHolder(@NonNull final HistoryViewHolder holder, int position) {
-        Transaction transaction = transactionList.get(position);
+        TransactionLegacy transaction = transactionList.get(position);
         holder.description.setText(transaction.getDescription());
         holder.date.setText(transaction.getDate());
         holder.sum.setText(String.valueOf(transaction.getSum()));
@@ -74,7 +74,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         });
     }
 
-    public void updateList(List<Transaction> transactions) {
+    public void updateList(List<TransactionLegacy> transactions) {
         this.transactionList.clear();
         this.transactionList.addAll(transactions);
         notifyDataSetChanged();
@@ -121,7 +121,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                             .setIcon(R.drawable.ic_warning_red_24dp)
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    historyPresenter.deleteTransaction(transactionList.get(adapterPosition).get_id());
+                                    historyPresenter.deleteTransaction(transactionList.get(adapterPosition).getId());
                                 }
                             })
                             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -145,7 +145,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         return transactionList.size();
     }
 
-    private String getMergedDescription(Context context, Transaction transaction) {
+    private String getMergedDescription(Context context, TransactionLegacy transaction) {
         StringBuilder stringBuilder = new StringBuilder(context.getText(R.string.transaction_delete_part1));
         stringBuilder.append(" ")
                 .append(transaction.getSum())

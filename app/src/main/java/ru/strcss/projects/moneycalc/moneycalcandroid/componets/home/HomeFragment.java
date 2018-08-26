@@ -27,7 +27,6 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getFinanceSummaryBySectionById;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionById;
 
 public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
@@ -74,15 +73,19 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         tabLayout.setupWithViewPager(viewPager);
 
         // TODO: 22.04.2018 show spinner
+        // show available data quickly
         if (dataStorage.getSettings() != null) {
             String periodFrom = dataStorage.getSettings().getPeriodFrom();
             String periodTo = dataStorage.getSettings().getPeriodTo();
-            List<SpendingSection> sections = dataStorage.getSettings().getSections();
+            List<SpendingSection> sections = dataStorage.getSpendingSections();
 //            if (periodFrom != null && periodTo != null && sections != null);
             // FIXME: 08.06.2018 fuck, setting DatesRange also causes request for statistics calculation!
             //                setDatesRange(periodFrom, periodTo, getSpendingSectionIds(sections));
         }
+
+
         presenter.requestSettings();
+        presenter.requestSectionStatistics();
         return root;
     }
 
@@ -93,22 +96,23 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     }
 
     @Override
-    public void setDatesRange(String from, String to, List<Integer> spendingSectionsIds) {
+    public void setDatesRange(String from, String to) {
         tvDatesRange.setText(String.format("%s - %s", from, to));
         // FIXME: 29.04.2018 this should be done using RxJava
-        presenter.requestSectionStatistics(from, to, spendingSectionsIds);
+//        presenter.requestSectionStatistics(from, to, spendingSectionsIds);
     }
 
     @Override
-    public void setStatisticsSections(List<SpendingSection> spendingSections, List<FinanceSummaryBySection> financeSummary) {
-        System.out.println("setStatisticsSection! financeSummary=" + financeSummary);
+    public void setStatisticsSections(List<FinanceSummaryBySection> financeSummaryList) {
+        System.out.println("setStatisticsSection! financeSummaryList=" + financeSummaryList);
 
         adapter.clearFragments();
 
-        for (FinanceSummaryBySection finSumBySec : financeSummary) {
+        for (FinanceSummaryBySection finSumBySec : financeSummaryList) {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
             if (!fView.isAdded()) {
-                adapter.addFrag(fView, getSpendingSectionById(spendingSections, finSumBySec.getSectionID()).getName());
+                adapter.addFrag(fView, finSumBySec.getSectionName());
+                //                adapter.addFrag(fView, getSpendingSectionById(spendingSections, finSumBySec.getSectionId()).getName());
             }
         }
         adapter.notifyDataSetChanged();
@@ -121,7 +125,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
                         fragment.getArguments().getSerializable(FINANCE_SUMMARY_BY_SECTION);
 
                 fragment.getArguments().putSerializable(FINANCE_SUMMARY_BY_SECTION,
-                        getFinanceSummaryBySectionById(financeSummary, oldSBS.getSectionID()));
+                        getFinanceSummaryBySectionById(financeSummaryList, oldSBS.getSectionId()));
                 fragmentManager.beginTransaction().detach(fragment).attach(fragment).commit();
             }
         }

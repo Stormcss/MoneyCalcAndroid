@@ -20,7 +20,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
@@ -38,7 +38,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     private FloatingActionButton fabAddTransaction;
     private RecyclerView rvTransactions;
     private HistoryAdapter adapter;
-    private List<Transaction> transactionList;
+    private List<TransactionLegacy> transactionList;
     private ProgressBar progressView;
 
     @Override
@@ -81,7 +81,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     }
 
     @Override
-    public void showTransactions(List<Transaction> transactions) {
+    public void showTransactions(List<TransactionLegacy> transactions) {
         adapter.updateList(transactions);
     }
 

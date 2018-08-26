@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
+import lombok.Getter;
+import lombok.Setter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -13,23 +15,26 @@ import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.Settings;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import rx.Observable;
 
 @Singleton
-public class MoneyCalcServerDAO implements MoneyCalcClient {
-    static final String BASE_URL = "http://62.181.41.23:8080";
-//    static final String BASE_URL = "http://192.168.1.100:8080";
+public class MoneyCalcServerDAO {
+    //    static final String BASE_URL = "http://62.181.41.23:8080";
+    private static final String IP = "192.168.93.253";
+    private static final String BASE_URL = "http://" + IP + ":8080";
 
+    @Getter
+    @Setter
     private String token;
     private MoneyCalcClient client;
 
@@ -43,71 +48,71 @@ public class MoneyCalcServerDAO implements MoneyCalcClient {
         client = retrofit.create(MoneyCalcClient.class);
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    @Override
     public Observable<MoneyCalcRs<Void>> registerPerson(Credentials credentials) {
         return client.registerPerson(credentials);
     }
 
-    @Override
+
     public Observable<Response<Void>> login(Access access) {
         return client.login(access);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<Settings>> getSettings(String token) {
+
+    public Observable<MoneyCalcRs<Settings>> getSettings() {
         return client.getSettings(token);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<SpendingSection>>> getSpendingSections(String token) {
+
+    public Observable<MoneyCalcRs<List<SpendingSection>>> getSpendingSections() {
         return client.getSpendingSections(token);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(String token, SpendingSectionAddContainer spendingSectionContainer) {
+
+    public Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(SpendingSectionAddContainer spendingSectionContainer) {
         return client.addSpendingSection(token, spendingSectionContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<SpendingSection>>> updateSpendingSection(String token, SpendingSectionUpdateContainer updateContainer) {
+
+    public Observable<MoneyCalcRs<List<SpendingSection>>> updateSpendingSection(SpendingSectionUpdateContainer updateContainer) {
         return client.updateSpendingSection(token, updateContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(String token, SpendingSectionDeleteContainer deleteContainer) {
+
+    public Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(SpendingSectionDeleteContainer deleteContainer) {
         return client.deleteSpendingSection(token, deleteContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(String token, FinanceSummaryGetContainer getContainer) {
+
+    public Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection() {
+        return client.getFinanceSummaryBySection(token);
+    }
+
+
+    public Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(FinanceSummaryGetContainerLegacy getContainer) {
         return client.getFinanceSummaryBySection(token, getContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<Transaction>> addTransaction(String token, TransactionAddContainer transactionContainer) {
+
+    public Observable<MoneyCalcRs<TransactionLegacy>> addTransaction(TransactionAddContainerLegacy transactionContainer) {
         return client.addTransaction(token, transactionContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<List<Transaction>>> getTransactions(String token, TransactionsSearchContainer container) {
+
+    public Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions() {
+        return client.getTransactions(token);
+    }
+
+    public Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions(TransactionsSearchContainerLegacy container) {
         return client.getTransactions(token, container);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<Void>> deleteTransaction(String token, TransactionDeleteContainer transactionContainer) {
+
+    public Observable<MoneyCalcRs<Void>> deleteTransaction(TransactionDeleteContainer transactionContainer) {
         return client.deleteTransaction(token, transactionContainer);
     }
 
-    @Override
-    public Observable<MoneyCalcRs<Transaction>> updateTransaction(String token, TransactionUpdateContainer transactionUpdateContainer) {
+
+    public Observable<MoneyCalcRs<TransactionLegacy>> updateTransaction(TransactionUpdateContainerLegacy transactionUpdateContainer) {
         return client.updateTransaction(token, transactionUpdateContainer);
     }
 }

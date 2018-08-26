@@ -48,7 +48,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
     @Override
     public void requestSpendingSections() {
-        moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
+        moneyCalcServerDAO.getSpendingSections()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -67,10 +67,10 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     public void onNext(MoneyCalcRs<List<SpendingSection>> getSpendingSectionsRs) {
                         System.out.println("getSpendingSectionsRs = " + getSpendingSectionsRs);
                         if (getSpendingSectionsRs.isSuccessful()) {
-                            dataStorage.getSettings().setSections(getSpendingSectionsRs.getPayload());
+                            dataStorage.setSpendingSections(getSpendingSectionsRs.getPayload());
                             view.showSpendingSections(getSpendingSectionsRs.getPayload());
                         } else {
-                            view.showErrorMessage(getSpendingSectionsRs.getMessage());
+                            view.showErrorMessage(getSpendingSectionsRs.toString());
                         }
                         view.hideSpinner();
                     }
@@ -79,8 +79,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
     @Override
     public void deleteSpendingSection(String id) {
-        SpendingSectionDeleteContainer container = new SpendingSectionDeleteContainer(id, BY_ID);
-        moneyCalcServerDAO.deleteSpendingSection(moneyCalcServerDAO.getToken(), container)
+        moneyCalcServerDAO.deleteSpendingSection(new SpendingSectionDeleteContainer(id, BY_ID))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -100,7 +99,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                             System.out.println("deleteSpendingSection! sectionRs.getPayload() = " + sectionRs.getPayload());
                             view.showDeleteSuccess();
                         } else {
-                            view.showErrorMessage(sectionRs.getMessage());
+                            view.showErrorMessage(sectionRs.toString());
                         }
                     }
                 });

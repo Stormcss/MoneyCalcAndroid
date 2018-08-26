@@ -3,7 +3,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransacti
 import java.util.List;
 
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 
@@ -23,9 +23,9 @@ public interface AddEditTransactionContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void addTransaction(Transaction transaction);
+        void addTransaction(TransactionLegacy transaction);
 
-        void editTransaction(String id, Transaction transaction);
+        void editTransaction(Integer id, TransactionLegacy transaction);
 
         void requestSpendingSectionsList();
 

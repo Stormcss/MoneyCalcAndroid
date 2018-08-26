@@ -9,15 +9,18 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
 public class AddEditTransactionPresenter implements AddEditTransactionContract.Presenter {
@@ -43,40 +46,42 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
     }
 
     @Override
-    public void addTransaction(final Transaction transaction) {
-        TransactionAddContainer container = new TransactionAddContainer(transaction);
-        moneyCalcServerDAO.addTransaction(moneyCalcServerDAO.getToken(), container)
+    public void addTransaction(final TransactionLegacy transaction) {
+        moneyCalcServerDAO.addTransaction(new TransactionAddContainerLegacy(transaction))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MoneyCalcRs<Transaction>>() {
+                .subscribe(new Observer<MoneyCalcRs<TransactionLegacy>>() {
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
                         e.printStackTrace();
-                        view.showErrorMessage(e.getMessage());
+                        System.err.println("addTransaction onErro: " + errorBodyMessage);
+                        view.showErrorMessage(errorBodyMessage);
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<Transaction> transactionRs) {
+                    public void onNext(MoneyCalcRs<TransactionLegacy> transactionRs) {
                         if (transactionRs.isSuccessful()) {
                             view.showAddSuccess();
                         } else {
-                            view.showErrorMessage(transactionRs.getMessage());
+                            System.err.println(transactionRs);
+                            view.showErrorMessage(transactionRs.toString());
                         }
                     }
                 });
     }
 
     @Override
-    public void editTransaction(String id, Transaction transaction) {
-        TransactionUpdateContainer container = new TransactionUpdateContainer(id, transaction);
-        moneyCalcServerDAO.updateTransaction(moneyCalcServerDAO.getToken(), container)
+    public void editTransaction(Integer id, TransactionLegacy transaction) {
+        TransactionUpdateContainerLegacy container = new TransactionUpdateContainerLegacy(id, transaction);
+        moneyCalcServerDAO.updateTransaction(container)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MoneyCalcRs<Transaction>>() {
+                .subscribe(new Observer<MoneyCalcRs<TransactionLegacy>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -88,11 +93,12 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<Transaction> transactionRs) {
+                    public void onNext(MoneyCalcRs<TransactionLegacy> transactionRs) {
                         if (transactionRs.isSuccessful()) {
                             view.showEditSuccess();
                         } else {
-                            view.showErrorMessage(transactionRs.getMessage());
+                            System.err.println(transactionRs);
+                            view.showErrorMessage(transactionRs.toString());
                         }
                     }
                 });
@@ -101,7 +107,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
     @Override
     public void requestSpendingSectionsList() {
-        moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
+        moneyCalcServerDAO.getSpendingSections()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -121,7 +127,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                             view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
 
                         } else {
-                            view.showErrorMessage(sectionsRs.getMessage());
+                            view.showErrorMessage(sectionsRs.toString());
                         }
                     }
                 });

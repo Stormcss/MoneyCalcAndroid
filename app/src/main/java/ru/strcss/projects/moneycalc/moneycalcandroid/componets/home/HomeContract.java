@@ -4,7 +4,6 @@ import java.util.List;
 
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 
@@ -16,11 +15,11 @@ public interface HomeContract {
 
         void showErrorMessage(String msg);
 
-        void setDatesRange(String from, String to, List<Integer> spendingSectionsIds);
+        void setDatesRange(String from, String to);
 
 //        void setSections(List<SpendingSection> sections);
 
-        void setStatisticsSections(List<SpendingSection> spendingSections, List<FinanceSummaryBySection> financeSummary);
+        void setStatisticsSections(List<FinanceSummaryBySection> financeSummary);
 
         void showAddTransaction();
     }
@@ -29,6 +28,10 @@ public interface HomeContract {
         void requestFinanceSummary(FinanceSummaryGetContainer financeSummaryGetContainer);
 
         void requestSettings();
+
+        void requestSpendingSections();
+
+        void requestSectionStatistics();
 
         void requestSectionStatistics(String from, String to, List<Integer> sections);
 

@@ -29,9 +29,9 @@ public class ComponentsUtils {
         return null;
     }
 
-    public static FinanceSummaryBySection getFinanceSummaryBySectionById(List<FinanceSummaryBySection> FinanceList, int id) {
-        for (FinanceSummaryBySection financeSummaryBySection : FinanceList) {
-            if (financeSummaryBySection.getSectionID() == id)
+    public static FinanceSummaryBySection getFinanceSummaryBySectionById(List<FinanceSummaryBySection> financeList, int id) {
+        for (FinanceSummaryBySection financeSummaryBySection : financeList) {
+            if (financeSummaryBySection.getSectionId() == id)
                 return financeSummaryBySection;
         }
         return null;
@@ -40,6 +40,7 @@ public class ComponentsUtils {
     public static String getErrorBodyMessage(HttpException ex) {
         try {
             String errorJSON = ex.response().errorBody().string();
+            System.err.println("errorJSON = " + errorJSON);
             final Matcher messageMatcher = messageGetterPattern.matcher(errorJSON);
 
             if (messageMatcher.find()) {

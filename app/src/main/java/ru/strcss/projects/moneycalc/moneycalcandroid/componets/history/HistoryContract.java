@@ -2,7 +2,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
 import java.util.List;
 
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 
@@ -12,7 +12,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 public interface HistoryContract {
     interface View extends BaseView<Presenter> {
 
-        void showTransactions(List<Transaction> transactions);
+        void showTransactions(List<TransactionLegacy> transactions);
 
         void showErrorMessage(String msg);
 
@@ -26,6 +26,6 @@ public interface HistoryContract {
     interface Presenter extends BasePresenter<View> {
         void requestTransactions();
 
-        void deleteTransaction(String id);
+        void deleteTransaction(Integer id);
     }
 }

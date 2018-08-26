@@ -10,9 +10,8 @@ import javax.inject.Singleton;
 
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import rx.Observer;
@@ -46,16 +45,13 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void requestTransactions() {
-        String periodFrom = dataStorage.getSettings().getPeriodFrom();
-        String periodTo = dataStorage.getSettings().getPeriodTo();
-        List<Integer> spendingSectionIds = getSpendingSectionIds(dataStorage.getSettings().getSections());
-        TransactionsSearchContainer searchContainer =
-                new TransactionsSearchContainer(periodFrom, periodTo, spendingSectionIds);
-
-        moneyCalcServerDAO.getTransactions(moneyCalcServerDAO.getToken(), searchContainer)
+//        String periodFrom = dataStorage.getSettings().getPeriodFrom();
+//        String periodTo = dataStorage.getSettings().getPeriodTo();
+//        List<Integer> sectionIds = getSpendingSectionIds(dataStorage.getSpendingSections());
+        moneyCalcServerDAO.getTransactions()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MoneyCalcRs<List<Transaction>>>() {
+                .subscribe(new Observer<MoneyCalcRs<List<TransactionLegacy>>>() {
                     @Override
                     public void onCompleted() {
                     }
@@ -67,7 +63,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<List<Transaction>> rs) {
+                    public void onNext(MoneyCalcRs<List<TransactionLegacy>> rs) {
                         System.out.println("requestTransactions. rs = " + rs);
                         if (rs.isSuccessful()) {
                             dataStorage.setTransactionList(rs.getPayload());
@@ -81,9 +77,9 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     }
 
     @Override
-    public void deleteTransaction(String id) {
+    public void deleteTransaction(Integer id) {
 
-        moneyCalcServerDAO.deleteTransaction(moneyCalcServerDAO.getToken(), new TransactionDeleteContainer(id))
+        moneyCalcServerDAO.deleteTransaction(new TransactionDeleteContainer(id))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<Void>>() {

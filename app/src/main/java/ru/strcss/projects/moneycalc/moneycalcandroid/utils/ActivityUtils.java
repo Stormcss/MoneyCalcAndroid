@@ -59,9 +59,15 @@ public class ActivityUtils {
         }
     }
 
+    /**
+     * Hides the soft keyboard
+     */
     public static void snackBarAction(final Context context, int messageRes, int doCancelRes) {
-        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context,
-                context.getText(messageRes), 3000);
+        snackBarAction(context, context.getText(messageRes), doCancelRes);
+    }
+
+    public static void snackBarAction(final Context context, CharSequence message, int doCancelRes) {
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context, message, 3000);
 
         snackbarWrapper.setAction(context.getText(doCancelRes),
                 new View.OnClickListener() {
@@ -74,4 +80,10 @@ public class ActivityUtils {
 
         snackbarWrapper.show();
     }
+
+    public static void snackBarAction(final Context context, CharSequence message) {
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context, message, 3000);
+        snackbarWrapper.show();
+    }
+
 }
