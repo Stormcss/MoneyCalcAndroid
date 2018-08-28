@@ -43,13 +43,13 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onNext(Response<Void> rs) {
-                        if (rs.isSuccessful()) {
-                            String token = rs.headers().get("Authorization");
+                        String token = rs.headers().get("Authorization");
+                        if (token != null) {
                             moneyCalcServerDAO.setToken(token);
                             System.out.println("token = " + moneyCalcServerDAO.getToken());
                             loginView.showMainActivity();
                         } else {
-                            loginView.showErrorMessage(rs.message());
+                            loginView.showErrorMessage("Bad credentials");
                         }
                         loginView.hideSpinner();
                     }

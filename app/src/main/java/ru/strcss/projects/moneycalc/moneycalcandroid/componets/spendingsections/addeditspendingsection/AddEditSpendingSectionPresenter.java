@@ -53,8 +53,8 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
                         e.printStackTrace();
+                        view.showErrorMessage(e.getMessage());
                     }
 
                     @Override

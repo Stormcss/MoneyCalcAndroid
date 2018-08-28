@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 
+import retrofit2.HttpException;
 import retrofit2.Response;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
@@ -13,6 +14,8 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
 
@@ -33,6 +36,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                 .flatMap(new Func1<MoneyCalcRs<Void>, Observable<Response<Void>>>() {
                     @Override
                     public Observable<Response<Void>> call(MoneyCalcRs<Void> loginRs) {
+                        System.out.println("loginRs = " + loginRs);
                         if (loginRs.isSuccessful()) {
                             return moneyCalcServerDAO.login(credentials.getAccess());
                         } else {
@@ -49,7 +53,10 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         registerView.hideSpinner();
-                        registerView.showErrorMessage(e.getMessage());
+                        if (e instanceof HttpException)
+                            registerView.showErrorMessage(getErrorBodyMessage((HttpException) e));
+                        else
+                            registerView.showErrorMessage(e.getMessage());
                     }
 
                     @Override

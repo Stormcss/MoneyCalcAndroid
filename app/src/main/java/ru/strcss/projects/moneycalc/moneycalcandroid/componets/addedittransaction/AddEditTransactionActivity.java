@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.Transaction;
+import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
@@ -39,9 +39,9 @@ public class AddEditTransactionActivity extends DaggerAppCompatActivity {
 
         // TODO: 01.05.2018 insert transactionId here
 //        getIntent().getAction()
-        Transaction editedTransaction = null;
+        TransactionLegacy editedTransaction = null;
         if (getIntent().getExtras() != null) {
-            editedTransaction = (Transaction) getIntent().getExtras().getSerializable(TRANSACTION);
+            editedTransaction = (TransactionLegacy) getIntent().getExtras().getSerializable(TRANSACTION);
         }
         setToolbarTitle(editedTransaction);
 
@@ -60,7 +60,7 @@ public class AddEditTransactionActivity extends DaggerAppCompatActivity {
         }
     }
 
-    private void setToolbarTitle(@Nullable Transaction transaction) {
+    private void setToolbarTitle(@Nullable TransactionLegacy transaction) {
         if (transaction == null) {
             mActionBar.setTitle(R.string.transaction_add);
         } else {
