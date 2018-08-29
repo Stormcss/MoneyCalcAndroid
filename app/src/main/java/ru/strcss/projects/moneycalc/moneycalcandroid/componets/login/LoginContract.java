@@ -12,8 +12,6 @@ public interface LoginContract {
 
         void showMainActivity();
 
-        void showErrorMessage(String msg);
-
         void showSpinner();
 
         void hideSpinner();

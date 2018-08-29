@@ -12,8 +12,6 @@ public interface RegisterContract {
 
         void showMainActivity();
 
-        void showErrorMessage(String msg);
-
         void showSpinner();
 
         void hideSpinner();

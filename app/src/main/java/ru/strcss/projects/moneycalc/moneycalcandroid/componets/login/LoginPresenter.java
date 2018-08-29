@@ -11,6 +11,8 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
+
 public class LoginPresenter implements LoginContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
@@ -38,7 +40,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                     public void onError(Throwable e) {
                         System.out.println("onError!!!!! " + e.getMessage());
                         loginView.hideSpinner();
-                        loginView.showErrorMessage(e.getMessage());
+                        showErrorMessageFromException(e, loginView);
                     }
 
                     @Override

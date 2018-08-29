@@ -13,8 +13,6 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 public interface AddEditTransactionContract {
     interface View extends BaseView<Presenter> {
 
-        void showErrorMessage(String msg);
-
         void showAddSuccess();
 
         void showEditSuccess();

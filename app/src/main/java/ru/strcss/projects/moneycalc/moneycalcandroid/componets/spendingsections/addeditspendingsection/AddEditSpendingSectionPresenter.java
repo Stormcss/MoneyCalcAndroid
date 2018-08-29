@@ -17,6 +17,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static ru.strcss.projects.moneycalc.dto.crudcontainers.SpendingSectionSearchType.BY_ID;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionContract.Presenter {
@@ -54,7 +55,7 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
-                        view.showErrorMessage(e.getMessage());
+                        showErrorMessageFromException(e, view);
                     }
 
                     @Override
@@ -80,8 +81,8 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
                         e.printStackTrace();
+                        showErrorMessageFromException(e, view);
                     }
 
                     @Override

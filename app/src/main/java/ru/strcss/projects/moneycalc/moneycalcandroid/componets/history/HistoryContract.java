@@ -14,8 +14,6 @@ public interface HistoryContract {
 
         void showTransactions(List<TransactionLegacy> transactions);
 
-        void showErrorMessage(String msg);
-
         void showDeleteSuccess();
 
         void showSpinner();

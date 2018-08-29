@@ -13,8 +13,6 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 public interface HomeContract {
     interface View extends BaseView<Presenter> {
 
-        void showErrorMessage(String msg);
-
         void setDatesRange(String from, String to);
 
 //        void setSections(List<SpendingSection> sections);

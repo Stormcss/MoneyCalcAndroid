@@ -7,7 +7,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
@@ -18,7 +17,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 import static ru.strcss.projects.moneycalc.dto.crudcontainers.SpendingSectionSearchType.BY_ID;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class SpendingSectionsPresenter implements SpendingSectionsContract.Presenter {
@@ -58,9 +57,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
-                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
-                        System.out.println("requestSpendingSections onError!!!!! " + errorBodyMessage);
-                        view.showErrorMessage(errorBodyMessage);
+                        showErrorMessageFromException(e, view);
                     }
 
                     @Override
@@ -89,8 +86,8 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
                         e.printStackTrace();
+                        showErrorMessageFromException(e, view);
                     }
 
                     @Override

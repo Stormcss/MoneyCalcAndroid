@@ -14,8 +14,6 @@ public interface SpendingSectionsContract {
 
         void showSpendingSections(List<SpendingSection> spendingSections);
 
-        void showErrorMessage(String msg);
-
         void showSpinner();
 
         void hideSpinner();

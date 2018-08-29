@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 
 public class ComponentsUtils {
     private final static String messageRegex = "\"message\":\"(.*?)\"";
@@ -52,5 +53,12 @@ public class ComponentsUtils {
             e1.printStackTrace();
             return ex.getMessage();
         }
+    }
+
+    public static void showErrorMessageFromException(Throwable ex, BaseView view) {
+        if (ex instanceof HttpException)
+            view.showErrorMessage(getErrorBodyMessage((HttpException) ex));
+        else
+            view.showErrorMessage(ex.getMessage());
     }
 }
