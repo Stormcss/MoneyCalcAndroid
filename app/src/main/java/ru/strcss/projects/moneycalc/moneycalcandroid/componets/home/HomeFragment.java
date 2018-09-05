@@ -21,7 +21,6 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
@@ -56,7 +55,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addTransaction();
+                presenter.showAddTransactionActivity();
             }
         });
 
@@ -77,10 +76,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         if (dataStorage.getSettings() != null) {
             String periodFrom = dataStorage.getSettings().getPeriodFrom();
             String periodTo = dataStorage.getSettings().getPeriodTo();
-            List<SpendingSection> sections = dataStorage.getSpendingSections();
-//            if (periodFrom != null && periodTo != null && sections != null);
-            // FIXME: 08.06.2018 fuck, setting DatesRange also causes request for statistics calculation!
-            //                setDatesRange(periodFrom, periodTo, getSpendingSectionIds(sections));
+            showDatesRange(periodFrom, periodTo);
         }
 
 
@@ -96,14 +92,12 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     }
 
     @Override
-    public void setDatesRange(String from, String to) {
+    public void showDatesRange(String from, String to) {
         tvDatesRange.setText(String.format("%s - %s", from, to));
-        // FIXME: 29.04.2018 this should be done using RxJava
-//        presenter.requestSectionStatistics(from, to, spendingSectionsIds);
     }
 
     @Override
-    public void setStatisticsSections(List<FinanceSummaryBySection> financeSummaryList) {
+    public void showStatisticsSections(List<FinanceSummaryBySection> financeSummaryList) {
         System.out.println("setStatisticsSection! financeSummaryList=" + financeSummaryList);
 
         adapter.clearFragments();
@@ -132,7 +126,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     }
 
     @Override
-    public void showAddTransaction() {
+    public void showAddTransactionActivity() {
         Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
         startActivityForResult(intent, 0);
     }
@@ -142,6 +136,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         super.onResume();
         presenter.takeView(this);
         presenter.requestSettings();
+        presenter.requestSectionStatistics();
     }
 
     @Override

@@ -12,6 +12,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsUpdateContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
@@ -22,7 +23,7 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionU
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.Settings;
+import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import rx.Observable;
@@ -58,8 +59,12 @@ public class MoneyCalcServerDAO {
     }
 
 
-    public Observable<MoneyCalcRs<Settings>> getSettings() {
+    public Observable<MoneyCalcRs<SettingsLegacy>> getSettings() {
         return client.getSettings(token);
+    }
+
+    public Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(SettingsUpdateContainer updateContainer) {
+        return client.updateSettings(token, updateContainer);
     }
 
 

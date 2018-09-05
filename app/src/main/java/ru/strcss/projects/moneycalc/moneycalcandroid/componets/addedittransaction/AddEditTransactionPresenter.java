@@ -9,7 +9,6 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
@@ -20,7 +19,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class AddEditTransactionPresenter implements AddEditTransactionContract.Presenter {
@@ -57,10 +56,11 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
                     @Override
                     public void onError(Throwable e) {
-                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
-                        e.printStackTrace();
-                        System.err.println("addTransaction onErro: " + errorBodyMessage);
-                        view.showErrorMessage(errorBodyMessage);
+                        showErrorMessageFromException(e, view);
+                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
+//                        e.printStackTrace();
+//                        System.err.println("showAddTransactionActivity onErro: " + errorBodyMessage);
+//                        view.showErrorMessage(errorBodyMessage);
                     }
 
                     @Override
@@ -88,8 +88,9 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
-                        e.printStackTrace();
+                        showErrorMessageFromException(e, view);
+                        //                        view.showErrorMessage(e.getMessage());
+//                        e.printStackTrace();
                     }
 
                     @Override
@@ -117,8 +118,9 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
                     @Override
                     public void onError(Throwable e) {
-                        view.showErrorMessage(e.getMessage());
-                        e.printStackTrace();
+                        showErrorMessageFromException(e, view);
+                        //                        view.showErrorMessage(e.getMessage());
+//                        e.printStackTrace();
                     }
 
                     @Override

@@ -49,7 +49,7 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public float getPageWidth(int position) {
-        return 0.5f;
+        return 1f;
     }
 
     @Override

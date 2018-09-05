@@ -18,6 +18,6 @@ public interface AddEditSpendingSectionContract {
     interface Presenter extends BasePresenter<View> {
         void addSpendingSection(SpendingSection spendingSection);
 
-        void editSpendingSection(String id, SpendingSection spendingSection);
+        void editSpendingSection(Integer id, SpendingSection spendingSection);
     }
 }

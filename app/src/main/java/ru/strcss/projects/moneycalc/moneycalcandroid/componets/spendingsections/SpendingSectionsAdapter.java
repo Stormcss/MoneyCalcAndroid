@@ -120,7 +120,7 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
                             .setIcon(R.drawable.ic_warning_red_24dp)
                             .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    presenter.deleteSpendingSection("" + sectionList.get(adapterPosition)
+                                    presenter.deleteSpendingSection(sectionList.get(adapterPosition)
                                             .getSectionId());
                                 }
                             })

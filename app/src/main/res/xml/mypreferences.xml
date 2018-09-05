@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/preferences_period">
+
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:summary="@string/preferences_period"
+            android:title="@string/preferences_period" />
+
+        <ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.DatePickerPreference
+            android:key="settings_period_from"
+            android:dependency="settings_period_to"
+            android:summary="Reschedule using current setting"
+            android:title="@string/preferences_period_from"
+            android:layout="@layout/preference_date_picker_layout" />
+
+        <ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.DatePickerPreference
+            android:key="settings_period_to"
+            android:dependency="settings_period_from"
+            android:summary="Reschedule using current setting"
+            android:title="@string/preferences_period_to"
+            android:layout="@layout/preference_date_picker_layout" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

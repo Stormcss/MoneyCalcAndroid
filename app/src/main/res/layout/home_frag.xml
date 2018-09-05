@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ru.strcss.projects.moneycalc.moneycalcandroid.home.HomeActivity">
+    tools:context="ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity">
 
     <include layout="@layout/home_frag_content" />
 

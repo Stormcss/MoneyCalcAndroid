@@ -7,7 +7,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Настройки</string>
 
-
     <!-- Menu titles -->
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
@@ -76,6 +75,11 @@
     <!-- History Activity -->
     <string name="transaction_delete_title">Удалить операцию</string>
     <string name="transaction_delete_success">Операция успешно удалена</string>
+
+    <!-- Preferences Activity -->
+    <string name="preferences_period">Период расчета</string>
+    <string name="preferences_period_from">Начало периода</string>
+    <string name="preferences_period_to">Конец периода</string>
 
     <!--  -->
     <string name="cancel">Отмена</string>

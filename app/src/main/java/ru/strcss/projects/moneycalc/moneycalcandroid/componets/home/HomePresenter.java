@@ -11,12 +11,14 @@ import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.Settings;
+import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class HomePresenter implements HomeContract.Presenter {
@@ -52,23 +54,22 @@ public class HomePresenter implements HomeContract.Presenter {
         moneyCalcServerDAO.getSettings()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<MoneyCalcRs<Settings>>() {
+                .subscribe(new Observer<MoneyCalcRs<SettingsLegacy>>() {
                     @Override
                     public void onCompleted() {
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        homeView.showErrorMessage(e.getMessage());
-                        e.printStackTrace();
+                        showErrorMessageFromException(e, homeView);
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<Settings> settingsRs) {
+                    public void onNext(MoneyCalcRs<SettingsLegacy> settingsRs) {
                         if (settingsRs.isSuccessful()) {
                             dataStorage.setSettings(settingsRs.getPayload());
 //                            List<Integer> spendingSectionIds = getSpendingSectionIds(settingsRs.getPayload().getSections());
-                            homeView.setDatesRange(settingsRs.getPayload().getPeriodFrom(),
+                            homeView.showDatesRange(settingsRs.getPayload().getPeriodFrom(),
                                     settingsRs.getPayload().getPeriodTo());
                         } else {
                             homeView.showErrorMessage(settingsRs.toString());
@@ -94,15 +95,14 @@ public class HomePresenter implements HomeContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        homeView.showErrorMessage(e.getMessage());
-                        e.printStackTrace();
+                        showErrorMessageFromException(e, homeView);
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<FinanceSummaryBySection>> statsRs) {
                         if (statsRs.isSuccessful()) {
                             dataStorage.setFinanceSummary(statsRs.getPayload());
-                            homeView.setStatisticsSections(statsRs.getPayload());
+                            homeView.showStatisticsSections(statsRs.getPayload());
                             //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
                             homeView.showErrorMessage(statsRs.toString());
@@ -123,15 +123,14 @@ public class HomePresenter implements HomeContract.Presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        homeView.showErrorMessage(e.getMessage());
-                        e.printStackTrace();
+                        showErrorMessageFromException(e, homeView);
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<FinanceSummaryBySection>> statsRs) {
                         if (statsRs.isSuccessful()) {
                             dataStorage.setFinanceSummary(statsRs.getPayload());
-                            homeView.setStatisticsSections(statsRs.getPayload());
+                            homeView.showStatisticsSections(statsRs.getPayload());
                             //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
                             homeView.showErrorMessage(statsRs.toString());
@@ -141,9 +140,9 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void addTransaction() {
+    public void showAddTransactionActivity() {
         if (homeView != null) {
-            homeView.showAddTransaction();
+            homeView.showAddTransactionActivity();
         }
     }
 }

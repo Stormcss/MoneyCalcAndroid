@@ -13,13 +13,13 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 public interface HomeContract {
     interface View extends BaseView<Presenter> {
 
-        void setDatesRange(String from, String to);
+        void showDatesRange(String from, String to);
 
 //        void setSections(List<SpendingSection> sections);
 
-        void setStatisticsSections(List<FinanceSummaryBySection> financeSummary);
+        void showStatisticsSections(List<FinanceSummaryBySection> financeSummary);
 
-        void showAddTransaction();
+        void showAddTransactionActivity();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -33,7 +33,7 @@ public interface HomeContract {
 
         void requestSectionStatistics(String from, String to, List<Integer> sections);
 
-        void addTransaction();
+        void showAddTransactionActivity();
 
         //Stats
 //        void saveStatsFragmentState(int sectionId, android.view.View view);

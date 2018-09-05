@@ -59,9 +59,6 @@ public class ActivityUtils {
         }
     }
 
-    /**
-     * Hides the soft keyboard
-     */
     public static void snackBarAction(final Context context, int messageRes, int doCancelRes) {
         snackBarAction(context, context.getText(messageRes), doCancelRes);
     }

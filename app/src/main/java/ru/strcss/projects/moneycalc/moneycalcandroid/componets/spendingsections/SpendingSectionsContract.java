@@ -26,6 +26,6 @@ public interface SpendingSectionsContract {
     interface Presenter extends BasePresenter<View> {
         void requestSpendingSections();
 
-        void deleteSpendingSection(String id);
+        void deleteSpendingSection(Integer id);
     }
 }

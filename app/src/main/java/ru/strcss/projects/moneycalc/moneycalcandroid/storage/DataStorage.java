@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import lombok.Getter;
 import lombok.Setter;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.Settings;
+import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 
@@ -15,7 +15,7 @@ import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 @Setter
 @Singleton
 public class DataStorage {
-    private Settings settings;
+    private SettingsLegacy settings;
     private List<SpendingSection> spendingSections;
     private List<FinanceSummaryBySection> financeSummary;
     private List<TransactionLegacy> transactionList;

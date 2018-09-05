@@ -68,7 +68,7 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
                             .isAdded(true)
                             .build();
                     if (isEditingSpendingSection) {
-                        presenter.editSpendingSection(String.valueOf(updatedSectionData.getId()), spendingSection);
+                        presenter.editSpendingSection(updatedSectionData.getId(), spendingSection);
                     } else {
                         presenter.addSpendingSection(spendingSection);
                     }

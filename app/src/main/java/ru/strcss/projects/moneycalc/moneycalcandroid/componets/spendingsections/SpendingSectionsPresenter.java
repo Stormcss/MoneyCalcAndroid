@@ -7,6 +7,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
@@ -16,7 +17,8 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.dto.crudcontainers.SpendingSectionSearchType.BY_ID;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
@@ -75,8 +77,8 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
     }
 
     @Override
-    public void deleteSpendingSection(String id) {
-        moneyCalcServerDAO.deleteSpendingSection(new SpendingSectionDeleteContainer(id, BY_ID))
+    public void deleteSpendingSection(Integer id) {
+        moneyCalcServerDAO.deleteSpendingSection(new SpendingSectionDeleteContainer(id))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -85,9 +87,11 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        showErrorMessageFromException(e, view);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
+                        snackBarAction(view.getContext(), errorBodyMessage);
+//                        snackBarAction(getActivity().getApplicationContext(), msg);
                     }
 
                     @Override
@@ -95,7 +99,9 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                         if (sectionRs.isSuccessful()) {
                             System.out.println("deleteSpendingSection! sectionRs.getPayload() = " + sectionRs.getPayload());
                             view.showDeleteSuccess();
+                            snackBarAction(view.getContext(), sectionRs.toString());
                         } else {
+                            snackBarAction(view.getContext(), sectionRs.toString());
                             view.showErrorMessage(sectionRs.toString());
                         }
                     }
