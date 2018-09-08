@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.App;
@@ -16,7 +17,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 @Component(modules = {AppModule.class,
         ApplicationModule.class,
         ActivityBindingModule.class,
-        AndroidSupportInjectionModule.class})
+        AndroidSupportInjectionModule.class,
+        AndroidInjectionModule.class})
 public interface AppComponent extends AndroidInjector<App> {
 
     MoneyCalcServerDAO getMoneyCalcServerDAO();

@@ -20,7 +20,7 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionU
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.Settings;
+import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import rx.Observable;
@@ -33,11 +33,11 @@ public interface MoneyCalcClient {
     Observable<Response<Void>> login(@Body Access access);
 
     @GET("/api/settings/get")
-    Observable<MoneyCalcRs<Settings>> getSettings(@Header("Authorization") String token);
+    Observable<MoneyCalcRs<SettingsLegacy>> getSettings(@Header("Authorization") String token);
 
     @POST("/api/settings/update")
-    Observable<MoneyCalcRs<Settings>> updateSettings(@Header("Authorization") String token,
-                                                     @Body SettingsUpdateContainer updateContainer);
+    Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(@Header("Authorization") String token,
+                                                           @Body SettingsUpdateContainer updateContainer);
 
     /**
      * Spending Sections

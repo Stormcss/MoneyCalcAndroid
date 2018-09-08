@@ -8,6 +8,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.DaggerAppComponent;
 
 public class App extends DaggerApplication {
+
+    // TODO: 07.09.2018 remove me?
     @Inject
     MoneyCalcServerDAO moneyCalcServerDAO;
 
