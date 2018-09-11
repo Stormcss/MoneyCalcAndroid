@@ -15,23 +15,31 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionU
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
 public class AddEditTransactionPresenter implements AddEditTransactionContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
 
+    private final EventBus eventBus;
+
     @Nullable
     private AddEditTransactionContract.View view;
 
     @Inject
-    AddEditTransactionPresenter(MoneyCalcServerDAO moneyCalcServerDAO) {
+    AddEditTransactionPresenter(MoneyCalcServerDAO moneyCalcServerDAO, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -55,10 +63,11 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, view);
-                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
-//                        e.printStackTrace();
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        showErrorMessageFromException(ex, view);
+                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
 //                        System.err.println("showAddTransactionActivity onErro: " + errorBodyMessage);
 //                        view.showErrorMessage(errorBodyMessage);
                     }
@@ -66,10 +75,14 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     @Override
                     public void onNext(MoneyCalcRs<TransactionLegacy> transactionRs) {
                         if (transactionRs.isSuccessful()) {
-                            view.showAddSuccess();
+                            eventBus.addTransactionEvent(ADDED);
+                            if (view != null) {
+                                view.showAddSuccess();
+                            }
                         } else {
-                            System.err.println(transactionRs);
-                            view.showErrorMessage(transactionRs.toString());
+                            eventBus.addErrorEvent(transactionRs.getMessage());
+                            //                            System.err.println(transactionRs);
+//                            view.showErrorMessage(transactionRs.toString());
                         }
                     }
                 });
@@ -87,19 +100,24 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, view);
-                        //                        view.showErrorMessage(e.getMessage());
-//                        e.printStackTrace();
+                    public void onError(Throwable ex) {
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        showErrorMessageFromException(ex, view);
+                        //                        view.showErrorMessage(ex.getMessage());
+//                        ex.printStackTrace();
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<TransactionLegacy> transactionRs) {
                         if (transactionRs.isSuccessful()) {
-                            view.showEditSuccess();
+                            eventBus.addTransactionEvent(EDITED);
+                            if (view != null) {
+                                view.showEditSuccess();
+                            }
                         } else {
-                            System.err.println(transactionRs);
-                            view.showErrorMessage(transactionRs.toString());
+                            eventBus.addErrorEvent(transactionRs.getMessage());
+                            //                            System.err.println(transactionRs);
+//                            view.showErrorMessage(transactionRs.toString());
                         }
                     }
                 });
@@ -117,17 +135,17 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, view);
-                        //                        view.showErrorMessage(e.getMessage());
-//                        e.printStackTrace();
+                    public void onError(Throwable ex) {
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        showErrorMessageFromException(ex, view);
+                        //                        view.showErrorMessage(ex.getMessage());
+//                        ex.printStackTrace();
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionsRs) {
                         if (sectionsRs.isSuccessful()) {
                             view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
-
                         } else {
                             view.showErrorMessage(sectionsRs.toString());
                         }

@@ -22,6 +22,9 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.Settings
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class HomeActivity extends DaggerAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -43,7 +46,7 @@ public class HomeActivity extends DaggerAppCompatActivity
 
         if (moneyCalcServerDAO.getToken() == null) {
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(intent.getFlags() | FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
 

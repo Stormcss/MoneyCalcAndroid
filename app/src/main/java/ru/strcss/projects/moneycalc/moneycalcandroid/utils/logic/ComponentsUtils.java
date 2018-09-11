@@ -38,6 +38,13 @@ public class ComponentsUtils {
         return null;
     }
 
+    public static String getErrorBodyMessage(Throwable t) {
+        if (t instanceof HttpException)
+            return getErrorBodyMessage((HttpException) t);
+        else
+            return t.getMessage();
+    }
+
     public static String getErrorBodyMessage(HttpException ex) {
         try {
             String errorJSON = ex.response().errorBody().string();
@@ -55,6 +62,7 @@ public class ComponentsUtils {
         }
     }
 
+    @Deprecated
     public static void showErrorMessageFromException(Throwable ex, BaseView view) {
         if (ex instanceof HttpException)
             view.showErrorMessage(getErrorBodyMessage((HttpException) ex));

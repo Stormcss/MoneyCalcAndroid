@@ -15,11 +15,11 @@ public interface HomeContract {
 
         void showDatesRange(String from, String to);
 
-//        void setSections(List<SpendingSection> sections);
-
         void showStatisticsSections(List<FinanceSummaryBySection> financeSummary);
 
         void showAddTransactionActivity();
+
+        void updateStatsAndSettings();
     }
 
     interface Presenter extends BasePresenter<View> {

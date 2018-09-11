@@ -14,25 +14,36 @@ import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.Event;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.Event.SETTING_UPDATED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
 public class HomePresenter implements HomeContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
     private final DataStorage dataStorage;
+    private final EventBus eventBus;
 
     @Nullable
     private HomeContract.View homeView;
 
     @Inject
-    HomePresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage) {
+    HomePresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
         this.dataStorage = dataStorage;
+        this.eventBus = eventBus;
+
+        subscribeEvents();
     }
 
     @Override
@@ -60,19 +71,22 @@ public class HomePresenter implements HomeContract.Presenter {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, homeView);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<SettingsLegacy> settingsRs) {
                         if (settingsRs.isSuccessful()) {
                             dataStorage.setSettings(settingsRs.getPayload());
-//                            List<Integer> spendingSectionIds = getSpendingSectionIds(settingsRs.getPayload().getSections());
-                            homeView.showDatesRange(settingsRs.getPayload().getPeriodFrom(),
-                                    settingsRs.getPayload().getPeriodTo());
+                            if (homeView != null) {
+                                homeView.showDatesRange(settingsRs.getPayload().getPeriodFrom(),
+                                        settingsRs.getPayload().getPeriodTo());
+                            }
                         } else {
-                            homeView.showErrorMessage(settingsRs.toString());
+                            eventBus.addErrorEvent(settingsRs.getMessage());
+                            //                            homeView.showErrorMessage(settingsRs.toString());
                         }
                     }
                 });
@@ -94,18 +108,22 @@ public class HomePresenter implements HomeContract.Presenter {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, homeView);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<FinanceSummaryBySection>> statsRs) {
                         if (statsRs.isSuccessful()) {
                             dataStorage.setFinanceSummary(statsRs.getPayload());
-                            homeView.showStatisticsSections(statsRs.getPayload());
+                            if (homeView != null) {
+                                homeView.showStatisticsSections(statsRs.getPayload());
+                            }
                             //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
-                            homeView.showErrorMessage(statsRs.toString());
+                            eventBus.addErrorEvent(statsRs.getMessage());
+                            //                            homeView.showErrorMessage(statsRs.toString());
                         }
                     }
                 });
@@ -122,18 +140,22 @@ public class HomePresenter implements HomeContract.Presenter {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, homeView);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<FinanceSummaryBySection>> statsRs) {
                         if (statsRs.isSuccessful()) {
                             dataStorage.setFinanceSummary(statsRs.getPayload());
-                            homeView.showStatisticsSections(statsRs.getPayload());
+                            if (homeView != null) {
+                                homeView.showStatisticsSections(statsRs.getPayload());
+                            }
                             //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
-                            homeView.showErrorMessage(statsRs.toString());
+                            eventBus.addErrorEvent(statsRs.getMessage());
+                            //                            homeView.showErrorMessage(statsRs.toString());
                         }
                     }
                 });
@@ -144,5 +166,27 @@ public class HomePresenter implements HomeContract.Presenter {
         if (homeView != null) {
             homeView.showAddTransactionActivity();
         }
+    }
+
+    private void subscribeEvents() {
+        this.eventBus.subscribeTransactionEvent().subscribe(new Action1<CrudEvent>() {
+            @Override
+            public void call(CrudEvent event) {
+                if (event.equals(CrudEvent.ADDED) || event.equals(CrudEvent.DELETED) ||
+                        event.equals(CrudEvent.EDITED)) {
+                    requestSettings();
+                    requestSectionStatistics();
+                }
+            }
+        });
+        this.eventBus.subscribeEvent().subscribe(new Action1<Event>() {
+            @Override
+            public void call(Event event) {
+                if (event.equals(SETTING_UPDATED)) {
+                    requestSettings();
+                    requestSectionStatistics();
+                }
+            }
+        });
     }
 }

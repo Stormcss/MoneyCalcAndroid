@@ -30,6 +30,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 import static dagger.internal.Preconditions.checkNotNull;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
 
 /**
  * This provides methods to help Activities load their UI.
@@ -78,8 +79,22 @@ public class ActivityUtils {
         snackbarWrapper.show();
     }
 
+    public static void snackBarAction(CharSequence message) {
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(getAppContext(), message, 3000);
+        snackbarWrapper.show();
+    }
+
     public static void snackBarAction(final Context context, CharSequence message) {
         final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(context, message, 3000);
+        snackbarWrapper.show();
+    }
+
+    public static void snackBarAction(int resId) {
+        snackBarAction(resId, 3000);
+    }
+
+    public static void snackBarAction(int resId, int duration) {
+        final SnackbarWrapper snackbarWrapper = SnackbarWrapper.make(getAppContext(), getAppContext().getText(resId), duration);
         snackbarWrapper.show();
     }
 

@@ -14,7 +14,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 public class RegisterPresenter implements RegisterContract.Presenter {
 
@@ -50,13 +52,13 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     }
 
                     @Override
-                    public void onError(Throwable e) {
+                    public void onError(Throwable ex) {
                         registerView.hideSpinner();
-                        showErrorMessageFromException(e, registerView);
-                        //                        if (e instanceof HttpException)
-//                            registerView.showErrorMessage(getErrorBodyMessage((HttpException) e));
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        if (ex instanceof HttpException)
+//                            registerView.showErrorMessage(getErrorBodyMessage((HttpException) ex));
 //                        else
-//                            registerView.showErrorMessage(e.getMessage());
+//                            registerView.showErrorMessage(ex.getMessage());
                     }
 
                     @Override

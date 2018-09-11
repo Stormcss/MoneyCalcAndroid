@@ -6,6 +6,7 @@ import dagger.Module;
 import dagger.Provides;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 
 @Module
 public class AppModule {
@@ -24,5 +25,11 @@ public class AppModule {
     @Singleton
     public DataStorage provideDataStorage() {
         return new DataStorage();
+    }
+
+    @Provides
+    @Singleton
+    public EventBus provideMyBus() {
+        return new EventBus();
     }
 }

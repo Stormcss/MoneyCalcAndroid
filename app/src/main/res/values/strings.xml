@@ -67,6 +67,7 @@
     <string name="spending_section_budget">Бюджет</string>
     <string name="spending_section_title">Удалить статью расхода</string>
     <string name="spending_section_add">Добавить статью расхода</string>
+    <string name="spending_section_added">Статья расхода успешно добавлена</string>
     <string name="spending_section_delete">Удалить статью расхода</string>
     <string name="spending_section_delete_success">Статья расхода успешно удалена</string>
     <string name="spending_section_edit">Редактировать статью расхода</string>
@@ -80,6 +81,7 @@
     <string name="preferences_period">Период расчета</string>
     <string name="preferences_period_from">Начало периода</string>
     <string name="preferences_period_to">Конец периода</string>
+    <string name="settings_update_success">Настройки успешно обновлены</string>
 
     <!--  -->
     <string name="cancel">Отмена</string>

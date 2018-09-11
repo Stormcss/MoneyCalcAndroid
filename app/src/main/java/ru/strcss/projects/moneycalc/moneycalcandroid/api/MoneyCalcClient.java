@@ -9,7 +9,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsUpdateContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsLegacyUpdateContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
@@ -37,7 +37,7 @@ public interface MoneyCalcClient {
 
     @POST("/api/settings/update")
     Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(@Header("Authorization") String token,
-                                                           @Body SettingsUpdateContainer updateContainer);
+                                                           @Body SettingsLegacyUpdateContainer updateContainer);
 
     /**
      * Spending Sections

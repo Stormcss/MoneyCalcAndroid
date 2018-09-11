@@ -7,31 +7,36 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit2.HttpException;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
 
+    private final EventBus eventBus;
+
     @Nullable
     private AddEditSpendingSectionContract.View view;
 
     @Inject
-    AddEditSpendingSectionPresenter(MoneyCalcServerDAO moneyCalcServerDAO) {
+    AddEditSpendingSectionPresenter(MoneyCalcServerDAO moneyCalcServerDAO, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
+        this.eventBus = eventBus;
     }
 
     @Override
@@ -55,19 +60,22 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        String errorBodyMessage = getErrorBodyMessage((HttpException) e);
-                        snackBarAction(view.getContext(), errorBodyMessage);
-//                        showErrorMessageFromException(e, view);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
+//                        snackBarAction(getAppContext(), errorBodyMessage);
+//                        showErrorMessageFromException(ex, view);
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> addSectionRs) {
                         if (addSectionRs.isSuccessful()) {
-                            view.showAddSuccess();
+                            eventBus.addSpendingSectionEvent(ADDED);
+//                            view.showAddSuccess();
                         } else {
-                            view.showErrorMessage(addSectionRs.getMessage());
+                            eventBus.addErrorEvent(addSectionRs.getMessage());
+                            //                            view.showErrorMessage(addSectionRs.getMessage());
                         }
                     }
                 });
@@ -84,17 +92,19 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                        showErrorMessageFromException(e, view);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
                     }
 
                     @Override
-                    public void onNext(MoneyCalcRs<List<SpendingSection>> sectionRs) {
-                        if (sectionRs.isSuccessful()) {
-                            view.showEditSuccess();
+                    public void onNext(MoneyCalcRs<List<SpendingSection>> editSectionRs) {
+                        if (editSectionRs.isSuccessful()) {
+                            eventBus.addSpendingSectionEvent(EDITED);
+//                            view.showEditSuccess();
                         } else {
-                            view.showErrorMessage(sectionRs.getMessage());
+                            eventBus.addErrorEvent(editSectionRs.getMessage());
+                            //                            view.showErrorMessage(editSectionRs.getMessage());
                         }
                     }
                 });

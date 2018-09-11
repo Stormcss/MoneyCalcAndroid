@@ -78,10 +78,11 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
             String periodTo = dataStorage.getSettings().getPeriodTo();
             showDatesRange(periodFrom, periodTo);
         }
+        if (dataStorage.getFinanceSummary() != null) {
+            showStatisticsSections(dataStorage.getFinanceSummary());
+        }
 
-
-        presenter.requestSettings();
-        presenter.requestSectionStatistics();
+        this.updateStatsAndSettings();
         return root;
     }
 
@@ -120,7 +121,8 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
                 fragment.getArguments().putSerializable(FINANCE_SUMMARY_BY_SECTION,
                         getFinanceSummaryBySectionById(financeSummaryList, oldSBS.getSectionId()));
-                fragmentManager.beginTransaction().detach(fragment).attach(fragment).commit();
+//                fragmentManager.beginTransaction().detach(fragment).attach(fragment).commit();
+                fragmentManager.beginTransaction().detach(fragment).attach(fragment).commitAllowingStateLoss();
             }
         }
     }
@@ -132,11 +134,15 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
     }
 
     @Override
+    public void updateStatsAndSettings() {
+        presenter.requestSettings();
+        presenter.requestSectionStatistics();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
-        presenter.requestSettings();
-        presenter.requestSectionStatistics();
     }
 
     @Override

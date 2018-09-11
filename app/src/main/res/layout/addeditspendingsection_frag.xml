@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/spending_section_name"
                 android:inputType="text"
-                android:maxLength="10"
+                android:maxLength="15"
                 android:maxLines="1"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>

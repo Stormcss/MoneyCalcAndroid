@@ -7,33 +7,53 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import retrofit2.HttpException;
+import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.showErrorMessageFromException;
 
 @Singleton
 public class SpendingSectionsPresenter implements SpendingSectionsContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
     private final DataStorage dataStorage;
+    private final EventBus eventBus;
 
     @Nullable
     private SpendingSectionsContract.View view;
 
     @Inject
-    SpendingSectionsPresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage) {
+    SpendingSectionsPresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
         this.dataStorage = dataStorage;
+        this.eventBus = eventBus;
+
+        eventBus.subscribeSpendingSectionEvent()
+                .subscribe(new Action1<CrudEvent>() {
+                    @Override
+                    public void call(CrudEvent sectionEvent) {
+                        requestSpendingSections();
+                        if (sectionEvent.equals(ADDED)) {
+                            snackBarAction(R.string.spending_section_added);
+                        } else if (sectionEvent.equals(EDITED)) {
+                            snackBarAction(R.string.spending_section_edit_success);
+                        }
+                    }
+                });
     }
 
 
@@ -58,8 +78,10 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     }
 
                     @Override
-                    public void onError(Throwable e) {
-                        showErrorMessageFromException(e, view);
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        showErrorMessageFromException(ex, view);
                     }
 
                     @Override
@@ -89,20 +111,20 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     @Override
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
-                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
-                        snackBarAction(view.getContext(), errorBodyMessage);
-//                        snackBarAction(getActivity().getApplicationContext(), msg);
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                        //                        snackBarAction(getActivity().getApplicationContext(), msg);
                     }
 
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionRs) {
                         if (sectionRs.isSuccessful()) {
-                            System.out.println("deleteSpendingSection! sectionRs.getPayload() = " + sectionRs.getPayload());
+//                            eventBus.addSpendingSectionEvent(DELETED);
                             view.showDeleteSuccess();
-                            snackBarAction(view.getContext(), sectionRs.toString());
+//                            System.out.println("deleteSpendingSection! sectionRs.getPayload() = " + sectionRs.getPayload());
+//                            snackBarAction(view.getContext(), sectionRs.toString());
                         } else {
-                            snackBarAction(view.getContext(), sectionRs.toString());
                             view.showErrorMessage(sectionRs.toString());
+//                            snackBarAction(view.getContext(), sectionRs.toString());
                         }
                     }
                 });

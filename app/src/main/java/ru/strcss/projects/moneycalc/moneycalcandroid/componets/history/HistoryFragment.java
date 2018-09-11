@@ -111,7 +111,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
-        presenter.requestTransactions();
+//        presenter.requestTransactions();
     }
 
     @Override

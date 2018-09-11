@@ -12,7 +12,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ru.strcss.projects.moneycalc.dto.Credentials;
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsUpdateContainer;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsLegacyUpdateContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
@@ -63,7 +63,7 @@ public class MoneyCalcServerDAO {
         return client.getSettings(token);
     }
 
-    public Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(SettingsUpdateContainer updateContainer) {
+    public Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(SettingsLegacyUpdateContainer updateContainer) {
         return client.updateSettings(token, updateContainer);
     }
 
