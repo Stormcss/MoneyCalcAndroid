@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -23,12 +26,13 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
 
 public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View {
 
@@ -40,11 +44,13 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     }
 
     // UI references
+    private TextView twTransactionDate;
     private EditText etTransactionSum;
     private EditText etTransactionDesc;
     private ListView lvTransactionSection;
 
     private SpendingSection selectedSection;
+    private String transactionDate;
     private List<SpendingSection> spendingSectionsList = new ArrayList<>();
     private ArrayAdapter<SpendingSection> ssAdapter;
 
@@ -72,7 +78,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
                 if (!sum.isEmpty() && selectedSection != null) {
                     TransactionLegacy transaction = TransactionLegacy.builder()
-                            .date(DatesUtils.formatDateToString(new Date()))
+                            .date(transactionDate)
                             .sum(Integer.parseInt(sum))
                             .description(description)
                             .sectionId(selectedSection.getSectionId())
@@ -87,6 +93,31 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
                 }
             }
         });
+
+        final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                String date = getIsoDate(year, month + 1, dayOfMonth);
+                twTransactionDate.setText(date);
+                transactionDate = date;
+            }
+        };
+
+        twTransactionDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar;
+                if (isEditingTransaction) {
+                    calendar = getCalendarFromString(updatedTransactionData.getDate());
+                } else {
+                    calendar = Calendar.getInstance();
+                }
+                new DatePickerDialog(getActivity(), onDateSetListener,
+                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
+
 
         ssAdapter = new SpendingSectionArrayAdapter(getActivity(), R.layout.addedittransaction_spendingsection_card, spendingSectionsList);
         lvTransactionSection.setAdapter(ssAdapter);
@@ -108,6 +139,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
         etTransactionSum = root.findViewById(R.id.ae_transaction_sum);
         etTransactionDesc = root.findViewById(R.id.ae_transaction_desc);
+        twTransactionDate = root.findViewById(R.id.ae_transaction_date);
         lvTransactionSection = root.findViewById(R.id.ae_transaction_section_listview);
 
         return root;
@@ -116,6 +148,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     private void setUpdatedTransactionData(TransactionLegacy transaction) {
         etTransactionSum.setText(String.valueOf(transaction.getSum()));
         etTransactionDesc.setText(transaction.getDescription());
+        twTransactionDate.setText(transaction.getDate());
     }
 
     @Override

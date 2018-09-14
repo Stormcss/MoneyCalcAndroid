@@ -13,20 +13,46 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
 
-        <android.support.design.widget.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <AutoCompleteTextView
-                android:id="@+id/ae_transaction_sum"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/transaction_sum"
-                android:inputType="numberSigned"
-                android:maxLines="1"
-                android:singleLine="true" />
+                android:layout_weight="1">
 
-        </android.support.design.widget.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/ae_transaction_sum"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:hint="@string/transaction_sum"
+                    android:inputType="numberSigned"
+                    android:maxLines="1"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <TextView
+                    android:id="@+id/ae_transaction_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center"
+                    android:text="20.08.2018"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+        </LinearLayout>
+
 
         <ListView
             android:id="@+id/ae_transaction_section_listview"
