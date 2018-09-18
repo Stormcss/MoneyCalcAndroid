@@ -12,7 +12,6 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin">
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,15 +49,12 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
         </LinearLayout>
 
-
-        <ListView
-            android:id="@+id/ae_transaction_section_listview"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ae_transaction_section_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:listSelector="@color/colorPrimaryBright" />
+            android:layout_height="100dp" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

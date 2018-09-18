@@ -5,20 +5,21 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -26,6 +27,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
@@ -34,7 +36,7 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
 
-public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View {
+public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View, SpendingSectionRecyclerViewAdapter.ItemClickListener {
 
     @Inject
     AddEditTransactionContract.Presenter presenter;
@@ -47,12 +49,16 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     private TextView twTransactionDate;
     private EditText etTransactionSum;
     private EditText etTransactionDesc;
-    private ListView lvTransactionSection;
+    private RecyclerView rvTransactionSection;
 
     private SpendingSection selectedSection;
     private String transactionDate;
     private List<SpendingSection> spendingSectionsList = new ArrayList<>();
-    private ArrayAdapter<SpendingSection> ssAdapter;
+    private SpendingSectionRecyclerViewAdapter ssAdapter;
+
+    private AtomicInteger selectedRecyclerViewItem = new AtomicInteger(-1);
+    private boolean isEditingTransaction;
+    private int updatedTransactionSectionId;
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -63,12 +69,9 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         final TransactionLegacy updatedTransactionData = (TransactionLegacy) bundle.get(TRANSACTION);
         FloatingActionButton fabAddTransaction = getActivity().findViewById(R.id.fab_addEditTransaction_done);
 
-        final boolean isEditingTransaction = updatedTransactionData != null;
+        twTransactionDate.setText(DatesUtils.formatDateToString(new Date()));
 
-        if (isEditingTransaction) {
-            setUpdatedTransactionData(updatedTransactionData);
-            fabAddTransaction.setImageResource(R.drawable.ic_edit_white_24dp);
-        }
+        isEditingTransaction = updatedTransactionData != null;
 
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,20 +121,17 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
             }
         });
 
+        ssAdapter = new SpendingSectionRecyclerViewAdapter(getActivity(), spendingSectionsList, selectedRecyclerViewItem);
+        ssAdapter.setClickListener(this);
+        rvTransactionSection.setAdapter(ssAdapter);
+        rvTransactionSection.setLayoutManager(new GridLayoutManager(getActivity(), 3));
 
-        ssAdapter = new SpendingSectionArrayAdapter(getActivity(), R.layout.addedittransaction_spendingsection_card, spendingSectionsList);
-        lvTransactionSection.setAdapter(ssAdapter);
-
-        lvTransactionSection.setClickable(true);
-        lvTransactionSection.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedSection = (SpendingSection) parent.getItemAtPosition(position);
-            }
-        });
+        if (isEditingTransaction) {
+            setUpdatedTransactionData(updatedTransactionData);
+            fabAddTransaction.setImageResource(R.drawable.ic_edit_white_24dp);
+        }
         presenter.requestSpendingSectionsList();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -140,7 +140,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         etTransactionSum = root.findViewById(R.id.ae_transaction_sum);
         etTransactionDesc = root.findViewById(R.id.ae_transaction_desc);
         twTransactionDate = root.findViewById(R.id.ae_transaction_date);
-        lvTransactionSection = root.findViewById(R.id.ae_transaction_section_listview);
+        rvTransactionSection = root.findViewById(R.id.ae_transaction_section_recyclerview);
 
         return root;
     }
@@ -149,13 +149,14 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         etTransactionSum.setText(String.valueOf(transaction.getSum()));
         etTransactionDesc.setText(transaction.getDescription());
         twTransactionDate.setText(transaction.getDate());
+
+        updatedTransactionSectionId = transaction.getSectionId();
     }
 
     @Override
     public void showErrorMessage(String msg) {
         System.out.println("showErrorMessage! " + msg);
         snackBarAction(getActivity().getApplicationContext(), msg);
-//        Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -185,6 +186,11 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     public void showSpendingSections(List<SpendingSection> spendingSections) {
         spendingSectionsList.clear();
         spendingSectionsList.addAll(spendingSections);
+
+        if (isEditingTransaction) {
+            int position = ssAdapter.getPositionBySpendingSectionInnerId(updatedTransactionSectionId);
+            this.onItemClick(null, position);
+        }
         ssAdapter.notifyDataSetChanged();
     }
 
@@ -198,5 +204,13 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     public void onDestroy() {
         presenter.dropView();
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        selectedSection = ssAdapter.getItem(position);
+        System.out.println("item! = " + selectedSection);
+        selectedRecyclerViewItem.set(position);
+        ssAdapter.notifyItemChanged(position);
     }
 }
