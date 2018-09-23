@@ -24,7 +24,7 @@ import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 @ActivityScoped
 public class LoginFragment extends DaggerFragment implements LoginContract.View {

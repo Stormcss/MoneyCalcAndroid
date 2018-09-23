@@ -50,6 +50,7 @@
 
     <!-- AddEditTransaction Activity -->
     <string name="transaction_sum">Сумма</string>
+    <string name="transaction_title">Заголовок</string>
     <string name="transaction_desc">Описание</string>
     <string name="transaction_section">Категория</string>
     <string name="transaction_date">Дата</string>

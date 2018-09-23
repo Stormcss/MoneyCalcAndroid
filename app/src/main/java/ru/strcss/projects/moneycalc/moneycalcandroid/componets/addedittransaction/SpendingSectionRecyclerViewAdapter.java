@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -35,8 +35,8 @@ public class SpendingSectionRecyclerViewAdapter extends RecyclerView.Adapter<Spe
         this.inflater = LayoutInflater.from(context);
         this.selectedPosition = selectedPosition;
 
-        colorPrimaryBright = ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryBright, null);//without theme
-        colorBackground = ResourcesCompat.getColor(context.getResources(), R.color.colorBackground, null);//without theme
+        colorPrimaryBright = ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryBright, null);
+        colorBackground = ResourcesCompat.getColor(context.getResources(), R.color.colorBackground, null);
     }
 
     public int getPositionBySpendingSectionInnerId(int sectionInnerId) {
@@ -90,7 +90,7 @@ public class SpendingSectionRecyclerViewAdapter extends RecyclerView.Adapter<Spe
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private TextView sectionName;
-        private LinearLayout sectionLayout;
+        private RelativeLayout sectionLayout;
         private ImageView sectionLogo;
 
         ViewHolder(View itemView) {

@@ -17,6 +17,7 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -29,6 +30,10 @@ import android.widget.Toast;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static dagger.internal.Preconditions.checkNotNull;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext;
 
@@ -98,4 +103,19 @@ public class ActivityUtils {
         snackbarWrapper.show();
     }
 
+    public static void changeActivityOnCondition(boolean condition, Context context, Class targetActivity) {
+        if (condition) {
+            Intent intent = new Intent(context, targetActivity);
+            intent.setFlags(intent.getFlags() | FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        }
+    }
+
+    public static void setViewVisibility(View view, boolean isShowed) {
+        if (isShowed) {
+            view.setVisibility(VISIBLE);
+        } else {
+            view.setVisibility(GONE);
+        }
+    }
 }

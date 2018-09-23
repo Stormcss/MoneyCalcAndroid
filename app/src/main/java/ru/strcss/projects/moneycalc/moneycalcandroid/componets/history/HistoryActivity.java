@@ -15,9 +15,13 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
+import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 
 public class HistoryActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,6 +31,9 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
     @Inject
     Lazy<HistoryFragment> historyFragmentProvider;
 
+    @Inject
+    MoneyCalcServerDAO moneyCalcServerDAO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +41,7 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, HistoryActivity.this, LoginActivity.class);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

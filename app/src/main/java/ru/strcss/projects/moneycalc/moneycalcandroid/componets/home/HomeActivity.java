@@ -22,8 +22,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.Settings
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 
 public class HomeActivity extends DaggerAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,11 +43,12 @@ public class HomeActivity extends DaggerAppCompatActivity
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (moneyCalcServerDAO.getToken() == null) {
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            intent.setFlags(intent.getFlags() | FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, HomeActivity.this, LoginActivity.class);
+//        if (moneyCalcServerDAO.getToken() == null) {
+//            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+//            intent.setFlags(intent.getFlags() | FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

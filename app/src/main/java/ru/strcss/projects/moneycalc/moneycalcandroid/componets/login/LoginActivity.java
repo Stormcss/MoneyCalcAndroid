@@ -1,15 +1,9 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.login;
 
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.util.TypedValue;
-import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import javax.inject.Inject;
@@ -17,7 +11,9 @@ import javax.inject.Inject;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener;
 
 /**
  * A login screen that offers login via email/password.
@@ -41,7 +37,7 @@ public class LoginActivity extends DaggerAppCompatActivity implements OnKeyboard
         setContentView(R.layout.login_activity);
 
         getSupportActionBar().hide();
-        setKeyboardVisibilityListener(this);
+        setKeyboardVisibilityListener(this, (ViewGroup) findViewById(android.R.id.content));
 
         signInLogo = findViewById(R.id.signIn_logo);
 
@@ -81,36 +77,9 @@ public class LoginActivity extends DaggerAppCompatActivity implements OnKeyboard
     public void onVisibilityChanged(boolean visible) {
         if (visible) {
             signInLogoTargetSize = signInLogo.getHeight();
-            UIutils.collapseView(signInLogo, 100, 0);
+            UiUtils.collapseView(signInLogo, 100, 0);
         } else
-            UIutils.expandView(signInLogo, 100, signInLogoTargetSize);
-//        Toast.makeText(LoginActivity.this, visible ? "Keyboard is active" : "Keyboard is Inactive", Toast.LENGTH_SHORT).show();
-    }
-
-    private void setKeyboardVisibilityListener(final OnKeyboardVisibilityListener onKeyboardVisibilityListener) {
-        final View parentView = ((ViewGroup) findViewById(android.R.id.content)).getChildAt(0);
-        parentView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-
-            private boolean alreadyOpen;
-            private final int defaultKeyboardHeightDP = 100;
-            private final int EstimatedKeyboardDP = defaultKeyboardHeightDP + (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? 48 : 0);
-            private final Rect rect = new Rect();
-
-            @Override
-            public void onGlobalLayout() {
-                int estimatedKeyboardHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, EstimatedKeyboardDP, parentView.getResources().getDisplayMetrics());
-                parentView.getWindowVisibleDisplayFrame(rect);
-                int heightDiff = parentView.getRootView().getHeight() - (rect.bottom - rect.top);
-                boolean isShown = heightDiff >= estimatedKeyboardHeight;
-
-                if (isShown == alreadyOpen) {
-                    Log.i("Keyboard state", "Ignoring global layout change...");
-                    return;
-                }
-                alreadyOpen = isShown;
-                onKeyboardVisibilityListener.onVisibilityChanged(isShown);
-            }
-        });
+            UiUtils.expandView(signInLogo, 100, signInLogoTargetSize);
     }
 }
 

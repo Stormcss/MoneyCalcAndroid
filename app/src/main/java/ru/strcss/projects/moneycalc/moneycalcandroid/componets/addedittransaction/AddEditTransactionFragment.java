@@ -27,16 +27,21 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener;
 
-public class AddEditTransactionFragment extends DaggerFragment implements AddEditTransactionContract.View, SpendingSectionRecyclerViewAdapter.ItemClickListener {
+public class AddEditTransactionFragment extends DaggerFragment
+        implements AddEditTransactionContract.View,
+        SpendingSectionRecyclerViewAdapter.ItemClickListener, OnKeyboardVisibilityListener {
 
     @Inject
     AddEditTransactionContract.Presenter presenter;
@@ -48,6 +53,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
     // UI references
     private TextView twTransactionDate;
     private EditText etTransactionSum;
+    private EditText etTransactionTitle;
     private EditText etTransactionDesc;
     private RecyclerView rvTransactionSection;
 
@@ -73,10 +79,13 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
         isEditingTransaction = updatedTransactionData != null;
 
+        setKeyboardVisibilityListener(this, (ViewGroup) getView().getParent());
+
         fabAddTransaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String sum = etTransactionSum.getText().toString();
+                String title = etTransactionTitle.getText().toString();
                 String description = etTransactionDesc.getText().toString();
 
                 if (!sum.isEmpty() && selectedSection != null) {
@@ -84,6 +93,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
                             .date(transactionDate)
                             .sum(Integer.parseInt(sum))
                             .description(description)
+                            .title(title)
                             .sectionId(selectedSection.getSectionId())
                             .build();
                     if (isEditingTransaction) {
@@ -138,6 +148,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         View root = inflater.inflate(R.layout.addedittransaction_frag, container, false);
 
         etTransactionSum = root.findViewById(R.id.ae_transaction_sum);
+        etTransactionTitle = root.findViewById(R.id.ae_transaction_title);
         etTransactionDesc = root.findViewById(R.id.ae_transaction_desc);
         twTransactionDate = root.findViewById(R.id.ae_transaction_date);
         rvTransactionSection = root.findViewById(R.id.ae_transaction_section_recyclerview);
@@ -147,6 +158,7 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
 
     private void setUpdatedTransactionData(TransactionLegacy transaction) {
         etTransactionSum.setText(String.valueOf(transaction.getSum()));
+        etTransactionTitle.setText(transaction.getTitle());
         etTransactionDesc.setText(transaction.getDescription());
         twTransactionDate.setText(transaction.getDate());
 
@@ -212,5 +224,13 @@ public class AddEditTransactionFragment extends DaggerFragment implements AddEdi
         System.out.println("item! = " + selectedSection);
         selectedRecyclerViewItem.set(position);
         ssAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onVisibilityChanged(boolean visible) {
+        if (visible) {
+            UiUtils.collapseView(rvTransactionSection, 100, 200);
+        } else
+            UiUtils.expandView(rvTransactionSection, 100, 500);
     }
 }

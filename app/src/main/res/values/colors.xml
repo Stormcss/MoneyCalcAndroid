@@ -7,4 +7,19 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorBackground">#FAFAFA</color>
     <color name="colorBlack">#000</color>
+
+    <!-- Indigo -->
+    <color name="indigo100">#C5CAE9</color>
+    <color name="indigo200">#9FA8DA</color>
+    <color name="indigo300">#7986CB</color>
+    <color name="indigo400">#5C6BC0</color>
+    <color name="indigo500">#3f51b5</color>
+    <color name="indigo600">#3949AB</color>
+    <color name="indigo700">#303f9f</color>
+    <color name="indigo800">#283593</color>
+    <color name="indigoA100">#8C9EFF</color>
+    <color name="indigoA200">#536DFE</color>
+    <color name="indigoA400">#3D5AFE</color>
+    <color name="indigoA700">#304FFE</color>
+
 </resources>

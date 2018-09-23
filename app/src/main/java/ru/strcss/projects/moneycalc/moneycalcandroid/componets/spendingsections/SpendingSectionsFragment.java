@@ -23,7 +23,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 public class SpendingSectionsFragment extends DaggerFragment implements SpendingSectionsContract.View {
 

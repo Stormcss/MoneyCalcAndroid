@@ -22,28 +22,15 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> {
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.setViewVisibility;
+
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> /*implements HistoryAdapter.ItemClickListener*/ {
 
     private Context mContext;
     private List<TransactionLegacy> transactionList;
     private HistoryContract.Presenter historyPresenter;
 
-    public static class HistoryViewHolder extends RecyclerView.ViewHolder {
-        CardView cv;
-        ImageView logo, menu;
-        TextView name, sum, date, description;
-
-        HistoryViewHolder(View view) {
-            super(view);
-            cv = view.findViewById(R.id.transaction_cardview);
-            logo = view.findViewById(R.id.transaction_spending_section_logo);
-            menu = view.findViewById(R.id.transaction_menu);
-//            name = view.findViewById(R.id.transaction_name);
-            sum = view.findViewById(R.id.transaction_sum);
-            date = view.findViewById(R.id.transaction_date);
-            description = view.findViewById(R.id.transaction_desc);
-        }
-    }
+    private View checkedRvItem;
 
     public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<TransactionLegacy> transactionList) {
         this.mContext = mContext;
@@ -63,6 +50,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     @Override
     public void onBindViewHolder(@NonNull final HistoryViewHolder holder, int position) {
         TransactionLegacy transaction = transactionList.get(position);
+        holder.title.setText(transaction.getTitle());
         holder.description.setText(transaction.getDescription());
         holder.date.setText(transaction.getDate());
         holder.sum.setText(String.valueOf(transaction.getSum()));
@@ -72,6 +60,26 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                 showPopupMenu(holder.menu, holder.getAdapterPosition());
             }
         });
+
+        holder.cv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkedRvItem != null) {
+                    if (checkedRvItem == holder.description) {
+                        setViewVisibility(checkedRvItem, false);
+                        checkedRvItem = null;
+                    } else {
+                        setViewVisibility(holder.description, true);
+                        setViewVisibility(checkedRvItem, false);
+                        checkedRvItem = holder.description;
+                    }
+                } else {
+                    setViewVisibility(holder.description, true);
+                    checkedRvItem = holder.description;
+                }
+            }
+        });
+        setViewVisibility(holder.description, false);
     }
 
     public void updateList(List<TransactionLegacy> transactions) {
@@ -159,5 +167,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
                     .append("\"");
         }
         return stringBuilder.append("?").toString();
+    }
+
+    public class HistoryViewHolder extends RecyclerView.ViewHolder {
+        CardView cv;
+        ImageView logo, menu;
+
+        TextView sum, date, title, description;
+
+        HistoryViewHolder(View view) {
+            super(view);
+            cv = view.findViewById(R.id.transaction_cardview);
+            logo = view.findViewById(R.id.transaction_spending_section_logo);
+            menu = view.findViewById(R.id.transaction_menu);
+            sum = view.findViewById(R.id.transaction_sum);
+            date = view.findViewById(R.id.transaction_date);
+            title = view.findViewById(R.id.transaction_title);
+            description = view.findViewById(R.id.transaction_desc);
+        }
     }
 }

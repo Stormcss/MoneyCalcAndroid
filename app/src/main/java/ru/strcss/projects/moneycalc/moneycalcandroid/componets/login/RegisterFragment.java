@@ -21,7 +21,7 @@ import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.enitities.Identifications;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UIutils.showProgress;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 public class RegisterFragment extends DaggerFragment implements RegisterContract.View {
 

@@ -7,72 +7,79 @@
     <android.support.v7.widget.CardView
         android:id="@+id/transaction_cardview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/card_spendingsection_margin"
         android:elevation="3dp"
         spending_section_cardview:cardCornerRadius="@dimen/card_spendingsection_radius">
+        <!--android:layout_height="40dp"-->
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/transaction_spending_section_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:src="@drawable/ic_restaurant_black_24dp" />
-            <!--android:layout_marginRight="16dp"-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/transaction_name"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_below="@+id/transaction_spending_section_logo"-->
-            <!--android:text="Машина"-->
-            <!--android:textSize="12sp" />-->
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/transaction_date"
-                android:layout_centerVertical="true"
-                android:text="01.01.1990"
-                android:layout_marginStart="30dp"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="@color/colorBlack" />
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="5dp"
+                android:text="01.01.1990"
+                android:textColor="@color/colorBlack"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
                 android:id="@+id/transaction_sum"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="false"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
                 android:layout_toRightOf="@+id/transaction_date"
-                android:textSize="17sp"
                 android:text="200"
-                android:textColor="@color/colorBlack" />
+                android:textColor="@color/colorBlack"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/transaction_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="false"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/transaction_sum"
+                android:text="пельмени"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/transaction_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_below="@+id/transaction_spending_section_logo"
+                android:layout_marginTop="5dp"
                 android:layout_marginStart="7dp"
-                android:layout_toRightOf="@+id/transaction_sum"
-                android:textSize="16sp"
-                android:text="пельмени" />
+                android:layout_marginEnd="30dp"
+                android:text="Подробное и очень долгое описание полное непонятных слов и хз чего еще"
+                android:visibility="gone"
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/transaction_menu"
                 android:layout_width="@dimen/ic_spendingsection_overflow_width"
                 android:layout_height="@dimen/ic_spendingsection_overflow_height"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
                 android:src="@drawable/ic_settings_black_24dp" />
 
         </RelativeLayout>
