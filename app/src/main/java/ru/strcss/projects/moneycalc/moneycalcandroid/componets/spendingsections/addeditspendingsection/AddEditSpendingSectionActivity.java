@@ -3,6 +3,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 
 import javax.inject.Inject;
@@ -24,6 +25,10 @@ public class AddEditSpendingSectionActivity extends DaggerAppCompatActivity {
     Lazy<AddEditSpendingSectionFragment> addEditSpendingSectionFragmentProvider;
 
     private ActionBar mActionBar;
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+    }
 
 
     @Override

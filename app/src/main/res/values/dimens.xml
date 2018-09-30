@@ -13,4 +13,6 @@
     <dimen name="ic_spendingsection_overflow_margin_top">10dp</dimen>
     <dimen name="card_spendingsection_radius">5dp</dimen>
     <dimen name="card_spendingsection_margin">4dp</dimen>
+
+    <dimen name="spendingsection_logo_card_size">28dp</dimen>
 </resources>

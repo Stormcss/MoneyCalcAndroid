@@ -18,6 +18,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
@@ -39,6 +40,7 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_activity);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.menu_history);
         setSupportActionBar(toolbar);
 
         changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, HistoryActivity.this, LoginActivity.class);
@@ -91,6 +93,8 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
                 break;
             case R.id.menu_refresh:
                 break;
@@ -117,7 +121,7 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
             Intent intent =
                     new Intent(HistoryActivity.this, SpendingSectionsActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

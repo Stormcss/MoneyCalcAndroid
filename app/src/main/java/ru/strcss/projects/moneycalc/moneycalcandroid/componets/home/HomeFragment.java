@@ -83,6 +83,9 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
         }
 
         this.updateStatsAndSettings();
+
+        //request spending sections to have copy of sections at DataStorage
+        presenter.requestSpendingSections();
         return root;
     }
 
@@ -99,15 +102,13 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
     @Override
     public void showStatisticsSections(List<FinanceSummaryBySection> financeSummaryList) {
-        System.out.println("setStatisticsSection! financeSummaryList=" + financeSummaryList);
-
         adapter.clearFragments();
 
         for (FinanceSummaryBySection finSumBySec : financeSummaryList) {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
             if (!fView.isAdded()) {
                 adapter.addFrag(fView, finSumBySec.getSectionName());
-                //                adapter.addFrag(fView, getSpendingSectionById(spendingSections, finSumBySec.getSectionId()).getName());
+                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSections, finSumBySec.getSectionId()).getName());
             }
         }
         adapter.notifyDataSetChanged();

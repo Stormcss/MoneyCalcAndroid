@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,8 +22,11 @@ import java.util.List;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.setViewVisibility;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getLogoIdBySectionId;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> /*implements HistoryAdapter.ItemClickListener*/ {
 
@@ -32,10 +36,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
 
     private View checkedRvItem;
 
-    public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<TransactionLegacy> transactionList) {
+    private final SparseIntArray logoStorage = DrawableStorage.getSpendingSectionLogoStorage();
+    private final DataStorage dataStorage;
+
+    public HistoryAdapter(Context mContext, HistoryContract.Presenter historyPresenter, List<TransactionLegacy> transactionList, DataStorage dataStorage) {
         this.mContext = mContext;
         this.historyPresenter = historyPresenter;
         this.transactionList = transactionList;
+        this.dataStorage = dataStorage;
     }
 
     @NonNull
@@ -54,6 +62,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         holder.description.setText(transaction.getDescription());
         holder.date.setText(transaction.getDate());
         holder.sum.setText(String.valueOf(transaction.getSum()));
+
+        Integer sectionLogoId = getLogoIdBySectionId(dataStorage.getSpendingSections(), transaction.getSectionId());
+        if (sectionLogoId != null) {
+            holder.logo.setImageResource(logoStorage.get(sectionLogoId));
+        }
+
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -122,7 +122,7 @@ public class HomeActivity extends DaggerAppCompatActivity
         } else if (id == R.id.nav_history) {
             Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         } else if (id == R.id.nav_stats) {
 
         } else if (id == R.id.nav_finance) {
@@ -130,7 +130,7 @@ public class HomeActivity extends DaggerAppCompatActivity
         } else if (id == R.id.nav_spending_sections) {
             Intent intent = new Intent(HomeActivity.this, SpendingSectionsActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

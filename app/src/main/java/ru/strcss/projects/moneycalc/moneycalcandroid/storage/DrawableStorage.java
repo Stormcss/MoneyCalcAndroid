@@ -11,6 +11,7 @@ public class DrawableStorage {
     static private SparseIntArray spendingSectionLogoStorage = new SparseIntArray(20);
 
     static {
+        spendingSectionLogoStorage.put(0, R.drawable.ic_empty_drawable);
         spendingSectionLogoStorage.put(1, R.drawable.ic_restaurant_black_24dp);
         spendingSectionLogoStorage.put(2, R.drawable.ic_menu_manage);
         spendingSectionLogoStorage.put(3, R.drawable.ic_show_chart_black_24dp);
@@ -25,8 +26,7 @@ public class DrawableStorage {
         spendingSectionLogoStorage.put(12, R.drawable.ic_local_gas_station_black_24dp);
         spendingSectionLogoStorage.put(13, R.drawable.ic_smoking_rooms_black_24dp);
         spendingSectionLogoStorage.put(14, R.drawable.ic_local_movies_black_24dp);
-        spendingSectionLogoStorage.put(15, R.drawable.ic_local_movies_black_24dp);
-        spendingSectionLogoStorage.put(16, R.drawable.ic_delete_black_24dp);
-        spendingSectionLogoStorage.put(17, R.drawable.ic_faucet_side_view_black);
+        spendingSectionLogoStorage.put(15, R.drawable.ic_delete_black_24dp);
+        spendingSectionLogoStorage.put(16, R.drawable.ic_faucet_side_view_black);
     }
 }

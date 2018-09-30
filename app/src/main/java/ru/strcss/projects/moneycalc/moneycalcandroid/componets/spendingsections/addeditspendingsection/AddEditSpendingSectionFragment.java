@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.inject.Inject;
 
@@ -22,7 +26,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.SPENDING_SECTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
 
-public class AddEditSpendingSectionFragment extends DaggerFragment implements AddEditSpendingSectionContract.View {
+public class AddEditSpendingSectionFragment extends DaggerFragment implements AddEditSpendingSectionContract.View,
+        SpendingSectionLogoRecyclerViewAdapter.ItemClickListener {
 
     @Inject
     AddEditSpendingSectionContract.Presenter presenter;
@@ -37,7 +42,11 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
     // UI references
     private EditText etSpendingSectionBudget;
     private EditText etSpendingSectionName;
-//    private Check
+    private RecyclerView rvSectionLogo;
+
+    private int selectedLogoId;
+    private SpendingSectionLogoRecyclerViewAdapter sectionLogoAdapter;
+    private AtomicInteger selectedRecyclerViewItem = new AtomicInteger(-1);
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,9 +59,20 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
 
         final boolean isEditingSpendingSection = updatedSectionData != null;
 
+        sectionLogoAdapter = new SpendingSectionLogoRecyclerViewAdapter(getActivity(), selectedRecyclerViewItem);
+        sectionLogoAdapter.setClickListener(this);
+        rvSectionLogo.setAdapter(sectionLogoAdapter);
+        rvSectionLogo.setLayoutManager(new GridLayoutManager(getActivity(), 6));
+
         if (isEditingSpendingSection) {
             setUpdatedSpendingSectionData(updatedSectionData);
             fabAddSpendingSection.setImageResource(R.drawable.ic_edit_white_24dp);
+
+            if (updatedSectionData.getLogoId() != null) {
+                int position = updatedSectionData.getLogoId();
+//                int position = sectionLogoAdapter.getPositionByLogoId(updatedSectionData.getLogoId());
+                this.onItemClick(null, position);
+            }
         }
 
         fabAddSpendingSection.setOnClickListener(new View.OnClickListener() {
@@ -60,11 +80,13 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
             public void onClick(View v) {
                 String name = etSpendingSectionName.getText().toString();
                 String budget = etSpendingSectionBudget.getText().toString();
+                int logoId = selectedRecyclerViewItem.get();
 
                 if (!name.isEmpty() && !budget.isEmpty()) {
                     SpendingSection spendingSection = SpendingSection.builder()
                             .name(name)
                             .budget(Integer.parseInt(budget))
+                            .logoId(logoId)
                             .isAdded(true)
                             .build();
                     if (isEditingSpendingSection) {
@@ -86,6 +108,7 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
 
         etSpendingSectionName = root.findViewById(R.id.ae_spening_section_name);
         etSpendingSectionBudget = root.findViewById(R.id.ae_spening_section_budget);
+        rvSectionLogo = root.findViewById(R.id.ae_spendingsection_section_logo_rw);
 
         return root;
     }
@@ -152,6 +175,15 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
         presenter.dropView();
         super.onDestroy();
     }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        selectedLogoId = sectionLogoAdapter.getItem(position);
+        System.out.println("item! = " + selectedLogoId);
+        selectedRecyclerViewItem.set(position);
+        sectionLogoAdapter.notifyItemChanged(position);
+    }
+
 
 //    /**
 //     * Hides the soft keyboard

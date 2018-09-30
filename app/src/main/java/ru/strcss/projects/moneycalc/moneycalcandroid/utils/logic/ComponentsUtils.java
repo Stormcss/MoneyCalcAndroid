@@ -22,12 +22,19 @@ public class ComponentsUtils {
         return ids;
     }
 
-    public static SpendingSection getSpendingSectionById(List<SpendingSection> spendingSections, int id) {
+    public static SpendingSection getSpendingSectionByInnerId(List<SpendingSection> spendingSections, int id) {
+        if (spendingSections == null)
+            return null;
         for (SpendingSection spendingSection : spendingSections) {
-            if (spendingSection.getId() == id)
+            if (spendingSection.getSectionId() == id)
                 return spendingSection;
         }
         return null;
+    }
+
+    public static Integer getLogoIdBySectionId(List<SpendingSection> spendingSections, Integer sectionId) {
+        SpendingSection spendingSection = getSpendingSectionByInnerId(spendingSections, sectionId);
+        return spendingSection == null ? null : spendingSection.getLogoId();
     }
 
     public static FinanceSummaryBySection getFinanceSummaryBySectionById(List<FinanceSummaryBySection> financeList, int id) {

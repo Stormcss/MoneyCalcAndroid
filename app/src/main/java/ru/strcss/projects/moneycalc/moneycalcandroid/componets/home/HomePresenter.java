@@ -12,6 +12,7 @@ import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummary
 import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
+import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
@@ -94,7 +95,29 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void requestSpendingSections() {
-//        moneyCalcServerDAO.getSpendingSections(moneyCalcServerDAO.getToken())
+        moneyCalcServerDAO.getSpendingSections()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
+
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable ex) {
+                        ex.printStackTrace();
+                        snackBarAction(getAppContext(), getErrorBodyMessage(ex));
+                    }
+
+                    @Override
+                    public void onNext(MoneyCalcRs<List<SpendingSection>> sectionsRs) {
+                        if (sectionsRs.isSuccessful()) {
+                            dataStorage.setSpendingSections(sectionsRs.getPayload());
+                        }
+                    }
+                });
     }
 
     @Override

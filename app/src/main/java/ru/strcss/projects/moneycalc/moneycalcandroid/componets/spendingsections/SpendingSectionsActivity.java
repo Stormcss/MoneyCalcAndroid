@@ -17,6 +17,7 @@ import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
 public class SpendingSectionsActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +34,8 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spendingsections_activity);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.menu_spending_sections);
         setSupportActionBar(toolbar);
 
 
@@ -85,6 +87,8 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
                 break;
             case R.id.menu_refresh:
                 break;
@@ -107,7 +111,7 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
             Intent intent =
                     new Intent(SpendingSectionsActivity.this, HistoryActivity.class);
             startActivity(intent);
-            overridePendingTransition(R.anim.abc_popup_enter, R.anim.abc_popup_exit);
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         } else if (id == R.id.nav_stats) {
 
         } else if (id == R.id.nav_spending_sections) {

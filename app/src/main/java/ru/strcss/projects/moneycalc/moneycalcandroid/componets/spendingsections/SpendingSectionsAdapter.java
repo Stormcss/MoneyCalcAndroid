@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,12 +23,15 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 
 public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectionsAdapter.SpendingSectionViewHolder> {
 
     private Context mContext;
     private List<SpendingSection> sectionList;
     private SpendingSectionsContract.Presenter presenter;
+
+    private SparseIntArray logoStorage = DrawableStorage.getSpendingSectionLogoStorage();
 
     public static class SpendingSectionViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
@@ -64,6 +68,10 @@ public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectio
         SpendingSection spendingSection = sectionList.get(position);
         holder.name.setText(spendingSection.getName());
         holder.finance.setText(String.valueOf(spendingSection.getBudget()));
+
+        if (spendingSection.getLogoId() != null) {
+            holder.logo.setImageResource(logoStorage.get(spendingSection.getLogoId(), 0));
+        }
 
         holder.menu.setOnClickListener(new View.OnClickListener() {
             @Override

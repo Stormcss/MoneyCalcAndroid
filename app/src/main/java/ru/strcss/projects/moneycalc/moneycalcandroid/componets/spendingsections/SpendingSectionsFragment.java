@@ -22,6 +22,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
@@ -29,6 +30,9 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
 
     @Inject
     SpendingSectionsContract.Presenter presenter;
+
+    @Inject
+    DataStorage dataStorage;
 
     @Inject
     public SpendingSectionsFragment() {
@@ -77,6 +81,10 @@ public class SpendingSectionsFragment extends DaggerFragment implements Spending
             }
         });
 
+        // show available data quickly
+        if (dataStorage.getSpendingSections() != null) {
+            showSpendingSections(dataStorage.getSpendingSections());
+        }
         return root;
     }
 

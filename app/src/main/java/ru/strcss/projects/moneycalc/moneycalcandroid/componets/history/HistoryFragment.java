@@ -22,6 +22,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
@@ -33,6 +34,9 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     @Inject
     public HistoryFragment() {
     }
+
+    @Inject
+    DataStorage dataStorage;
 
     // UI references
     private FloatingActionButton fabAddTransaction;
@@ -49,7 +53,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
         progressView = root.findViewById(R.id.history_progress);
 
         transactionList = new ArrayList<>();
-        adapter = new HistoryAdapter(getContext(), presenter, transactionList);
+        adapter = new HistoryAdapter(getContext(), presenter, transactionList, dataStorage);
 
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
         rvTransactions.setLayoutManager(mLayoutManager);

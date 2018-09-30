@@ -23,14 +23,15 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/spending_section_name"
                 android:inputType="text"
-                android:maxLength="15"
+                android:maxLength="16"
                 android:maxLines="1"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
 
             <AutoCompleteTextView
                 android:id="@+id/ae_spening_section_budget"
@@ -41,6 +42,16 @@
                 android:maxLines="1"
                 android:singleLine="true" />
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ae_spendingsection_section_logo_rw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin" />
+
 
     </LinearLayout>
 </ScrollView>
