@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
@@ -130,10 +133,51 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
             }
         });
 
+//        final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
+//            @Override
+//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+//                String date = getIsoDate(year, month + 1, dayOfMonth);
+//                dateFrom.setText(date);
+//                transactionDate = date;
+//            }
+//        };
+
         root.findViewById(R.id.history_fab_sheet_item_filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(getActivity().findViewById(android.R.id.content), "Filter", Snackbar.LENGTH_LONG).show();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+                View mview = getLayoutInflater().inflate(R.layout.history_filter_activity, null);
+                final View dateFrom = mview.findViewById(R.id.history_filter_date_from);
+                final View dateTo = mview.findViewById(R.id.history_filter_date_to);
+                final RecyclerView sectionsRv = mview.findViewById(R.id.history_filter_sections);
+                final Button btnSectionsCheckAll = mview.findViewById(R.id.history_filter_section_check_all_button);
+                final Button btnSectionsUncheckAll = mview.findViewById(R.id.history_filter_section_uncheck_all_button);
+                final EditText etTitle = mview.findViewById(R.id.history_filter_title);
+                final EditText etDesc = mview.findViewById(R.id.history_filter_desc);
+
+                mBuilder.setView(mview);
+                AlertDialog dialog = mBuilder.create();
+                dialog.getWindow().setLayout(600, 400);
+                ;
+                dialog.show();
+
+//                dateFrom.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        Calendar calendar;
+//                        if (isEditingTransaction) {
+//                            calendar = getCalendarFromString(updatedTransactionData.getDate());
+//                        } else {
+//                            calendar = Calendar.getInstance();
+//                        }
+//                        new DatePickerDialog(getActivity(), onDateSetListener,
+//                                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+//                                calendar.get(Calendar.DAY_OF_MONTH)).show();
+//                    }
+//                });
+
+                //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Filter", Snackbar.LENGTH_LONG).show();
+
                 materialSheetFab.hideSheet();
             }
         });

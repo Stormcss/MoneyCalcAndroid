@@ -7,4 +7,5 @@ public class AppConstants {
     public static final String TRANSACTION = "transaction";
     public static final String SPENDING_SECTION = "spending section";
     public static final String FINANCE_SUMMARY_BY_SECTION = "FinanceSummaryBySection";
+    public static final String TRANSACTIONS_SEARCH_CONTAINER = "TransactionsSearchContainer";
 }
