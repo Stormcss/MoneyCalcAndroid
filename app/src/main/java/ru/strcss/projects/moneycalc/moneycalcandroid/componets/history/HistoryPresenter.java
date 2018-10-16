@@ -26,6 +26,7 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.DELETED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.REQUESTED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
@@ -34,12 +35,13 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     private final MoneyCalcServerDAO moneyCalcServerDAO;
     private final DataStorage dataStorage;
     private final EventBus eventBus;
+    private boolean isFilterActive = false;
 
     @Nullable
     private HistoryContract.View view;
 
     @Inject
-    HistoryPresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage, EventBus eventBus) {
+    HistoryPresenter(MoneyCalcServerDAO moneyCalcServerDAO, final DataStorage dataStorage, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
         this.dataStorage = dataStorage;
         this.eventBus = eventBus;
@@ -51,6 +53,17 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                         if (transactionEvent.equals(ADDED) || transactionEvent.equals(DELETED)
                                 || transactionEvent.equals(EDITED))
                             requestTransactions();
+                    }
+                });
+
+        eventBus.subscribeTransactionEvent()
+                .subscribe(new Action1<CrudEvent>() {
+                    @Override
+                    public void call(CrudEvent transactionEvent) {
+                        if (transactionEvent.equals(REQUESTED))
+                            isFilterActive = true;
+                        view.showTransactions(dataStorage.getTransactionList());
+                        view.showFilterWindow();
                     }
                 });
     }
@@ -67,6 +80,8 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void requestTransactions() {
+        isFilterActive = false;
+
         moneyCalcServerDAO.getTransactions()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())

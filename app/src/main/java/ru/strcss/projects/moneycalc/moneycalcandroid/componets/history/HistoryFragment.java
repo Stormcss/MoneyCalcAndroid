@@ -1,6 +1,5 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,9 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.gordonwong.materialsheetfab.MaterialSheetFab;
 import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
@@ -28,6 +27,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyfilter.HistoryFilterActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static android.view.View.INVISIBLE;
@@ -50,15 +50,21 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     private View sheetView;
     private RecyclerView rvTransactions;
     private HistoryAdapter adapter;
-    private List<TransactionLegacy> transactionList;
     private ProgressBar progressView;
     private MaterialSheetFab materialSheetFab;
+    private RelativeLayout filterWindow;
+    private TextView filterWindowCancel;
+
     private int statusBarColor;
+    private List<TransactionLegacy> transactionList;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.history_frag, container, false);
+
+        filterWindow = root.findViewById(R.id.history_filter_window);
+        filterWindowCancel = root.findViewById(R.id.history_filter_window_cancel);
 
         rvTransactions = root.findViewById(R.id.rv_history);
         progressView = root.findViewById(R.id.history_progress);
@@ -85,6 +91,14 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
                     historyFab.hide();
                 else if (dy < 0 && sheetView.getVisibility() == INVISIBLE)
                     historyFab.show();
+            }
+        });
+
+        filterWindowCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                presenter.requestTransactions();
+                hideFilterWindow();
             }
         });
 
@@ -142,42 +156,50 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
 //            }
 //        };
 
+//        root.findViewById(R.id.history_fab_sheet_item_filter).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
+//                View mview = getLayoutInflater().inflate(R.layout.history_filter_activity, null);
+//                final View dateFrom = mview.findViewById(R.id.history_filter_date_from);
+//                final View dateTo = mview.findViewById(R.id.history_filter_date_to);
+//                final RecyclerView sectionsRv = mview.findViewById(R.id.history_filter_sections);
+//                final Button btnSectionsCheckAll = mview.findViewById(R.id.history_filter_section_check_all_button);
+//                final Button btnSectionsUncheckAll = mview.findViewById(R.id.history_filter_section_uncheck_all_button);
+//                final EditText etTitle = mview.findViewById(R.id.history_filter_title);
+//                final EditText etDesc = mview.findViewById(R.id.history_filter_desc);
+//
+//                mBuilder.setView(mview);
+//                AlertDialog dialog = mBuilder.create();
+//                dialog.getWindow().setLayout(600, 400);
+//                ;
+//                dialog.show();
+//
+////                dateFrom.setOnClickListener(new View.OnClickListener() {
+////                    @Override
+////                    public void onClick(View v) {
+////                        Calendar calendar;
+////                        if (isEditingTransaction) {
+////                            calendar = getCalendarFromString(updatedTransactionData.getDate());
+////                        } else {
+////                            calendar = Calendar.getInstance();
+////                        }
+////                        new DatePickerDialog(getActivity(), onDateSetListener,
+////                                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+////                                calendar.get(Calendar.DAY_OF_MONTH)).show();
+////                    }
+////                });
+//
+//                //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Filter", Snackbar.LENGTH_LONG).show();
+//
+//                materialSheetFab.hideSheet();
+//            }
+//        });
         root.findViewById(R.id.history_fab_sheet_item_filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-                View mview = getLayoutInflater().inflate(R.layout.history_filter_activity, null);
-                final View dateFrom = mview.findViewById(R.id.history_filter_date_from);
-                final View dateTo = mview.findViewById(R.id.history_filter_date_to);
-                final RecyclerView sectionsRv = mview.findViewById(R.id.history_filter_sections);
-                final Button btnSectionsCheckAll = mview.findViewById(R.id.history_filter_section_check_all_button);
-                final Button btnSectionsUncheckAll = mview.findViewById(R.id.history_filter_section_uncheck_all_button);
-                final EditText etTitle = mview.findViewById(R.id.history_filter_title);
-                final EditText etDesc = mview.findViewById(R.id.history_filter_desc);
-
-                mBuilder.setView(mview);
-                AlertDialog dialog = mBuilder.create();
-                dialog.getWindow().setLayout(600, 400);
-                ;
-                dialog.show();
-
-//                dateFrom.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Calendar calendar;
-//                        if (isEditingTransaction) {
-//                            calendar = getCalendarFromString(updatedTransactionData.getDate());
-//                        } else {
-//                            calendar = Calendar.getInstance();
-//                        }
-//                        new DatePickerDialog(getActivity(), onDateSetListener,
-//                                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-//                                calendar.get(Calendar.DAY_OF_MONTH)).show();
-//                    }
-//                });
-
-                //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Filter", Snackbar.LENGTH_LONG).show();
-
+                Intent intent = new Intent(getContext(), HistoryFilterActivity.class);
+                startActivityForResult(intent, 0);
                 materialSheetFab.hideSheet();
             }
         });
@@ -229,10 +251,19 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     }
 
     @Override
+    public void showFilterWindow() {
+        filterWindow.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideFilterWindow() {
+        filterWindow.setVisibility(View.GONE);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         presenter.takeView(this);
-//        presenter.requestTransactions();
     }
 
     @Override

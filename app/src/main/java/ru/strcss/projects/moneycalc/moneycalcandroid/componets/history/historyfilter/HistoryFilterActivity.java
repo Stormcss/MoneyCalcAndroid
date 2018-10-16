@@ -2,9 +2,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyf
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,76 +20,90 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTIONS_SEARCH_CONTAINER;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getStringFromCalendar;
 
 public class HistoryFilterActivity extends DaggerAppCompatActivity {
 
-    private TextView dateFrom;
-    private TextView dateTo;
+    private TextView twDateFrom;
+    private TextView twDateTo;
     private RecyclerView sectionsRv;
     private Button btnSectionsCheckAll;
     private Button btnSectionsUncheckAll;
     private EditText etTitle;
     private EditText etDesc;
 
+    private ActionBar mActionBar;
+
     private TransactionsSearchContainerLegacy filter;
-    private boolean isFilterApplied;
+
+    @Inject
+    HistoryFilterContract.Presenter presenter;
+
+    @Inject
+    public HistoryFilterActivity() {
+    }
+
     @Inject
     MoneyCalcServerDAO moneyCalcServerDAO;
+
+    @Inject
+    DataStorage dataStorage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.history_filter_activity);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.menu_history_filter);
-        setSupportActionBar(toolbar);
-
         changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, HistoryFilterActivity.this, LoginActivity.class);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        setContentView(R.layout.history_filter_activity);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        dateFrom = findViewById(R.id.history_filter_date_from);
-        dateTo = findViewById(R.id.history_filter_date_to);
+        mActionBar = getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayShowHomeEnabled(true);
+        mActionBar.setTitle(R.string.menu_history_filter);
+
+        twDateFrom = findViewById(R.id.history_filter_date_from);
+        twDateTo = findViewById(R.id.history_filter_date_to);
         sectionsRv = findViewById(R.id.history_filter_sections);
         btnSectionsCheckAll = findViewById(R.id.history_filter_section_check_all_button);
         btnSectionsUncheckAll = findViewById(R.id.history_filter_section_uncheck_all_button);
         etTitle = findViewById(R.id.history_filter_title);
         etDesc = findViewById(R.id.history_filter_desc);
 
+        if (getIntent().getExtras() != null) {
+            filter = (TransactionsSearchContainerLegacy) getIntent().getExtras().getSerializable(TRANSACTIONS_SEARCH_CONTAINER);
+        }
 
-        final TransactionsSearchContainerLegacy savedFilter =
-                (TransactionsSearchContainerLegacy) savedInstanceState.get(TRANSACTIONS_SEARCH_CONTAINER);
+        if (filter == null) {
+            filter = new TransactionsSearchContainerLegacy(dataStorage.getSettings().getPeriodFrom(),
+                    dataStorage.getSettings().getPeriodTo(), null);
+        }
 
-        isFilterApplied = savedFilter != null;
-
-        setTransactionPeriodListener(savedFilter);
-
+        setTransactionPeriodListener(filter);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        if (filter != null) {
+            System.out.println("filter = " + filter);
+            presenter.requestFilteredTransactions(filter);
         }
+        super.onBackPressed();
     }
 
     final DatePickerDialog.OnDateSetListener onDateFromSetListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String date = getIsoDate(year, month + 1, dayOfMonth);
-            dateFrom.setText(date);
+            twDateFrom.setText(date);
             filter.setRangeFrom(date);
         }
     };
@@ -100,14 +112,28 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String date = getIsoDate(year, month + 1, dayOfMonth);
-            dateTo.setText(date);
+            twDateTo.setText(date);
             filter.setRangeTo(date);
         }
     };
 
     private void setTransactionPeriodListener(final TransactionsSearchContainerLegacy savedFilter) {
-        dateFrom.setOnClickListener(getDateClickListener(savedFilter.getRangeFrom(), onDateFromSetListener));
-        dateTo.setOnClickListener(getDateClickListener(savedFilter.getRangeTo(), onDateToSetListener));
+        String dateFrom = null;
+        String dateTo = null;
+
+        if (savedFilter != null) {
+            dateFrom = savedFilter.getRangeFrom();
+            dateTo = savedFilter.getRangeTo();
+            twDateFrom.setText(dateFrom);
+            twDateTo.setText(dateTo);
+        } else {
+            String calendar = getStringFromCalendar(Calendar.getInstance());
+            twDateFrom.setText(calendar);
+            twDateTo.setText(calendar);
+        }
+
+        twDateFrom.setOnClickListener(getDateClickListener(dateFrom, onDateFromSetListener));
+        twDateTo.setOnClickListener(getDateClickListener(dateTo, onDateToSetListener));
     }
 
     private View.OnClickListener getDateClickListener(final String date,
@@ -116,15 +142,25 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
             @Override
             public void onClick(View v) {
                 Calendar calendar;
-                if (isFilterApplied) {
+                if (date != null) {
                     calendar = getCalendarFromString(date);
                 } else {
                     calendar = Calendar.getInstance();
                 }
-                new DatePickerDialog(getParent(), onDateSetListener,
-                        calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+                getDatePickerDialog(onDateSetListener, calendar).show();
             }
         };
+    }
+
+    private DatePickerDialog getDatePickerDialog(DatePickerDialog.OnDateSetListener listener, Calendar calendar) {
+        return new DatePickerDialog(this, listener,
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

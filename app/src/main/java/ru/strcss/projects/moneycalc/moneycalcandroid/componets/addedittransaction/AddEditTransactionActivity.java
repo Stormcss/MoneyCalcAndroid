@@ -37,8 +37,6 @@ public class AddEditTransactionActivity extends DaggerAppCompatActivity {
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setDisplayShowHomeEnabled(true);
 
-        // TODO: 01.05.2018 insert transactionId here
-//        getIntent().getAction()
         TransactionLegacy editedTransaction = null;
         if (getIntent().getExtras() != null) {
             editedTransaction = (TransactionLegacy) getIntent().getExtras().getSerializable(TRANSACTION);
