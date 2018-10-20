@@ -145,7 +145,8 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
                     @Override
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionsRs) {
                         if (sectionsRs.isSuccessful()) {
-                            view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
+                            view.showSpendingSections(sectionsRs.getPayload());
+//                            view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
                         } else {
                             view.showErrorMessage(sectionsRs.toString());
                         }

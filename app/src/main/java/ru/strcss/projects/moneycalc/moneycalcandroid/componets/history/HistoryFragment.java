@@ -78,11 +78,9 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
         rvTransactions.setItemAnimator(new DefaultItemAnimator());
         rvTransactions.setAdapter(adapter);
 
-
         presenter.requestTransactions();
 
         setupFab(root);
-
 
         rvTransactions.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -99,6 +97,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
             public void onClick(View v) {
                 presenter.requestTransactions();
                 hideFilterWindow();
+                dataStorage.setTransactionsFilter(null);
             }
         });
 

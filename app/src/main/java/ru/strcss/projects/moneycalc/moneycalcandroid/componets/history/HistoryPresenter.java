@@ -2,7 +2,6 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,7 +9,6 @@ import javax.inject.Singleton;
 
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
@@ -35,7 +33,6 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     private final MoneyCalcServerDAO moneyCalcServerDAO;
     private final DataStorage dataStorage;
     private final EventBus eventBus;
-    private boolean isFilterActive = false;
 
     @Nullable
     private HistoryContract.View view;
@@ -60,10 +57,11 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                 .subscribe(new Action1<CrudEvent>() {
                     @Override
                     public void call(CrudEvent transactionEvent) {
-                        if (transactionEvent.equals(REQUESTED))
-                            isFilterActive = true;
-                        view.showTransactions(dataStorage.getTransactionList());
-                        view.showFilterWindow();
+                        if (transactionEvent.equals(REQUESTED)) {
+                            view.showTransactions(dataStorage.getTransactionList());
+                            view.showFilterWindow();
+
+                        }
                     }
                 });
     }
@@ -80,8 +78,6 @@ public class HistoryPresenter implements HistoryContract.Presenter {
 
     @Override
     public void requestTransactions() {
-        isFilterActive = false;
-
         moneyCalcServerDAO.getTransactions()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -145,14 +141,5 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                     }
                 });
 
-    }
-
-
-    private List<Integer> getSpendingSectionIds(List<SpendingSection> spendingSections) {
-        List<Integer> ids = new ArrayList<>();
-        for (SpendingSection spendingSection : spendingSections) {
-            ids.add(spendingSection.getId());
-        }
-        return ids;
     }
 }

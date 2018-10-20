@@ -25,6 +25,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransactio
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.setViewVisibility;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getLogoIdBySectionId;
 
@@ -130,7 +131,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
             switch (menuItem.getItemId()) {
                 case R.id.spendingsection_menu_update:
                     Intent intent = new Intent(mContext, AddEditTransactionActivity.class);
-                    intent.putExtra("transaction", transactionList.get(adapterPosition));
+                    intent.putExtra(TRANSACTION, transactionList.get(adapterPosition));
 
                     mContext.startActivity(intent);
 

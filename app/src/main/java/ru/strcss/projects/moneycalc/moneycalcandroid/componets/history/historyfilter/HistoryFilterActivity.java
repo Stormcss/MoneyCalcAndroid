@@ -3,6 +3,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyf
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -11,28 +12,35 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
+import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVMultiChooseAdapter;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTIONS_SEARCH_CONTAINER;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getStringFromCalendar;
 
-public class HistoryFilterActivity extends DaggerAppCompatActivity {
+public class HistoryFilterActivity extends DaggerAppCompatActivity implements HistoryFilterContract.View,
+        SpendingSectionRVSingleChooseAdapter.ItemClickListener {
 
     private TextView twDateFrom;
     private TextView twDateTo;
-    private RecyclerView sectionsRv;
+    private RecyclerView rvSections;
     private Button btnSectionsCheckAll;
     private Button btnSectionsUncheckAll;
     private EditText etTitle;
@@ -41,6 +49,10 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
     private ActionBar mActionBar;
 
     private TransactionsSearchContainerLegacy filter;
+
+    private List<SpendingSection> spendingSectionsList = new ArrayList<>();
+    private SpendingSectionRVMultiChooseAdapter ssAdapter;
+    private Set<Integer> selectedRecyclerViewItems = new HashSet<>();
 
     @Inject
     HistoryFilterContract.Presenter presenter;
@@ -72,15 +84,13 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
 
         twDateFrom = findViewById(R.id.history_filter_date_from);
         twDateTo = findViewById(R.id.history_filter_date_to);
-        sectionsRv = findViewById(R.id.history_filter_sections);
+        rvSections = findViewById(R.id.history_filter_sections);
         btnSectionsCheckAll = findViewById(R.id.history_filter_section_check_all_button);
         btnSectionsUncheckAll = findViewById(R.id.history_filter_section_uncheck_all_button);
         etTitle = findViewById(R.id.history_filter_title);
         etDesc = findViewById(R.id.history_filter_desc);
 
-        if (getIntent().getExtras() != null) {
-            filter = (TransactionsSearchContainerLegacy) getIntent().getExtras().getSerializable(TRANSACTIONS_SEARCH_CONTAINER);
-        }
+        filter = dataStorage.getTransactionsFilter();
 
         if (filter == null) {
             filter = new TransactionsSearchContainerLegacy(dataStorage.getSettings().getPeriodFrom(),
@@ -88,11 +98,19 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
         }
 
         setTransactionPeriodListener(filter);
+
+        ssAdapter = new SpendingSectionRVMultiChooseAdapter(this, spendingSectionsList, selectedRecyclerViewItems);
+        ssAdapter.setClickListener(this);
+        rvSections.setAdapter(ssAdapter);
+        rvSections.setLayoutManager(new GridLayoutManager(this, 3));
+
+        presenter.requestSpendingSectionsList();
     }
 
     @Override
     public void onBackPressed() {
         if (filter != null) {
+            filter.setRequiredSections(new ArrayList<>(selectedRecyclerViewItems));
             System.out.println("filter = " + filter);
             presenter.requestFilteredTransactions(filter);
         }
@@ -162,5 +180,39 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        ssAdapter.notifyItemChanged(position);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.takeView(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.dropView();
+        super.onDestroy();
+    }
+
+    @Override
+    public void showErrorMessage(String msg) {
+
+    }
+
+    @Override
+    public void showSpendingSections(List<SpendingSection> spendingSections) {
+        spendingSectionsList.clear();
+        spendingSectionsList.addAll(spendingSections);
+
+        if (filter != null && filter.getRequiredSections() != null) {
+            selectedRecyclerViewItems.addAll(filter.getRequiredSections());
+        }
+
+        ssAdapter.notifyDataSetChanged();
     }
 }

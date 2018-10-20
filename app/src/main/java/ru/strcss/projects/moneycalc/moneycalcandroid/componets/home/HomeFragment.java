@@ -108,7 +108,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
             if (!fView.isAdded()) {
                 adapter.addFrag(fView, finSumBySec.getSectionName());
-                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSections, finSumBySec.getSectionId()).getName());
+                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSectionsList, finSumBySec.getSectionId()).getName());
             }
         }
         adapter.notifyDataSetChanged();

@@ -27,6 +27,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
@@ -37,11 +38,12 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getPositionBySpendingSectionInnerId;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener;
 
 public class AddEditTransactionFragment extends DaggerFragment
         implements AddEditTransactionContract.View,
-        SpendingSectionRecyclerViewAdapter.ItemClickListener, OnKeyboardVisibilityListener {
+        SpendingSectionRVSingleChooseAdapter.ItemClickListener, OnKeyboardVisibilityListener {
 
     @Inject
     AddEditTransactionContract.Presenter presenter;
@@ -60,7 +62,7 @@ public class AddEditTransactionFragment extends DaggerFragment
     private SpendingSection selectedSection;
     private String transactionDate;
     private List<SpendingSection> spendingSectionsList = new ArrayList<>();
-    private SpendingSectionRecyclerViewAdapter ssAdapter;
+    private SpendingSectionRVSingleChooseAdapter ssAdapter;
 
     private AtomicInteger selectedRecyclerViewItem = new AtomicInteger(-1);
     private boolean isEditingTransaction;
@@ -131,7 +133,7 @@ public class AddEditTransactionFragment extends DaggerFragment
             }
         });
 
-        ssAdapter = new SpendingSectionRecyclerViewAdapter(getActivity(), spendingSectionsList, selectedRecyclerViewItem);
+        ssAdapter = new SpendingSectionRVSingleChooseAdapter(getActivity(), spendingSectionsList, selectedRecyclerViewItem);
         ssAdapter.setClickListener(this);
         rvTransactionSection.setAdapter(ssAdapter);
         rvTransactionSection.setLayoutManager(new GridLayoutManager(getActivity(), 3));
@@ -200,7 +202,7 @@ public class AddEditTransactionFragment extends DaggerFragment
         spendingSectionsList.addAll(spendingSections);
 
         if (isEditingTransaction) {
-            int position = ssAdapter.getPositionBySpendingSectionInnerId(updatedTransactionSectionId);
+            int position = getPositionBySpendingSectionInnerId(spendingSectionsList, updatedTransactionSectionId);
             this.onItemClick(null, position);
         }
         ssAdapter.notifyDataSetChanged();

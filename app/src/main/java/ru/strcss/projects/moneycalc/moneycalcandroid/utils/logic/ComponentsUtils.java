@@ -32,6 +32,24 @@ public class ComponentsUtils {
         return null;
     }
 
+    public static int getPositionBySpendingSectionInnerId(List<SpendingSection> spendingSections, int sectionInnerId) {
+        if (spendingSections != null) {
+            for (int i = 0; i < spendingSections.size(); i++) {
+                if (spendingSections.get(i).getSectionId() == sectionInnerId)
+                    return i;
+            }
+        }
+        return 0;
+    }
+
+    public static Integer getSpendingSectionInnerIdByPosition(List<SpendingSection> spendingSections, int position) {
+        if (spendingSections != null) {
+            if (spendingSections.size() > position)
+                return spendingSections.get(position).getSectionId();
+        }
+        return null;
+    }
+
     public static Integer getLogoIdBySectionId(List<SpendingSection> spendingSections, Integer sectionId) {
         SpendingSection spendingSection = getSpendingSectionByInnerId(spendingSections, sectionId);
         return spendingSection == null ? null : spendingSection.getLogoId();
