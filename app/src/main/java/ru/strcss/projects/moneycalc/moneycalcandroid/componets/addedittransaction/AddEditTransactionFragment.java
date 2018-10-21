@@ -77,7 +77,7 @@ public class AddEditTransactionFragment extends DaggerFragment
         final TransactionLegacy updatedTransactionData = (TransactionLegacy) bundle.get(TRANSACTION);
         FloatingActionButton fabAddTransaction = getActivity().findViewById(R.id.fab_addEditTransaction_done);
 
-        twTransactionDate.setText(DatesUtils.formatDateToString(new Date()));
+        twTransactionDate.setText(DatesUtils.formatDateToIsoString(new Date()));
 
         isEditingTransaction = updatedTransactionData != null;
 

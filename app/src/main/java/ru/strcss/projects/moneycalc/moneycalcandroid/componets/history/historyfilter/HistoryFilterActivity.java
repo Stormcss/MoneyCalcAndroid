@@ -31,9 +31,10 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivi
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDate;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getStringFromCalendar;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getStringIsoDateFromCalendar;
 
 public class HistoryFilterActivity extends DaggerAppCompatActivity implements HistoryFilterContract.View,
         SpendingSectionRVSingleChooseAdapter.ItemClickListener {
@@ -140,12 +141,12 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity implements Hi
         String dateTo = null;
 
         if (savedFilter != null) {
-            dateFrom = savedFilter.getRangeFrom();
-            dateTo = savedFilter.getRangeTo();
+            dateFrom = formatDate(savedFilter.getRangeFrom());
+            dateTo = formatDate(savedFilter.getRangeTo());
             twDateFrom.setText(dateFrom);
             twDateTo.setText(dateTo);
         } else {
-            String calendar = getStringFromCalendar(Calendar.getInstance());
+            String calendar = formatDate(getStringIsoDateFromCalendar(Calendar.getInstance()));
             twDateFrom.setText(calendar);
             twDateTo.setText(calendar);
         }

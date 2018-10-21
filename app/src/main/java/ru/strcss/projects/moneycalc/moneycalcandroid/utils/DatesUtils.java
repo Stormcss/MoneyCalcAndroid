@@ -10,10 +10,28 @@ import java.util.Locale;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
 
 public class DatesUtils {
-    static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
-    public static String formatDateToString(Date date) {
-        String dateString = dateFormat.format(date);
+    /**
+     * Format date to pretty view.
+     * <p>
+     * String 2018-10-21 -> String 21.10.2018
+     */
+    public static String formatDate(String isoStringDate) {
+        String[] splittedDate = isoStringDate.split("-");
+        if (splittedDate[1].length() == 1)
+            return String.format("%s.0%s.%s", splittedDate[2], splittedDate[1], splittedDate[0]);
+
+        return String.format("%s.%s.%s", splittedDate[2], splittedDate[1], splittedDate[0]);
+    }
+
+    /**
+     * convert Date to String iso format.
+     * <p>
+     * Date 2018-10-21 -> String 2018-10-21
+     */
+    public static String formatDateToIsoString(Date date) {
+        String dateString = serverDateFormat.format(date);
         String[] splittedDate = dateString.split("-");
         if (splittedDate[1].length() == 1)
             return String.format("%s-0%s-%s", splittedDate[0], splittedDate[1], splittedDate[2]);
@@ -21,14 +39,23 @@ public class DatesUtils {
         return dateString;
     }
 
+    /**
+     * get String iso date format from year, month and day.
+     * <p>
+     * 2018,10,21 -> String 2018-10-21
+     */
     public static String getIsoDate(int year, int month, int day) {
         return String.format(Locale.ROOT, "%d-%02d-%02d", year, month, day);
-//        return String.format("%d-%02d-%02d", year, month, day);
     }
 
+    /**
+     * get Date from String iso date format.
+     * <p>
+     * String 2018-10-21 -> Date 2018-10-21
+     */
     public static Date formatDateFromString(String date) {
         try {
-            return dateFormat.parse(date);
+            return serverDateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
             snackBarAction(e.getMessage());
@@ -36,13 +63,29 @@ public class DatesUtils {
         }
     }
 
+    /**
+     * get Calendar from String iso date format.
+     * <p>
+     * String 2018-10-21 -> Calendar 2018-10-21
+     */
     public static Calendar getCalendarFromString(String date) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(formatDateFromString(date));
         return cal;
     }
 
-    public static String getStringFromCalendar(Calendar calendar) {
-        return getIsoDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    /**
+     * get String iso date format from Calendar.
+     * <p>
+     * Calendar 2018-10-21 -> String 2018-10-21
+     */
+    public static String getStringIsoDateFromCalendar(Calendar calendar) {
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+        if (month == 0) {
+            month = 12;
+            year -= 1;
+        }
+        return getIsoDate(year, month, calendar.get(Calendar.DAY_OF_MONTH));
     }
 }
