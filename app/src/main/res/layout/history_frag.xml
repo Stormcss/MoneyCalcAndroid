@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="Filter is Active"
+                android:text="@string/transaction_filter_active"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -40,12 +40,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:text="Cancel"
+                android:text="@string/transaction_filter_cancel"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp"
                 android:textStyle="bold" />
-
-
         </RelativeLayout>
 
 
@@ -65,7 +63,6 @@
             android:clipToPadding="false"
             android:scrollbars="vertical"
             app:layout_constraintTop_toBottomOf="@+id/history_filter_window" />
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
 
     </android.support.constraint.ConstraintLayout>
 
@@ -73,7 +70,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Your FAB implementation -->
         <ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryFab
             android:id="@+id/fab_history_addtransaction"
             style="@style/Widget.MaterialSheetFab.Fab"
@@ -110,7 +106,7 @@
                         android:id="@+id/history_fab_sheet_item_filter"
                         style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
                         android:drawableStart="@drawable/ic_search_black_24dp"
-                        android:text="Filter" />
+                        android:text="@string/transaction_filter" />
 
                     <!-- Note -->
                     <LinearLayout
@@ -123,21 +119,11 @@
                         style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
                         android:drawableStart="@drawable/ic_attach_money_black_24dp"
                         android:background="@color/theme_accent"
-                        android:text="Add Transaction" />
+                        android:text="@string/transaction_add" />
 
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
         </io.codetail.widget.RevealLinearLayout>
     </RelativeLayout>
-
-    <!--<android.support.design.widget.FloatingActionButton-->
-    <!--android:id="@+id/fab_history_addtransaction"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_gravity="bottom|end"-->
-    <!--android:layout_margin="@dimen/fab_margin"-->
-    <!--android:src="@drawable/ic_add_white_24dp" />-->
-    <!--app:srcCompat="@android:drawable/ic_menu_add" />-->
-
 </android.support.design.widget.CoordinatorLayout>

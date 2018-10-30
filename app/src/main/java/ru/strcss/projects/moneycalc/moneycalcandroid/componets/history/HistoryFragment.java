@@ -110,13 +110,6 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
      */
     private void setupFab(View root) {
         historyFab = root.findViewById(R.id.fab_history_addtransaction);
-//        historyFab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getContext(), AddEditTransactionActivity.class);
-//                startActivityForResult(intent, 0);
-//            }
-//        });
 
         sheetView = root.findViewById(R.id.history_fab_sheet);
         View overlay = root.findViewById(R.id.history_overlay);
@@ -146,54 +139,6 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
             }
         });
 
-//        final DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-//            @Override
-//            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-//                String date = getIsoDate(year, month + 1, dayOfMonth);
-//                dateFrom.setText(date);
-//                transactionDate = date;
-//            }
-//        };
-
-//        root.findViewById(R.id.history_fab_sheet_item_filter).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(getActivity());
-//                View mview = getLayoutInflater().inflate(R.layout.history_filter_activity, null);
-//                final View dateFrom = mview.findViewById(R.id.history_filter_date_from);
-//                final View dateTo = mview.findViewById(R.id.history_filter_date_to);
-//                final RecyclerView sectionsRv = mview.findViewById(R.id.history_filter_sections);
-//                final Button btnSectionsCheckAll = mview.findViewById(R.id.history_filter_section_check_all_button);
-//                final Button btnSectionsUncheckAll = mview.findViewById(R.id.history_filter_section_uncheck_all_button);
-//                final EditText etTitle = mview.findViewById(R.id.history_filter_title);
-//                final EditText etDesc = mview.findViewById(R.id.history_filter_desc);
-//
-//                mBuilder.setView(mview);
-//                AlertDialog dialog = mBuilder.create();
-//                dialog.getWindow().setLayout(600, 400);
-//                ;
-//                dialog.show();
-//
-////                dateFrom.setOnClickListener(new View.OnClickListener() {
-////                    @Override
-////                    public void onClick(View v) {
-////                        Calendar calendar;
-////                        if (isEditingTransaction) {
-////                            calendar = getCalendarFromString(updatedTransactionData.getDate());
-////                        } else {
-////                            calendar = Calendar.getInstance();
-////                        }
-////                        new DatePickerDialog(getActivity(), onDateSetListener,
-////                                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-////                                calendar.get(Calendar.DAY_OF_MONTH)).show();
-////                    }
-////                });
-//
-//                //                Snackbar.make(getActivity().findViewById(android.R.id.content), "Filter", Snackbar.LENGTH_LONG).show();
-//
-//                materialSheetFab.hideSheet();
-//            }
-//        });
         root.findViewById(R.id.history_fab_sheet_item_filter).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -211,16 +156,6 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
             }
         });
     }
-
-//    @Override
-//    public void onBackPressed() {
-//        if (materialSheetFab.isSheetVisible()) {
-//            materialSheetFab.hideSheet();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
-
 
     @Override
     public void showTransactions(List<TransactionLegacy> transactions) {

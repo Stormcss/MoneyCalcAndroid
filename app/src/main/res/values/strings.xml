@@ -79,6 +79,8 @@
     <string name="transaction_delete_title">Удалить операцию</string>
     <string name="transaction_delete_success">Операция успешно удалена</string>
     <string name="transaction_filter">Фильтр</string>
+    <string name="transaction_filter_active">Применен фильтр</string>
+    <string name="transaction_filter_cancel">Снять</string>
     <string name="transaction_filter_title">Фильтр по заголовку</string>
     <string name="transaction_filter_desc">Фильтр по описанию</string>
     <string name="transaction_filter_sections_check_all">Выделить всё</string>

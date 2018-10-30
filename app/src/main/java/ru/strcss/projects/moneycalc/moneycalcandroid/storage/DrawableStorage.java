@@ -8,7 +8,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 public class DrawableStorage {
 
     @Getter
-    static private SparseIntArray spendingSectionLogoStorage = new SparseIntArray(20);
+    static private SparseIntArray spendingSectionLogoStorage = new SparseIntArray(25);
 
     static {
         spendingSectionLogoStorage.put(0, R.drawable.ic_empty_drawable);
@@ -28,5 +28,9 @@ public class DrawableStorage {
         spendingSectionLogoStorage.put(14, R.drawable.ic_local_movies_black_24dp);
         spendingSectionLogoStorage.put(15, R.drawable.ic_delete_black_24dp);
         spendingSectionLogoStorage.put(16, R.drawable.ic_faucet_side_view_black);
+        spendingSectionLogoStorage.put(17, R.drawable.ic_local_bar_black_24dp);
+        spendingSectionLogoStorage.put(18, R.drawable.ic_fitness_center_black_24dp);
+        spendingSectionLogoStorage.put(19, R.drawable.ic_home_black_24dp);
+        spendingSectionLogoStorage.put(20, R.drawable.ic_local_parking_black_24dp);
     }
 }

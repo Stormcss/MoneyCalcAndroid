@@ -14,8 +14,15 @@ public class DatesUtilsTest {
 
     @ParameterizedTest
     @CsvSource({"2018-10-21, 21.10.2018", "2018-01-09, 09.01.2018", "2018-12-13, 13.12.2018"})
-    void formatDate(String incomeDate, String expectedDate) {
-        String formattedDate = DatesUtils.formatDate(incomeDate);
+    void formatDateToPretty(String incomeDate, String expectedDate) {
+        String formattedDate = DatesUtils.formatDateToPretty(incomeDate);
+        assertEquals(expectedDate, formattedDate, "Not equal!");
+    }
+
+    @ParameterizedTest
+    @CsvSource({"21.10.2018, 2018-10-21", "09.01.2018, 2018-01-09", "13.12.2018, 2018-12-13"})
+    void formatDateToIso(String incomeDate, String expectedDate) {
+        String formattedDate = DatesUtils.formatDateToIso(incomeDate);
         assertEquals(expectedDate, formattedDate, "Not equal!");
     }
 

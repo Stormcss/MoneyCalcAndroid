@@ -98,7 +98,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
     @Override
     public void showDatesRange(String from, String to) {
-        tvDatesRange.setText(String.format("%s - %s", DatesUtils.formatDate(from), DatesUtils.formatDate(to)));
+        tvDatesRange.setText(String.format("%s - %s", DatesUtils.formatDateToPretty(from), DatesUtils.formatDateToPretty(to)));
     }
 
     @Override

@@ -13,16 +13,29 @@ public class DatesUtils {
     private static DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
     /**
-     * Format date to pretty view.
+     * Format date from ISO8601 to pretty view.
      * <p>
      * String 2018-10-21 -> String 21.10.2018
      */
-    public static String formatDate(String isoStringDate) {
+    public static String formatDateToPretty(String isoStringDate) {
         String[] splittedDate = isoStringDate.split("-");
         if (splittedDate[1].length() == 1)
             return String.format("%s.0%s.%s", splittedDate[2], splittedDate[1], splittedDate[0]);
 
         return String.format("%s.%s.%s", splittedDate[2], splittedDate[1], splittedDate[0]);
+    }
+
+    /**
+     * Format date from pretty to ISO8601 view.
+     * <p>
+     * String 21.10.2018 -> String 2018-10-21
+     */
+    public static String formatDateToIso(String prettyStringDate) {
+        String[] splittedDate = prettyStringDate.split("\\.");
+        if (splittedDate[1].length() == 1)
+            return String.format("%s-0%s-%s", splittedDate[2], splittedDate[1], splittedDate[0]);
+
+        return String.format("%s-%s-%s", splittedDate[2], splittedDate[1], splittedDate[0]);
     }
 
     /**

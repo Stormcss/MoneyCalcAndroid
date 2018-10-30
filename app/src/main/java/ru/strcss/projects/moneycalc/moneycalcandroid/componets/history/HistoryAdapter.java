@@ -62,7 +62,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         TransactionLegacy transaction = transactionList.get(position);
         holder.title.setText(transaction.getTitle());
         holder.description.setText(transaction.getDescription());
-        holder.date.setText(DatesUtils.formatDate(transaction.getDate()));
+        holder.date.setText(DatesUtils.formatDateToPretty(transaction.getDate()));
         holder.sum.setText(String.valueOf(transaction.getSum()));
 
         Integer sectionLogoId = getLogoIdBySectionId(dataStorage.getSpendingSections(), transaction.getSectionId());
