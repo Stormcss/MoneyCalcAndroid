@@ -24,7 +24,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_from;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_to;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToString;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIsoString;
 
 
 public class SettingsFragment extends PreferenceFragment implements HasFragmentInjector, SettingsContract.View {
@@ -62,8 +62,8 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
         super.onPause();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        String dateFrom = formatDateToString(new Date(preferences.getLong(settings_period_from.name(), -1)));
-        String dateTo = formatDateToString(new Date(preferences.getLong(settings_period_to.name(), -1)));
+        String dateFrom = formatDateToIsoString(new Date(preferences.getLong(settings_period_from.name(), -1)));
+        String dateTo = formatDateToIsoString(new Date(preferences.getLong(settings_period_to.name(), -1)));
 
         SettingsLegacy settings = SettingsLegacy.builder()
                 .periodFrom(dateFrom)

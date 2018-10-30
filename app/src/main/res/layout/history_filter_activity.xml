@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/history_filter_root_view"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/Toolbar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/indigo300"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="10dp"
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+
+            <ImageView
+                android:id="@+id/history_filter_date_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:src="@drawable/ic_calendar_white" />
+
+            <TextView
+                android:id="@+id/history_filter_date_from"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/history_filter_date_logo"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="20.08.2018"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/history_filter_date_separator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/history_filter_date_from"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="-"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/history_filter_date_to"
+                android:layout_width="wrap_content"
+                android:layout_height="31dp"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/history_filter_date_separator"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:text="20.08.2018"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/history_filter_sections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_weight="1"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/history_filter_section_buttons_pane"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/history_filter_section_check_all_button"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:textColor="@android:color/black"
+            android:background="@color/indigoA100"
+            android:hint="@string/transaction_filter_sections_check_all" />
+
+        <Button
+            android:id="@+id/history_filter_section_uncheck_all_button"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:textColor="@drawable/selector_button_default"
+            android:background="@color/indigoA100"
+            android:hint="@string/transaction_filter_sections_uncheck_all" />
+
+    </LinearLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/indigo200"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="5dp"
+        android:theme="@style/WhiteTheme">
+
+        <AutoCompleteTextView
+            android:id="@+id/history_filter_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="@string/transaction_filter_title"
+            android:inputType="textAutoComplete"
+            android:maxLines="1"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/indigo300"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="5dp"
+        android:theme="@style/WhiteTheme">
+
+        <AutoCompleteTextView
+            android:id="@+id/history_filter_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dropDownHeight="fill_parent"
+            android:dropDownWidth="match_parent"
+            android:hint="@string/transaction_filter_desc"
+            android:inputType="textMultiLine"
+            android:lines="3"
+            android:singleLine="false" />
+    </android.support.design.widget.TextInputLayout>
+
+
+</LinearLayout>

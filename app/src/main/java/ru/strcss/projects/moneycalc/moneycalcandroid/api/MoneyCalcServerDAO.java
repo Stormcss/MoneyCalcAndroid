@@ -31,7 +31,7 @@ import rx.Observable;
 @Singleton
 public class MoneyCalcServerDAO {
     //    static final String BASE_URL = "http://62.181.41.23:8080";
-    private static final String IP = "192.168.93.253";
+    private static final String IP = "192.168.93.254";
     private static final String BASE_URL = "http://" + IP + ":8080";
 
     @Getter

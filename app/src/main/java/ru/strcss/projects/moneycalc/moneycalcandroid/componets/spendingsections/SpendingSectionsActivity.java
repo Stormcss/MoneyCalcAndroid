@@ -15,20 +15,25 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
+import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
+
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 
 public class SpendingSectionsActivity extends DaggerAppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     SpendingSectionsPresenter presenter;
-//    @Inject
-//    HomeFragment homeFragment;
 
     @Inject
     Lazy<SpendingSectionsFragment> spendingSectionsFragmentProvider;
+
+    @Inject
+    MoneyCalcServerDAO moneyCalcServerDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +43,15 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
         toolbar.setTitle(R.string.menu_spending_sections);
         setSupportActionBar(toolbar);
 
+        changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, SpendingSectionsActivity.this, LoginActivity.class);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         SpendingSectionsFragment spendingSectionsFragment =
@@ -56,19 +62,11 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), spendingSectionsFragment, R.id.spendingSections_contentFrame);
         }
-
-
-        // Load previously saved state, if available.
-//        if (savedInstanceState != null) {
-//            TasksFilterType currentFiltering =
-//                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-//            mTasksPresenter.setFiltering(currentFiltering);
-//        }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -117,7 +115,7 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
         } else if (id == R.id.nav_spending_sections) {
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

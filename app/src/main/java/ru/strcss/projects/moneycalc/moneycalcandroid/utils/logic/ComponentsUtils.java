@@ -1,7 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,12 +14,12 @@ public class ComponentsUtils {
     private final static String messageRegex = "\"message\":\"(.*?)\"";
     private final static Pattern messageGetterPattern = Pattern.compile(messageRegex);
 
-    public static List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
-        List<Integer> ids = new ArrayList<>();
-        for (SpendingSection section : sections)
-            ids.add(section.getId());
-        return ids;
-    }
+//    public static List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
+//        List<Integer> ids = new ArrayList<>();
+//        for (SpendingSection section : sections)
+//            ids.add(section.getId());
+//        return ids;
+//    }
 
     public static SpendingSection getSpendingSectionByInnerId(List<SpendingSection> spendingSections, int id) {
         if (spendingSections == null)
@@ -28,6 +27,24 @@ public class ComponentsUtils {
         for (SpendingSection spendingSection : spendingSections) {
             if (spendingSection.getSectionId() == id)
                 return spendingSection;
+        }
+        return null;
+    }
+
+    public static int getPositionBySpendingSectionInnerId(List<SpendingSection> spendingSections, int sectionInnerId) {
+        if (spendingSections != null) {
+            for (int i = 0; i < spendingSections.size(); i++) {
+                if (spendingSections.get(i).getSectionId() == sectionInnerId)
+                    return i;
+            }
+        }
+        return 0;
+    }
+
+    public static Integer getSpendingSectionInnerIdByPosition(List<SpendingSection> spendingSections, int position) {
+        if (spendingSections != null) {
+            if (spendingSections.size() > position)
+                return spendingSections.get(position).getSectionId();
         }
         return null;
     }

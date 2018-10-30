@@ -7,6 +7,7 @@
     <color name="colorWhite">#FFF</color>
     <color name="colorBackground">#FAFAFA</color>
     <color name="colorBlack">#000</color>
+    <color name="theme_accent">#FFEB3B</color>
 
     <!-- Indigo -->
     <color name="indigo100">#C5CAE9</color>

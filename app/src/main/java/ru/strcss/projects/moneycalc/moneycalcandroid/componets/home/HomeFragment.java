@@ -23,6 +23,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getFinanceSummaryBySectionById;
@@ -97,7 +98,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
     @Override
     public void showDatesRange(String from, String to) {
-        tvDatesRange.setText(String.format("%s - %s", from, to));
+        tvDatesRange.setText(String.format("%s - %s", DatesUtils.formatDateToPretty(from), DatesUtils.formatDateToPretty(to)));
     }
 
     @Override
@@ -108,7 +109,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
             if (!fView.isAdded()) {
                 adapter.addFrag(fView, finSumBySec.getSectionName());
-                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSections, finSumBySec.getSectionId()).getName());
+                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSectionsList, finSumBySec.getSectionId()).getName());
             }
         }
         adapter.notifyDataSetChanged();

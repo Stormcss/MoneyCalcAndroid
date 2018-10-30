@@ -6,6 +6,7 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
 import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.enitities.SpendingSection;
@@ -19,4 +20,6 @@ public class DataStorage {
     private List<SpendingSection> spendingSections;
     private List<FinanceSummaryBySection> financeSummary;
     private List<TransactionLegacy> transactionList;
+
+    private TransactionsSearchContainerLegacy transactionsFilter;
 }

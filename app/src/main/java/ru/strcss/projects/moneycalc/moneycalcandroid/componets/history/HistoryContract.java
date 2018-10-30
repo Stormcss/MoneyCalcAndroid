@@ -19,6 +19,10 @@ public interface HistoryContract {
         void showSpinner();
 
         void hideSpinner();
+
+        void showFilterWindow();
+
+        void hideFilterWindow();
     }
 
     interface Presenter extends BasePresenter<View> {

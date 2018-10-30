@@ -2,7 +2,6 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
 import android.support.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -10,7 +9,6 @@ import javax.inject.Singleton;
 
 import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
@@ -26,6 +24,7 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.DELETED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.REQUESTED;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage;
 
 @Singleton
@@ -39,7 +38,7 @@ public class HistoryPresenter implements HistoryContract.Presenter {
     private HistoryContract.View view;
 
     @Inject
-    HistoryPresenter(MoneyCalcServerDAO moneyCalcServerDAO, DataStorage dataStorage, EventBus eventBus) {
+    HistoryPresenter(MoneyCalcServerDAO moneyCalcServerDAO, final DataStorage dataStorage, EventBus eventBus) {
         this.moneyCalcServerDAO = moneyCalcServerDAO;
         this.dataStorage = dataStorage;
         this.eventBus = eventBus;
@@ -51,6 +50,18 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                         if (transactionEvent.equals(ADDED) || transactionEvent.equals(DELETED)
                                 || transactionEvent.equals(EDITED))
                             requestTransactions();
+                    }
+                });
+
+        eventBus.subscribeTransactionEvent()
+                .subscribe(new Action1<CrudEvent>() {
+                    @Override
+                    public void call(CrudEvent transactionEvent) {
+                        if (transactionEvent.equals(REQUESTED)) {
+                            view.showTransactions(dataStorage.getTransactionList());
+                            view.showFilterWindow();
+
+                        }
                     }
                 });
     }
@@ -130,14 +141,5 @@ public class HistoryPresenter implements HistoryContract.Presenter {
                     }
                 });
 
-    }
-
-
-    private List<Integer> getSpendingSectionIds(List<SpendingSection> spendingSections) {
-        List<Integer> ids = new ArrayList<>();
-        for (SpendingSection spendingSection : spendingSections) {
-            ids.add(spendingSection.getId());
-        }
-        return ids;
     }
 }
