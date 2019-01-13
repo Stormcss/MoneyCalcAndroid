@@ -25,20 +25,9 @@ public class HomePagerAdapter extends FragmentPagerAdapter {
         mFragmentTitleList.clear();
     }
 
-//    public void refreshFragments(FragmentActivity fa) {
-//        for (HomeStatsFragment fragment : mFragmentList) {
-//            fragment.redraw();
-////            fa.getSupportFragmentManager().beginTransaction()
-////                    .detach(fragment)
-////                    .attach(fragment)
-////                    .commitAllowingStateLoss();
-//        }
-//    }
-
     @Override
     public Fragment getItem(int position) {
         return mFragmentList.get(position);
-//        return HomeStatsFragment.newInstance(position + 1);
     }
 
     @Override

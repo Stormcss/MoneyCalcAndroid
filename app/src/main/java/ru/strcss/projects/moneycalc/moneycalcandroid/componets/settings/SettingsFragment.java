@@ -18,9 +18,9 @@ import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasFragmentInjector;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_from;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_to;

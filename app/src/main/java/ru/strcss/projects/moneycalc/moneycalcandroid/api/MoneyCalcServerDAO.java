@@ -10,28 +10,23 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import ru.strcss.projects.moneycalc.dto.Credentials;
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsLegacyUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.Access;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 import rx.Observable;
 
 @Singleton
 public class MoneyCalcServerDAO {
     //    static final String BASE_URL = "http://62.181.41.23:8080";
-    private static final String IP = "192.168.93.254";
+    private static final String IP = "192.168.93.252";
     private static final String BASE_URL = "http://" + IP + ":8080";
 
     @Getter
@@ -63,8 +58,8 @@ public class MoneyCalcServerDAO {
         return client.getSettings(token);
     }
 
-    public Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(SettingsLegacyUpdateContainer updateContainer) {
-        return client.updateSettings(token, updateContainer);
+    public Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(SettingsLegacy settings) {
+        return client.updateSettings(token, settings);
     }
 
 
@@ -73,8 +68,8 @@ public class MoneyCalcServerDAO {
     }
 
 
-    public Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(SpendingSectionAddContainer spendingSectionContainer) {
-        return client.addSpendingSection(token, spendingSectionContainer);
+    public Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(SpendingSection spendingSection) {
+        return client.addSpendingSection(token, spendingSection);
     }
 
 
@@ -83,8 +78,8 @@ public class MoneyCalcServerDAO {
     }
 
 
-    public Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(SpendingSectionDeleteContainer deleteContainer) {
-        return client.deleteSpendingSection(token, deleteContainer);
+    public Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(Integer deleteId) {
+        return client.deleteSpendingSection(token, deleteId);
     }
 
 
@@ -93,13 +88,13 @@ public class MoneyCalcServerDAO {
     }
 
 
-    public Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(FinanceSummaryGetContainerLegacy getContainer) {
+    public Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(FinanceSummaryFilterLegacy getContainer) {
         return client.getFinanceSummaryBySection(token, getContainer);
     }
 
 
-    public Observable<MoneyCalcRs<TransactionLegacy>> addTransaction(TransactionAddContainerLegacy transactionContainer) {
-        return client.addTransaction(token, transactionContainer);
+    public Observable<MoneyCalcRs<TransactionLegacy>> addTransaction(TransactionLegacy transaction) {
+        return client.addTransaction(token, transaction);
     }
 
 
@@ -107,13 +102,13 @@ public class MoneyCalcServerDAO {
         return client.getTransactions(token);
     }
 
-    public Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions(TransactionsSearchContainerLegacy container) {
+    public Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions(TransactionsSearchFilterLegacy container) {
         return client.getTransactions(token, container);
     }
 
 
-    public Observable<MoneyCalcRs<Void>> deleteTransaction(TransactionDeleteContainer transactionContainer) {
-        return client.deleteTransaction(token, transactionContainer);
+    public Observable<MoneyCalcRs<Void>> deleteTransaction(Integer transactionId) {
+        return client.deleteTransaction(token, transactionId);
     }
 
 

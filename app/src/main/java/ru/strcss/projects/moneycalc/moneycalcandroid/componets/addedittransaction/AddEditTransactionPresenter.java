@@ -9,13 +9,12 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -54,7 +53,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
 
     @Override
     public void addTransaction(final TransactionLegacy transaction) {
-        moneyCalcServerDAO.addTransaction(new TransactionAddContainerLegacy(transaction))
+        moneyCalcServerDAO.addTransaction(transaction)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<TransactionLegacy>>() {
@@ -158,7 +157,7 @@ public class AddEditTransactionPresenter implements AddEditTransactionContract.P
         Collections.sort(sectionList, new Comparator<SpendingSection>() {
             @Override
             public int compare(SpendingSection o1, SpendingSection o2) {
-                return o1.getId() - o2.getId();
+                return (int) (o1.getId() - o2.getId());
             }
         });
         return sectionList;

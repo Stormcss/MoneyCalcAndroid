@@ -25,10 +25,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyfilter.HistoryFilterActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 import static android.view.View.INVISIBLE;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;

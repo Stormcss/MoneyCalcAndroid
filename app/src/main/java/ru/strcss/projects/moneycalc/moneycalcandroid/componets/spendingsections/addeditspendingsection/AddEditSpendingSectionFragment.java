@@ -19,9 +19,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsContract;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.SPENDING_SECTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
@@ -83,12 +83,11 @@ public class AddEditSpendingSectionFragment extends DaggerFragment implements Ad
                 int logoId = selectedRecyclerViewItem.get();
 
                 if (!name.isEmpty() && !budget.isEmpty()) {
-                    SpendingSection spendingSection = SpendingSection.builder()
-                            .name(name)
-                            .budget(Integer.parseInt(budget))
-                            .logoId(logoId)
-                            .isAdded(true)
-                            .build();
+                    SpendingSection spendingSection = new SpendingSection();
+                    spendingSection.setName(name);
+                    spendingSection.setBudget(Long.parseLong(budget));
+                    spendingSection.setLogoId(logoId);
+                    spendingSection.setIsAdded(true);
                     if (isEditingSpendingSection) {
                         presenter.editSpendingSection(updatedSectionData.getSectionId(), spendingSection);
                     } else {

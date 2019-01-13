@@ -1,8 +1,8 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings;
 
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
 
 /**
  * This specifies the contract between the view and the {@link SettingsPresenter}.

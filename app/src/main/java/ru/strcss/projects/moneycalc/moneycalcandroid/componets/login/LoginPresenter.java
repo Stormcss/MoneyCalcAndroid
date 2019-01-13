@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import retrofit2.Response;
-import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

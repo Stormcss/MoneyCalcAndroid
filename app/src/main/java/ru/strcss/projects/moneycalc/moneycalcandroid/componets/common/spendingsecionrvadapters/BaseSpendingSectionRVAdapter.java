@@ -13,8 +13,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 public abstract class BaseSpendingSectionRVAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 

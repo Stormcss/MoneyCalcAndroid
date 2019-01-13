@@ -7,17 +7,17 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.Event;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilter;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -58,7 +58,7 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void requestFinanceSummary(FinanceSummaryGetContainer financeSummaryGetContainer) {
+    public void requestFinanceSummary(FinanceSummaryFilter financeSummaryGetContainer) {
     }
 
     @Override
@@ -154,7 +154,7 @@ public class HomePresenter implements HomeContract.Presenter {
 
     @Override
     public void requestSectionStatistics(String from, String to, List<Integer> sections) {
-        moneyCalcServerDAO.getFinanceSummaryBySection(new FinanceSummaryGetContainerLegacy(from, to, sections))
+        moneyCalcServerDAO.getFinanceSummaryBySection(new FinanceSummaryFilterLegacy(from, to, sections))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<FinanceSummaryBySection>>>() {

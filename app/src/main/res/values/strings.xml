@@ -10,6 +10,7 @@
     <!-- Menu titles -->
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
+    <string name="menu_logout">Выйти</string>
     <string name="menu_finance">Финансы</string>
     <string name="menu_stats">Статистика</string>
     <string name="menu_history">История</string>

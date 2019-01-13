@@ -20,9 +20,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
@@ -121,10 +121,7 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Access access = Access.builder()
-                    .login(login)
-                    .password(password)
-                    .build();
+            Access access = new Access(login, password, null);
 
             // Show a progress spinner, and kick off a background task to
             showSpinner();

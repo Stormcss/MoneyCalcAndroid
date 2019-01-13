@@ -5,11 +5,10 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsLegacyUpdateContainer;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -47,7 +46,7 @@ public class SettingsPresenter implements SettingsContract.Presenter {
 
     @Override
     public void updateSettings(SettingsLegacy settings) {
-        moneyCalcServerDAO.updateSettings(new SettingsLegacyUpdateContainer(settings))
+        moneyCalcServerDAO.updateSettings(settings)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<SettingsLegacy>>() {

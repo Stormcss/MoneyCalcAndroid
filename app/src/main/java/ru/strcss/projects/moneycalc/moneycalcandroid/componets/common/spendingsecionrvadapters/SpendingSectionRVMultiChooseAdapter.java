@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static android.graphics.PorterDuff.Mode;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionInnerIdByPosition;

@@ -105,6 +105,10 @@ public class HomeActivity extends DaggerAppCompatActivity
                 homePresenter.requestSettings();
                 homePresenter.requestSectionStatistics();
                 break;
+            case R.id.menu_logout:
+                moneyCalcServerDAO.setToken(null);
+                changeActivityOnCondition(true, this, LoginActivity.class);
+                break;
             default:
                 break;
         }

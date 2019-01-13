@@ -6,11 +6,11 @@ import javax.inject.Singleton;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 @Getter
 @Setter
@@ -21,5 +21,5 @@ public class DataStorage {
     private List<FinanceSummaryBySection> financeSummary;
     private List<TransactionLegacy> transactionList;
 
-    private TransactionsSearchContainerLegacy transactionsFilter;
+    private TransactionsSearchFilterLegacy transactionsFilter;
 }

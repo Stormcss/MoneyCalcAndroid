@@ -16,10 +16,10 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.dto.Credentials;
-import ru.strcss.projects.moneycalc.enitities.Access;
-import ru.strcss.projects.moneycalc.enitities.Identifications;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Identifications;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
@@ -102,16 +102,12 @@ public class RegisterFragment extends DaggerFragment implements RegisterContract
             focusView.requestFocus();
         } else {
             System.out.println("generating Credentials");
-            Access access = Access.builder()
-                    .login(login)
-                    .password(password)
-                    .email(email)
-                    .build();
+            Access access = new Access(login, password, email);
 
             // Show a progress spinner, and kick off a background task to
 //            showProgress(true);
             // perform the user login attempt.
-            presenter.attemptRegister(new Credentials(access, Identifications.builder().name(name).build()));
+            presenter.attemptRegister(new Credentials(access, new Identifications(null, name)));
             showSpinner();
         }
     }

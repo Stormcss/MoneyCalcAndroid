@@ -6,13 +6,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.HttpException;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 public class ComponentsUtils {
-    private final static String messageRegex = "\"message\":\"(.*?)\"";
-    private final static Pattern messageGetterPattern = Pattern.compile(messageRegex);
+    private static final String messageRegex = "\"message\":\"(.*?)\"";
+    private static final Pattern messageGetterPattern = Pattern.compile(messageRegex);
 
 //    public static List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
 //        List<Integer> ids = new ArrayList<>();

@@ -2,10 +2,10 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyf
 
 import java.util.List;
 
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 /**
  * This specifies the contract between the view and the loginPresenter.
@@ -16,7 +16,7 @@ public interface HistoryFilterContract {
     }
 
     interface Presenter extends BasePresenter<View> {
-        void requestFilteredTransactions(TransactionsSearchContainerLegacy filter);
+        void requestFilteredTransactions(TransactionsSearchFilterLegacy filter);
 
         void requestSpendingSectionsList();
     }
