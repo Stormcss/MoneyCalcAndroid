@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -20,6 +22,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryAc
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
@@ -36,6 +39,9 @@ public class HomeActivity extends DaggerAppCompatActivity
     @Inject
     MoneyCalcServerDAO moneyCalcServerDAO;
 
+    @Inject
+    DataStorage dataStorage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +50,6 @@ public class HomeActivity extends DaggerAppCompatActivity
         setSupportActionBar(toolbar);
 
         changeActivityOnCondition(moneyCalcServerDAO.getToken() == null, HomeActivity.this, LoginActivity.class);
-//        if (moneyCalcServerDAO.getToken() == null) {
-//            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-//            intent.setFlags(intent.getFlags() | FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//        }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,13 +69,11 @@ public class HomeActivity extends DaggerAppCompatActivity
                     getSupportFragmentManager(), homeFragment, R.id.home_contentFrame);
         }
 
+        View headerView = navigationView.getHeaderView(0);
+//        View headerView = navigationView.findViewById(R.id.nav_header_user);
 
-        // Load previously saved state, if available.
-//        if (savedInstanceState != null) {
-//            TasksFilterType currentFiltering =
-//                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-//            mTasksPresenter.setFiltering(currentFiltering);
-//        }
+        TextView navHeaderUser = headerView.findViewById(R.id.nav_header_user);
+        navHeaderUser.setText(dataStorage.getActiveUserData().getUserLogin());
     }
 
     @Override
@@ -98,8 +97,7 @@ public class HomeActivity extends DaggerAppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_settings:
-                Intent i = new Intent(this, SettingsActivity.class);
-                startActivity(i);
+                startActivity(new Intent(this, SettingsActivity.class));
                 break;
             case R.id.menu_refresh:
                 homePresenter.requestSettings();
@@ -107,6 +105,7 @@ public class HomeActivity extends DaggerAppCompatActivity
                 break;
             case R.id.menu_logout:
                 moneyCalcServerDAO.setToken(null);
+                dataStorage.getActiveUserData().clearData();
                 changeActivityOnCondition(true, this, LoginActivity.class);
                 break;
             default:
@@ -137,7 +136,7 @@ public class HomeActivity extends DaggerAppCompatActivity
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

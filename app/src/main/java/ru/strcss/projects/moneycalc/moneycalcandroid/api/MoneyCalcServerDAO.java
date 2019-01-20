@@ -1,11 +1,12 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.api;
 
+import android.content.SharedPreferences;
+
 import java.util.List;
 
 import javax.inject.Singleton;
 
 import lombok.Getter;
-import lombok.Setter;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -23,31 +24,43 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 import rx.Observable;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_ip;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_port;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_token;
+
 @Singleton
 public class MoneyCalcServerDAO {
-    //    static final String BASE_URL = "http://62.181.41.23:8080";
-    private static final String IP = "192.168.93.252";
-    private static final String BASE_URL = "http://" + IP + ":8080";
 
     @Getter
-    @Setter
     private String token;
     private MoneyCalcClient client;
+    private final SharedPreferences sharedPreferences;
 
-    public MoneyCalcServerDAO() {
+    public MoneyCalcServerDAO(SharedPreferences sharedPreferences) {
+        this.sharedPreferences = sharedPreferences;
+        String serverIp = sharedPreferences.getString(appl_settings_server_ip.name(), null);
+        String serverPort = sharedPreferences.getString(appl_settings_server_port.name(), null);
+        token = sharedPreferences.getString(appl_settings_token.name(), null);
+        saveServerIp(serverIp, serverPort);
+    }
+
+    public void saveServerIp(String serverIp, String serverPort){
         Retrofit retrofit = new Retrofit.Builder()
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(String.format("http://%s:%s", serverIp, serverPort))
                 .build();
-
         client = retrofit.create(MoneyCalcClient.class);
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        sharedPreferences.edit().putString(appl_settings_token.name(), token).apply();
     }
 
     public Observable<MoneyCalcRs<Void>> registerPerson(Credentials credentials) {
         return client.registerPerson(credentials);
     }
-
 
     public Observable<Response<Void>> login(Access access) {
         return client.login(access);

@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -19,6 +20,9 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
 
+    @Inject
+    DataStorage dataStorage;
+
     @Nullable
     private LoginContract.View loginView;
 
@@ -28,7 +32,7 @@ public class LoginPresenter implements LoginContract.Presenter {
     }
 
     @Override
-    public void attemptLogin(Access access) {
+    public void attemptLogin(final Access access) {
         moneyCalcServerDAO.login(access)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -50,6 +54,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         String token = rs.headers().get("Authorization");
                         if (token != null) {
                             moneyCalcServerDAO.setToken(token);
+                            dataStorage.getActiveUserData().setUserLogin(access.getLogin());
                             System.out.println("token = " + moneyCalcServerDAO.getToken());
                             loginView.showMainActivity();
                         } else {

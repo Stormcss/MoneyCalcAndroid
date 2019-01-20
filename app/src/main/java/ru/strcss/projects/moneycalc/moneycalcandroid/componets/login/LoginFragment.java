@@ -134,7 +134,6 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
     public void showMainActivity() {
         Intent mainActivityIntent = new Intent(getActivity(), HomeActivity.class);
         mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        mainActivityIntent.setFlags(mainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(mainActivityIntent);
     }
 

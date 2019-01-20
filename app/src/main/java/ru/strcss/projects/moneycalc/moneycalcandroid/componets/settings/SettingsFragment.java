@@ -22,8 +22,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_from;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.PreferenceKey.settings_period_to;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsPreferenceKey.settings_period_from;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsPreferenceKey.settings_period_to;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIsoString;
 
 
@@ -36,7 +36,7 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
     SettingsContract.Presenter presenter;
 
     @Inject
-    DataStorage dataStorage;
+    DataStorage dataStorage; // TODO: 16.01.2019 remove me?
 
     private Context context;
 
@@ -47,9 +47,8 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.mypreferences);
+        addPreferencesFromResource(R.xml.settings_preferences);
     }
-
 
     @Override
     public void onResume() {

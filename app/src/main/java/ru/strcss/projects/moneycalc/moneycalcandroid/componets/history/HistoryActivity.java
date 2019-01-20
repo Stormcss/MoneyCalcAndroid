@@ -98,6 +98,10 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
                 break;
             case R.id.menu_refresh:
                 break;
+            case R.id.menu_logout:
+                moneyCalcServerDAO.setToken(null);
+                changeActivityOnCondition(true, this, LoginActivity.class);
+                break;
             default:
                 break;
         }

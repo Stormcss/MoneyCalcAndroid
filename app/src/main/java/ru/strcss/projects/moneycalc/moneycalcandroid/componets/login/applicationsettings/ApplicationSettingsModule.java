@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.home;
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings;
 
 import dagger.Binds;
 import dagger.Module;
@@ -8,15 +8,15 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.di.FragmentScoped;
 
 /**
  * This is a Dagger module. We use this to pass in the View dependency to the
- * {@link HomePresenter}.
+ * {@link ApplicationSettingsPresenter}.
  */
 @Module
-public abstract class HomeModule {
+public abstract class ApplicationSettingsModule {
     @FragmentScoped
     @ContributesAndroidInjector
-    abstract HomeFragment homeFragment();
+    abstract ApplicationSettingsFragment applicationSettingsFragment();
 
     @ActivityScoped
     @Binds
-    abstract HomeContract.Presenter homePresenter(HomePresenter presenter);
+    abstract ApplicationSettingsContract.Presenter settingsPresenter(ApplicationSettingsPresenter presenter);
 }

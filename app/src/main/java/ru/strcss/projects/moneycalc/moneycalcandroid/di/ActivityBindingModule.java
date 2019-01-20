@@ -12,6 +12,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginModule;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsModule;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
@@ -59,4 +61,8 @@ public abstract class ActivityBindingModule {
     @ActivityScoped
     @ContributesAndroidInjector(modules = HistoryFilterModule.class)
     abstract HistoryFilterActivity addHistoryFilterActivity();
+
+    @ActivityScoped
+    @ContributesAndroidInjector(modules =  ApplicationSettingsModule.class)
+    abstract ApplicationSettingsActivity applicationSettingsActivity();
 }

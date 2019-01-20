@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import retrofit2.Response;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
 import rx.Observable;
@@ -21,6 +22,9 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.Componen
 public class RegisterPresenter implements RegisterContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
+
+    @Inject
+    DataStorage dataStorage;
 
     @Nullable
     private RegisterContract.View registerView;
@@ -66,6 +70,7 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         if (rs.isSuccessful()) {
                             String token = rs.headers().get("Authorization");
                             moneyCalcServerDAO.setToken(token);
+                            dataStorage.getActiveUserData().setUserLogin(credentials.getAccess().getLogin());
                             System.out.println("token = " + token);
                             registerView.showMainActivity();
                         } else {

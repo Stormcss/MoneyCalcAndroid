@@ -1,9 +1,12 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.di;
 
+import android.preference.PreferenceManager;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import ru.strcss.projects.moneycalc.moneycalcandroid.App;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
@@ -14,13 +17,13 @@ public class AppModule {
     @Provides
     @Singleton
     public MoneyCalcServerDAO provideMoneyCalcServerDAO() {
-        return new MoneyCalcServerDAO();
+        return new MoneyCalcServerDAO(PreferenceManager.getDefaultSharedPreferences(App.getAppContext()));
     }
 
     @Provides
     @Singleton
     public DataStorage provideDataStorage() {
-        return new DataStorage();
+        return new DataStorage(PreferenceManager.getDefaultSharedPreferences(App.getAppContext()));
     }
 
     @Provides
@@ -34,4 +37,5 @@ public class AppModule {
     public DrawableStorage provideDrawableStorage() {
         return new DrawableStorage();
     }
+
 }

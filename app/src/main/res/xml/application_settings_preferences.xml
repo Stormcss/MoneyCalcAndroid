@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/appl_settings_server_address">
+
+        <EditTextPreference
+            android:key="appl_settings_server_ip"
+            android:inputType="phone"
+            android:summary=""
+            android:title="@string/appl_settings_server_ip"/>
+
+        <EditTextPreference
+            android:key="appl_settings_server_port"
+            android:inputType="number"
+            android:summary=""
+            android:title="@string/appl_settings_server_port"/>
+
+        <!--<EditTextPreference-->
+            <!--android:key="appl_settings_server_ip"-->
+            <!--android:inputType="number|numberDecimal"-->
+            <!--android:digits="0123456789."-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+        <!--<ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.DatePickerPreference-->
+            <!--android:key="settings_period_to"-->
+            <!--android:dependency="settings_period_from"-->
+            <!--android:summary=""-->
+            <!--android:title="@string/preferences_period_to"-->
+            <!--android:layout="@layout/preference_date_picker_layout" />-->
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

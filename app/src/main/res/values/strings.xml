@@ -87,11 +87,16 @@
     <string name="transaction_filter_sections_check_all">Выделить всё</string>
     <string name="transaction_filter_sections_uncheck_all">Снять всё</string>
 
-    <!-- Preferences Activity -->
+    <!-- Settings Activity -->
     <string name="preferences_period">Период расчета</string>
     <string name="preferences_period_from">Начало периода</string>
     <string name="preferences_period_to">Конец периода</string>
     <string name="settings_update_success">Настройки успешно обновлены</string>
+
+    <!-- Application Settings Activity -->
+    <string name="appl_settings_server_address">Адрес сервера</string>
+    <string name="appl_settings_server_ip">IP адрес сервера</string>
+    <string name="appl_settings_server_port">Порт сервера</string>
 
     <!--  -->
     <string name="cancel">Отмена</string>

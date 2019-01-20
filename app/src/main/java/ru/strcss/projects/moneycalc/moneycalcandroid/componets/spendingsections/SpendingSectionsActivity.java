@@ -90,6 +90,10 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
                 break;
             case R.id.menu_refresh:
                 break;
+            case R.id.menu_logout:
+                moneyCalcServerDAO.setToken(null);
+                changeActivityOnCondition(true, this, LoginActivity.class);
+                break;
             default:
                 break;
         }
@@ -99,7 +103,6 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {

@@ -3,11 +3,6 @@
 
     <PreferenceCategory android:title="@string/preferences_period">
 
-        <!--<CheckBoxPreference-->
-        <!--android:key="checkbox_preference"-->
-        <!--android:summary="@string/preferences_period"-->
-        <!--android:title="@string/preferences_period" />-->
-
         <ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.DatePickerPreference
             android:key="settings_period_from"
             android:dependency="settings_period_to"
