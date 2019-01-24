@@ -1,7 +1,9 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -24,6 +26,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_login;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 @ActivityScoped
@@ -139,7 +142,6 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
 
     @Override
     public void showErrorMessage(String msg) {
-        System.out.println("showErrorMessage!");
         Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
     }
 
@@ -155,13 +157,17 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
         showProgress(false, mLoginFormView, progressView, animTime);
     }
 
+    @Override
+    public void saveLoginToPreferences(String login) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        defaultSharedPreferences.edit().putString(appl_storage_login.name(), login).apply();
+    }
+
     private boolean isLoginValid(String login) {
-        //TODO: Replace this with your own logic
         return login.length() > 2;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 2;
     }
 }

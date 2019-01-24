@@ -1,7 +1,9 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -21,6 +23,7 @@ import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.Identifications;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_login;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 public class RegisterFragment extends DaggerFragment implements RegisterContract.View {
@@ -146,5 +149,11 @@ public class RegisterFragment extends DaggerFragment implements RegisterContract
     public void hideSpinner() {
         int animTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
         showProgress(false, registerFormView, progressView, animTime);
+    }
+
+    @Override
+    public void saveLoginToPreferences(String login) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        defaultSharedPreferences.edit().putString(appl_storage_login.name(), login).apply();
     }
 }

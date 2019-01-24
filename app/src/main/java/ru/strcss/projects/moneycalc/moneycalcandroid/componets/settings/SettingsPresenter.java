@@ -58,8 +58,6 @@ public class SettingsPresenter implements SettingsContract.Presenter {
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex));
-                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
-//                        snackBarAction(view.getContext(), errorBodyMessage);
                     }
 
                     @Override
@@ -69,7 +67,6 @@ public class SettingsPresenter implements SettingsContract.Presenter {
                             view.showUpdateSuccess();
                         } else {
                             eventBus.addErrorEvent(updateRs.getMessage());
-                            //                            view.showErrorMessage(updateRs.getMessage());
                         }
                     }
                 });

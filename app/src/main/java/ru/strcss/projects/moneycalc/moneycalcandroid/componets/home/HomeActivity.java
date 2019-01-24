@@ -105,7 +105,7 @@ public class HomeActivity extends DaggerAppCompatActivity
                 break;
             case R.id.menu_logout:
                 moneyCalcServerDAO.setToken(null);
-                dataStorage.getActiveUserData().clearData();
+                dataStorage.clearStorage();
                 changeActivityOnCondition(true, this, LoginActivity.class);
                 break;
             default:

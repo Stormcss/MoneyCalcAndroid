@@ -24,9 +24,9 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 import rx.Observable;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_token;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_ip;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_port;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_token;
 
 @Singleton
 public class MoneyCalcServerDAO {
@@ -40,7 +40,7 @@ public class MoneyCalcServerDAO {
         this.sharedPreferences = sharedPreferences;
         String serverIp = sharedPreferences.getString(appl_settings_server_ip.name(), null);
         String serverPort = sharedPreferences.getString(appl_settings_server_port.name(), null);
-        token = sharedPreferences.getString(appl_settings_token.name(), null);
+        token = sharedPreferences.getString(appl_storage_token.name(), null);
         saveServerIp(serverIp, serverPort);
     }
 
@@ -55,7 +55,7 @@ public class MoneyCalcServerDAO {
 
     public void setToken(String token) {
         this.token = token;
-        sharedPreferences.edit().putString(appl_settings_token.name(), token).apply();
+        sharedPreferences.edit().putString(appl_storage_token.name(), token).apply();
     }
 
     public Observable<MoneyCalcRs<Void>> registerPerson(Credentials credentials) {

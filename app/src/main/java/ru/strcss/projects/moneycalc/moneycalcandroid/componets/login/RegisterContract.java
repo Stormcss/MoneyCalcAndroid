@@ -15,6 +15,8 @@ public interface RegisterContract {
         void showSpinner();
 
         void hideSpinner();
+
+        void saveLoginToPreferences(String login);
     }
 
     interface Presenter extends BasePresenter<View> {

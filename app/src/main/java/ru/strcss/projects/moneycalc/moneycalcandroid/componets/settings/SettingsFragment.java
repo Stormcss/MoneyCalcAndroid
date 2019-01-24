@@ -25,6 +25,7 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsPreferenceKey.settings_period_from;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsPreferenceKey.settings_period_to;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIsoString;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 
 
 public class SettingsFragment extends PreferenceFragment implements HasFragmentInjector, SettingsContract.View {
@@ -36,9 +37,10 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
     SettingsContract.Presenter presenter;
 
     @Inject
-    DataStorage dataStorage; // TODO: 16.01.2019 remove me?
+    DataStorage dataStorage;
 
     private Context context;
+    private SharedPreferences preferences;
 
     @Inject
     public SettingsFragment() {
@@ -48,6 +50,18 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settings_preferences);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String activeLogin = dataStorage.getActiveUserData().getUserLogin();
+        if (preferences.getLong(settings_period_from.name() + activeLogin, -1) == -1 && dataStorage.getSettings() != null) {
+            SettingsLegacy settings = dataStorage.getSettings();
+            preferences.edit()
+                    .putLong(settings_period_from.name() + activeLogin,
+                            getCalendarFromString(settings.getPeriodFrom()).getTimeInMillis())
+                    .putLong(settings_period_to.name() + activeLogin,
+                            getCalendarFromString(settings.getPeriodTo()).getTimeInMillis())
+                    .apply();
+        }
     }
 
     @Override
@@ -59,10 +73,11 @@ public class SettingsFragment extends PreferenceFragment implements HasFragmentI
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        String dateFrom = formatDateToIsoString(new Date(preferences.getLong(settings_period_from.name(), -1)));
-        String dateTo = formatDateToIsoString(new Date(preferences.getLong(settings_period_to.name(), -1)));
+        String activeLogin = dataStorage.getActiveUserData().getUserLogin();
+
+        String dateFrom = formatDateToIsoString(new Date(preferences.getLong(settings_period_from.name() + activeLogin, -1)));
+        String dateTo = formatDateToIsoString(new Date(preferences.getLong(settings_period_to.name() + activeLogin, -1)));
 
         SettingsLegacy settings = SettingsLegacy.builder()
                 .periodFrom(dateFrom)

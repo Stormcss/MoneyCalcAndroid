@@ -109,7 +109,6 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
             HomeStatsFragment fView = HomeStatsFragment.newInstance(finSumBySec);
             if (!fView.isAdded()) {
                 adapter.addFrag(fView, finSumBySec.getSectionName());
-                //                adapter.addFrag(fView, getSpendingSectionByInnerId(spendingSectionsList, finSumBySec.getSectionId()).getName());
             }
         }
         adapter.notifyDataSetChanged();
@@ -123,7 +122,6 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View {
 
                 fragment.getArguments().putSerializable(FINANCE_SUMMARY_BY_SECTION,
                         getFinanceSummaryBySectionById(financeSummaryList, oldSBS.getSectionId()));
-//                fragmentManager.beginTransaction().detach(fragment).attach(fragment).commit();
                 fragmentManager.beginTransaction().detach(fragment).attach(fragment).commitAllowingStateLoss();
             }
         }

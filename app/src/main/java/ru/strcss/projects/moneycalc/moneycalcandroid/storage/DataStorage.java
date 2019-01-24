@@ -36,6 +36,15 @@ public class DataStorage {
         fillUserDataFromSharedPreferences();
     }
 
+    public void clearStorage() {
+        this.settings = null;
+        this.spendingSections = null;
+        this.financeSummary = null;
+        this.transactionList = null;
+        this.transactionsFilter = null;
+        this.activeUserData.clearData();
+    }
+
     private void fillUserDataFromSharedPreferences(){
         this.activeUserData.userLogin = sharedPreferences.getString(appl_storage_login.name(), null);
         this.activeUserData.userName = sharedPreferences.getString(appl_storage_username.name(), null);

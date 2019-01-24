@@ -7,8 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ApplicationSettingsPreferenceKey {
     appl_settings_server_ip("192.168.93.252"),
-    appl_settings_server_port("8080"),
-    appl_settings_token(null);
+    appl_settings_server_port("8080");
 
     private String defaultValue;
 }

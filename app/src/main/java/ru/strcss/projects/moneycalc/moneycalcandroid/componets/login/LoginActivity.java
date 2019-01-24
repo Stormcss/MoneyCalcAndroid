@@ -19,7 +19,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.application
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_token;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_token;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener;
 
 /**
@@ -45,11 +45,9 @@ public class LoginActivity extends DaggerAppCompatActivity implements OnKeyboard
         setContentView(R.layout.login_activity);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getString(appl_settings_token.name(), null) != null) {
+        if (sharedPreferences.getString(appl_storage_token.name(), null) != null) {
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
-        // TODO: 20.01.2019 get token from preference. If token != null -> open HomeActivity.
-
 
         getSupportActionBar().hide();
         setKeyboardVisibilityListener(this, (ViewGroup) findViewById(android.R.id.content));

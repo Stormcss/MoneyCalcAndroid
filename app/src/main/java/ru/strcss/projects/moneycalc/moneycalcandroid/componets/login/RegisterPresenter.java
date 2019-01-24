@@ -59,10 +59,6 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     public void onError(Throwable ex) {
                         registerView.hideSpinner();
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex));
-                        //                        if (ex instanceof HttpException)
-//                            registerView.showErrorMessage(getErrorBodyMessage((HttpException) ex));
-//                        else
-//                            registerView.showErrorMessage(ex.getMessage());
                     }
 
                     @Override
@@ -70,8 +66,12 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         if (rs.isSuccessful()) {
                             String token = rs.headers().get("Authorization");
                             moneyCalcServerDAO.setToken(token);
-                            dataStorage.getActiveUserData().setUserLogin(credentials.getAccess().getLogin());
+
+                            String login = credentials.getAccess().getLogin();
+                            dataStorage.getActiveUserData().setUserLogin(login);
+                            registerView.saveLoginToPreferences(login);
                             System.out.println("token = " + token);
+
                             registerView.showMainActivity();
                         } else {
                             System.out.println("rs = " + rs);

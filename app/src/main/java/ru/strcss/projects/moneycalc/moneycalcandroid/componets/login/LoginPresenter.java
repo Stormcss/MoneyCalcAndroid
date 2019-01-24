@@ -55,6 +55,7 @@ public class LoginPresenter implements LoginContract.Presenter {
                         if (token != null) {
                             moneyCalcServerDAO.setToken(token);
                             dataStorage.getActiveUserData().setUserLogin(access.getLogin());
+                            loginView.saveLoginToPreferences(access.getLogin());
                             System.out.println("token = " + moneyCalcServerDAO.getToken());
                             loginView.showMainActivity();
                         } else {
