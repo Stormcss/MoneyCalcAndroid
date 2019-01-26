@@ -6,20 +6,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import retrofit2.HttpException;
-import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 public class ComponentsUtils {
     private static final String messageRegex = "\"message\":\"(.*?)\"";
     private static final Pattern messageGetterPattern = Pattern.compile(messageRegex);
-
-//    public static List<Integer> getSpendingSectionIds(List<SpendingSection> sections) {
-//        List<Integer> ids = new ArrayList<>();
-//        for (SpendingSection section : sections)
-//            ids.add(section.getId());
-//        return ids;
-//    }
 
     public static SpendingSection getSpendingSectionByInnerId(List<SpendingSection> spendingSections, int id) {
         if (spendingSections == null)
@@ -84,13 +76,5 @@ public class ComponentsUtils {
             e1.printStackTrace();
             return ex.getMessage();
         }
-    }
-
-    @Deprecated
-    public static void showErrorMessageFromException(Throwable ex, BaseView view) {
-        if (ex instanceof HttpException)
-            view.showErrorMessage(getErrorBodyMessage((HttpException) ex));
-        else
-            view.showErrorMessage(ex.getMessage());
     }
 }
