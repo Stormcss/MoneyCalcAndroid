@@ -115,6 +115,7 @@ public class HomePresenter implements HomeContract.Presenter {
                     public void onNext(MoneyCalcRs<List<SpendingSection>> sectionsRs) {
                         if (sectionsRs.isSuccessful()) {
                             dataStorage.setSpendingSections(sectionsRs.getPayload());
+                            eventBus.receivedSpendingSectionEvent(CrudEvent.RECEIVED);
                         }
                     }
                 });
@@ -143,10 +144,8 @@ public class HomePresenter implements HomeContract.Presenter {
                             if (homeView != null) {
                                 homeView.showStatisticsSections(statsRs.getPayload());
                             }
-                            //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
                             eventBus.addErrorEvent(statsRs.getMessage());
-                            //                            homeView.showErrorMessage(statsRs.toString());
                         }
                     }
                 });
@@ -175,10 +174,8 @@ public class HomePresenter implements HomeContract.Presenter {
                             if (homeView != null) {
                                 homeView.showStatisticsSections(statsRs.getPayload());
                             }
-                            //                            homeView.setStatisticsSection(statsRs.getPayload());
                         } else {
                             eventBus.addErrorEvent(statsRs.getMessage());
-                            //                            homeView.showErrorMessage(statsRs.toString());
                         }
                     }
                 });
@@ -211,5 +208,15 @@ public class HomePresenter implements HomeContract.Presenter {
                 }
             }
         });
+
+        this.eventBus.subscribeSpendingSectionEvent().subscribe(new Action1<CrudEvent>() {
+            @Override
+            public void call(CrudEvent event) {
+                if (event.equals(CrudEvent.RECEIVED)) {
+                    homeView.redrawTabLogos();
+                }
+            }
+        });
+
     }
 }

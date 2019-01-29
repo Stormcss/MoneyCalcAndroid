@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.concurrent.ThreadLocalRandom;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
@@ -35,9 +38,21 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
         return fragment;
     }
 
+    private static final int[] colors = new int[]{
+            Color.CYAN,
+            Color.WHITE,
+            Color.RED,
+            Color.BLUE,
+            Color.GREEN,
+            Color.GRAY,
+            Color.YELLOW
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_stats_frag, container, false);
+
+        root.setBackgroundColor(colors[ThreadLocalRandom.current().nextInt(0,7)]);
 
         FinanceSummaryBySection financeSummary = (FinanceSummaryBySection) getArguments().getSerializable(FINANCE_SUMMARY_BY_SECTION);
 

@@ -20,6 +20,8 @@ public interface HomeContract {
         void showAddTransactionActivity();
 
         void updateStatsAndSettings();
+
+        void redrawTabLogos();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -34,12 +36,5 @@ public interface HomeContract {
         void requestSectionStatistics(String from, String to, List<Integer> sections);
 
         void showAddTransactionActivity();
-
-        //Stats
-//        void saveStatsFragmentState(int sectionId, android.view.View view);
-//
-//        void clearStatsFragmentStates();
-//
-//        void updateStatisticsSection(Integer id);
     }
 }

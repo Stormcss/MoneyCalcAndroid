@@ -126,10 +126,10 @@ public class HomeActivity extends DaggerAppCompatActivity
             Intent intent = new Intent(HomeActivity.this, HistoryActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        } else if (id == R.id.nav_stats) {
-
-        } else if (id == R.id.nav_finance) {
-
+//        } else if (id == R.id.nav_stats) {
+//
+//        } else if (id == R.id.nav_finance) {
+//
         } else if (id == R.id.nav_spending_sections) {
             Intent intent = new Intent(HomeActivity.this, SpendingSectionsActivity.class);
             startActivity(intent);

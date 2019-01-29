@@ -113,9 +113,9 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
                     new Intent(SpendingSectionsActivity.this, HistoryActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        } else if (id == R.id.nav_stats) {
-
-        } else if (id == R.id.nav_spending_sections) {
+//        } else if (id == R.id.nav_stats) {
+//
+//        } else if (id == R.id.nav_spending_sections) {
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
