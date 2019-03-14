@@ -24,10 +24,10 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransactio
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.sectiontabs.TabAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.sectiontabs.TabHolder;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToPretty;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getFinanceSummaryBySectionById;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getLogoIdBySectionId;
 
@@ -74,7 +74,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View, T
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(this);
 
-        tabs = root.findViewById(R.id.lv_tabs);
+        tabs = root.findViewById(R.id.home_section_tabs);
         if (tabs != null) {
             // landscape mode
             this.tabAdapter = new TabAdapter(tabs, this);
@@ -107,7 +107,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View, T
 
     @Override
     public void showDatesRange(String from, String to) {
-        tvDatesRange.setText(String.format("%s - %s", DatesUtils.formatDateToPretty(from), DatesUtils.formatDateToPretty(to)));
+        tvDatesRange.setText(String.format("%s - %s", formatDateToPretty(from), formatDateToPretty(to)));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class HomeFragment extends DaggerFragment implements HomeContract.View, T
         }
         adapter.notifyDataSetChanged();
         tabAdapter.notifyDataSetChanged();
-        
+
         FragmentManager fragmentManager = getFragmentManager();
 
 

@@ -70,9 +70,9 @@ public class TabAdapter extends BaseAdapter implements AdapterView.OnItemClickLi
             tabLogo.setImageResource(logoStorage.get(getItem(i).getLogoId(), 0));
 
         if (i == currentSelected) {
-            setTextViewToSelected(view, tabTitle);
+            setTextViewToSelected(view, tabTitle, tabLogo);
         } else {
-            setTextViewToUnSelected(view, tabTitle);
+            setTextViewToUnSelected(view, tabTitle, tabLogo);
         }
 
         return view;
@@ -96,46 +96,45 @@ public class TabAdapter extends BaseAdapter implements AdapterView.OnItemClickLi
         }
     }
 
-    private void setTextViewToSelected(View tab, TextView tabTitle) {
-        tab.setBackgroundResource(R.color.indigoA100);
+    private void setTextViewToSelected(View tab, TextView tabTitle, ImageView tabLogo) {
+        tab.setBackgroundResource(R.color.indigoA400);
         tabTitle.setTextColor(Color.WHITE);
+        tabLogo.setColorFilter(Color.WHITE);
     }
 
-    private void setTextViewToUnSelected(View tab, TextView tabTitle) {
+    private void setTextViewToUnSelected(View tab, TextView tabTitle, ImageView tabLogo) {
         tab.setBackgroundResource(R.color.indigo100);
         tabTitle.setTextColor(Color.GRAY);
+        tabLogo.setColorFilter(Color.DKGRAY);
     }
 
     private void select(int position) {
         if (currentSelected >= 0) {
             deselect(currentSelected);
         }
-
         View targetView = getViewByPosition(position);
         if (targetView != null) {
-            setTextViewToSelected(targetView, (TextView) (targetView.findViewById(R.id.home_tab_title)));
+            TextView tabTitle = targetView.findViewById(R.id.home_tab_title);
+            ImageView tabLogo = targetView.findViewById(R.id.home_tab_spending_section_logo);
+            setTextViewToSelected(targetView, tabTitle, tabLogo);
         }
-
         if (listener != null) {
             listener.selectItem(position);
         }
-
         currentSelected = position;
-
     }
 
     private void deselect(int position) {
         if (getViewByPosition(position) != null) {
             View targetView = getViewByPosition(position);
             if (targetView != null) {
-                setTextViewToUnSelected(targetView, (TextView) (targetView.findViewById(R.id.home_tab_title)));
+                TextView tabTitle = targetView.findViewById(R.id.home_tab_title);
+                ImageView tabLogo = targetView.findViewById(R.id.home_tab_spending_section_logo);
+                setTextViewToUnSelected(targetView, tabTitle, tabLogo);
             }
         }
-
         currentSelected = -1;
     }
-
-    // OnClick Events
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,6 +55,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
     private MaterialSheetFab materialSheetFab;
     private RelativeLayout filterWindow;
     private TextView filterWindowCancel;
+    private LinearLayout noItemsBlock;
 
     private int statusBarColor;
     private List<TransactionLegacy> transactionList;
@@ -69,6 +71,7 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
         rvTransactions = root.findViewById(R.id.rv_history);
         progressView = root.findViewById(R.id.history_progress);
         sheetView = root.findViewById(R.id.history_fab_sheet);
+        noItemsBlock = root.findViewById(R.id.history_empty_block);
 
         transactionList = new ArrayList<>();
         adapter = new HistoryAdapter(getContext(), presenter, transactionList, dataStorage);
@@ -159,6 +162,10 @@ public class HistoryFragment extends DaggerFragment implements HistoryContract.V
 
     @Override
     public void showTransactions(List<TransactionLegacy> transactions) {
+        if (transactions.isEmpty())
+            noItemsBlock.setVisibility(View.VISIBLE);
+        else
+            noItemsBlock.setVisibility(View.GONE);
         adapter.updateList(transactions);
     }
 

@@ -70,7 +70,6 @@ public class HomeActivity extends DaggerAppCompatActivity
         }
 
         View headerView = navigationView.getHeaderView(0);
-//        View headerView = navigationView.findViewById(R.id.nav_header_user);
 
         TextView navHeaderUser = headerView.findViewById(R.id.nav_header_user);
         navHeaderUser.setText(dataStorage.getActiveUserData().getUserLogin());

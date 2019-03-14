@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
 
@@ -38,21 +36,9 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
         return fragment;
     }
 
-    private static final int[] colors = new int[]{
-            Color.CYAN,
-            Color.WHITE,
-            Color.RED,
-            Color.BLUE,
-            Color.GREEN,
-            Color.GRAY,
-            Color.YELLOW
-    };
-
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_stats_frag, container, false);
-
-        root.setBackgroundColor(colors[ThreadLocalRandom.current().nextInt(0,7)]);
 
         FinanceSummaryBySection financeSummary = (FinanceSummaryBySection) getArguments().getSerializable(FINANCE_SUMMARY_BY_SECTION);
 
@@ -61,11 +47,29 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
         tvSpendAll = root.findViewById(R.id.home_stats_spend);
         tvLeftAll = root.findViewById(R.id.home_stats_left);
 
-        tvDayBalance.setText(String.valueOf(financeSummary.getTodayBalance()));
-        tvSummaryBalance.setText(String.valueOf(financeSummary.getSummaryBalance()));
-        tvSpendAll.setText(String.valueOf(financeSummary.getMoneySpendAll()));
-        tvLeftAll.setText(String.valueOf(financeSummary.getMoneyLeftAll()));
+        if (financeSummary == null)
+            return root;
+
+        setBalanceValue(tvDayBalance, financeSummary.getTodayBalance(), true);
+        setBalanceValue(tvSummaryBalance, financeSummary.getSummaryBalance(), true);
+        setBalanceValue(tvSpendAll, financeSummary.getMoneySpendAll(), false);
+        setBalanceValue(tvLeftAll, financeSummary.getMoneyLeftAll(), true);
         return root;
+    }
+
+    private void setBalanceValue(TextView textView, Double value, boolean setColor){
+        textView.setText(String.valueOf(value));
+        if (setColor)
+            setBalanceColor(textView, value);
+    }
+
+    private void setBalanceColor(TextView textView, Double value){
+        if (value > 0)
+            textView.setTextColor(Color.rgb(0,150,0));
+        else if (value < 0)
+            textView.setTextColor(Color.rgb(150,0,0));
+        else
+            textView.setTextColor(Color.BLACK);
     }
 
 

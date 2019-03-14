@@ -58,8 +58,8 @@
             android:orientation="horizontal">
 
             <ListView
-                android:id="@+id/lv_tabs"
-                android:layout_width="115dp"
+                android:id="@+id/home_section_tabs"
+                android:layout_width="125dp"
                 android:background="@color/indigo100"
                 android:layout_height="match_parent"/>
 
@@ -67,23 +67,6 @@
                 android:id="@+id/home_sections_viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
-
-            <!--<android.support.design.widget.TabLayout-->
-            <!--android:id="@+id/home_sections_tabLayout"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:background="?attr/colorPrimary"-->
-            <!--android:elevation="6dp"-->
-            <!--android:minHeight="?attr/actionBarSize"-->
-            <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />-->
-
-            <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/home_sections_viewPager"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content" />-->
         </LinearLayout>
-
-
     </LinearLayout>
 </ScrollView>

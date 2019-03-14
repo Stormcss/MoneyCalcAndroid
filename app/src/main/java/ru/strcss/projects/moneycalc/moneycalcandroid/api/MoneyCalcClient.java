@@ -9,6 +9,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
@@ -53,7 +54,7 @@ public interface MoneyCalcClient {
 
     @DELETE("/api/spendingSections/{sectionId}")
     Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(@Header("Authorization") String token,
-                                                                         Integer sectionId);
+                                                                         @Path("sectionId") Integer sectionId);
 
     /**
      * Statistics
@@ -85,7 +86,7 @@ public interface MoneyCalcClient {
 
     @DELETE("/api/transactions/{transactionId}")
     Observable<MoneyCalcRs<Void>> deleteTransaction(@Header("Authorization") String token,
-                                                    Integer transactionId);
+                                                    @Path("transactionId") Integer transactionId);
 }
 
 

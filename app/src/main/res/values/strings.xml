@@ -43,6 +43,10 @@
 
     <!-- Home Activity -->
     <string name="home_dates_range_desc">Диапазон:</string>
+    <string name="home_today_balance">Баланс сегодня:</string>
+    <string name="home_summary_balance">Баланс за период:</string>
+    <string name="home_spend_balance">Потрачено за период:</string>
+    <string name="home_left_balance">Осталось:</string>
 
     <!-- SpendingSection Activity -->
     <string name="ss_turnOff_ss">Отключить</string>
@@ -79,6 +83,7 @@
     <!-- History Activity -->
     <string name="transaction_delete_title">Удалить операцию</string>
     <string name="transaction_delete_success">Операция успешно удалена</string>
+    <string name="transaction_no_items">Ничего нет</string>
     <string name="transaction_filter">Фильтр</string>
     <string name="transaction_filter_active">Применен фильтр</string>
     <string name="transaction_filter_cancel">Снять</string>
@@ -98,7 +103,7 @@
     <string name="appl_settings_server_ip">IP адрес сервера</string>
     <string name="appl_settings_server_port">Порт сервера</string>
 
-    <!--  -->
+    <!-- Dialogs -->
     <string name="cancel">Отмена</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>

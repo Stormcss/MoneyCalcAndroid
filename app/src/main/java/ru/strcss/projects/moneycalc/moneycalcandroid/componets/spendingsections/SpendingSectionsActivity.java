@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -20,6 +22,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryAc
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
@@ -34,6 +37,9 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
 
     @Inject
     MoneyCalcServerDAO moneyCalcServerDAO;
+
+    @Inject
+    DataStorage dataStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,11 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
             ActivityUtils.addFragmentToActivity(
                     getSupportFragmentManager(), spendingSectionsFragment, R.id.spendingSections_contentFrame);
         }
+
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView navHeaderUser = headerView.findViewById(R.id.nav_header_user);
+        navHeaderUser.setText(dataStorage.getActiveUserData().getUserLogin());
     }
 
     @Override
@@ -89,6 +100,7 @@ public class SpendingSectionsActivity extends DaggerAppCompatActivity implements
                 startActivity(i);
                 break;
             case R.id.menu_refresh:
+                presenter.requestSpendingSections();
                 break;
             case R.id.menu_logout:
                 moneyCalcServerDAO.setToken(null);
