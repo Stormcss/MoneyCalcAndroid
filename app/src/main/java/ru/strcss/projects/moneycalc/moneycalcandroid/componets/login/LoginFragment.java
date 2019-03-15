@@ -1,7 +1,9 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.login;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
@@ -20,10 +22,11 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.Access;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_login;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 
 @ActivityScoped
@@ -121,10 +124,7 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
             // form field with an error.
             focusView.requestFocus();
         } else {
-            Access access = Access.builder()
-                    .login(login)
-                    .password(password)
-                    .build();
+            Access access = new Access(login, password, null);
 
             // Show a progress spinner, and kick off a background task to
             showSpinner();
@@ -137,13 +137,11 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
     public void showMainActivity() {
         Intent mainActivityIntent = new Intent(getActivity(), HomeActivity.class);
         mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        mainActivityIntent.setFlags(mainActivityIntent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(mainActivityIntent);
     }
 
     @Override
     public void showErrorMessage(String msg) {
-        System.out.println("showErrorMessage!");
         Snackbar.make(getActivity().findViewById(android.R.id.content), msg, Snackbar.LENGTH_LONG).show();
     }
 
@@ -159,13 +157,17 @@ public class LoginFragment extends DaggerFragment implements LoginContract.View 
         showProgress(false, mLoginFormView, progressView, animTime);
     }
 
+    @Override
+    public void saveLoginToPreferences(String login) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        defaultSharedPreferences.edit().putString(appl_storage_login.name(), login).apply();
+    }
+
     private boolean isLoginValid(String login) {
-        //TODO: Replace this with your own logic
         return login.length() > 2;
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
         return password.length() > 2;
     }
 }

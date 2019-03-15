@@ -15,6 +15,9 @@ import java.util.Date;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 
+import static ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_login;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsPreferenceKey.settings_period_from;
+
 public class DatePickerPreference extends DialogPreference implements
         DatePicker.OnDateChangedListener, DatePickerDialog.OnDateSetListener {
 
@@ -37,27 +40,15 @@ public class DatePickerPreference extends DialogPreference implements
     }
 
     @Override
-    protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
-        Long mCurrentValue;
-        if (restorePersistedValue) {
-            // Restore existing state
-            mCurrentValue = this.getPersistedLong(Calendar.getInstance().getTimeInMillis());
-        } else {
-            // Set default state from the XML attribute
-            mCurrentValue = (Long) defaultValue;
-            persistLong(mCurrentValue);
-        }
-    }
-
-    @Override
     protected void onBindView(View view) {
         super.onBindView(view);
         updatePreferenceView(view);
     }
 
     void updatePreferenceView(View view) {
-        currentTimestamp = getSharedPreferences().getLong(currentKey, 0L);
-        otherTimestamp = getSharedPreferences().getLong(otherKey, 0L);
+        String activeLogin = getSharedPreferences().getString(appl_storage_login.name(), null);
+        currentTimestamp = getSharedPreferences().getLong(currentKey + activeLogin, 0L);
+        otherTimestamp = getSharedPreferences().getLong(otherKey + activeLogin, 0L);
 
         String dateString = new SimpleDateFormat("dd.MM.yyyy").format(new Date(currentTimestamp));
         if (twSelectedDate != null) {
@@ -75,8 +66,10 @@ public class DatePickerPreference extends DialogPreference implements
         //required to synchronise timestamps in both DatePickerPreference objects 
         updatePreferenceView(null);
 
+        String activeLogin = getSharedPreferences().getString(appl_storage_login.name(), null);
+
         DatePicker picker = new DatePicker(getContext());
-        mDate = getPersistedLong(System.currentTimeMillis());
+        mDate = getSharedPreferences().getLong(currentKey + activeLogin, 0L);
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(mDate);
@@ -87,7 +80,7 @@ public class DatePickerPreference extends DialogPreference implements
 
         picker.init(year, month, day, this);
 
-        if (currentKey.equals("settings_period_from"))
+        if (currentKey.equals(settings_period_from.name()))
             picker.setMaxDate(otherTimestamp - DAY_IN_MILLIS);
         else
             picker.setMinDate(otherTimestamp + DAY_IN_MILLIS);
@@ -116,7 +109,8 @@ public class DatePickerPreference extends DialogPreference implements
 
         if (positiveResult) {
             if (isPersistent()) {
-                persistLong(mDate);
+                String activeLogin = getSharedPreferences().getString(appl_storage_login.name(), null);
+                getSharedPreferences().edit().putLong(getKey() + activeLogin, mDate).apply();
             }
             callChangeListener(String.valueOf(mDate));
         }

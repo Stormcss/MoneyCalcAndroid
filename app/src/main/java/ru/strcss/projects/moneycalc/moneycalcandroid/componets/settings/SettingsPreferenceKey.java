@@ -1,6 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings;
 
-public enum PreferenceKey {
+public enum SettingsPreferenceKey {
     settings_period_from,
     settings_period_to,
 }

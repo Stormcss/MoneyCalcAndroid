@@ -8,13 +8,12 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
@@ -55,7 +54,6 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
                     }
                 });
     }
-
 
     @Override
     public void takeView(SpendingSectionsContract.View view) {
@@ -100,7 +98,7 @@ public class SpendingSectionsPresenter implements SpendingSectionsContract.Prese
 
     @Override
     public void deleteSpendingSection(Integer id) {
-        moneyCalcServerDAO.deleteSpendingSection(new SpendingSectionDeleteContainer(id))
+        moneyCalcServerDAO.deleteSpendingSection(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {

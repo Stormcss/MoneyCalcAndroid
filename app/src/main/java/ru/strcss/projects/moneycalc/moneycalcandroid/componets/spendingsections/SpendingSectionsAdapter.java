@@ -20,10 +20,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 public class SpendingSectionsAdapter extends RecyclerView.Adapter<SpendingSectionsAdapter.SpendingSectionViewHolder> {
 

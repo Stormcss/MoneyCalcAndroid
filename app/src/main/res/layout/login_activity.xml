@@ -7,13 +7,28 @@
     android:orientation="vertical"
     tools:context="ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity">
 
-    <!-- Login progress -->
-
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="-45dp"
+            android:gravity="end"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/signIn_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:src="@drawable/ic_settings_black_24dp"
+                android:tint="@android:color/white" />
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/signIn_logo"
@@ -29,15 +44,14 @@
             android:layout_margin="@dimen/activity_vertical_margin"
             android:gravity="center"
             android:text="@string/app_name"
-            android:textSize="18sp"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <android.support.design.widget.TabLayout
         android:id="@+id/login_tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
         android:background="?attr/colorPrimaryDark"
         android:elevation="6dp"
         android:minHeight="?attr/actionBarSize"
@@ -46,6 +60,5 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/login_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/login_tabLayout" />
+        android:layout_height="fill_parent" />
 </LinearLayout>

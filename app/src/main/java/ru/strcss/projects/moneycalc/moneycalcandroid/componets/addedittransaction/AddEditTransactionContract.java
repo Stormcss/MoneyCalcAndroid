@@ -2,10 +2,10 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransacti
 
 import java.util.List;
 
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 /**
  * This specifies the contract between the view and the homePresenter.

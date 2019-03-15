@@ -4,25 +4,23 @@ import java.util.List;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-import ru.strcss.projects.moneycalc.dto.Credentials;
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SettingsLegacyUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionAddContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionDeleteContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.Access;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
-import ru.strcss.projects.moneycalc.enitities.SettingsLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 import rx.Observable;
 
 public interface MoneyCalcClient {
@@ -32,63 +30,63 @@ public interface MoneyCalcClient {
     @POST("/login")
     Observable<Response<Void>> login(@Body Access access);
 
-    @GET("/api/settings/get")
+    @GET("/api/settings")
     Observable<MoneyCalcRs<SettingsLegacy>> getSettings(@Header("Authorization") String token);
 
-    @POST("/api/settings/update")
+    @PUT("/api/settings")
     Observable<MoneyCalcRs<SettingsLegacy>> updateSettings(@Header("Authorization") String token,
-                                                           @Body SettingsLegacyUpdateContainer updateContainer);
+                                                           @Body SettingsLegacy settings);
 
     /**
      * Spending Sections
      */
 
-    @GET("/api/settings/spendingSection/get")
+    @GET("/api/spendingSections")
     Observable<MoneyCalcRs<List<SpendingSection>>> getSpendingSections(@Header("Authorization") String token);
 
-    @POST("/api/settings/spendingSection/add")
+    @POST("/api/spendingSections")
     Observable<MoneyCalcRs<List<SpendingSection>>> addSpendingSection(@Header("Authorization") String token,
-                                                                      @Body SpendingSectionAddContainer spendingSectionContainer);
+                                                                      @Body SpendingSection spendingSection);
 
-    @POST("/api/settings/spendingSection/update")
+    @PUT("/api/spendingSections")
     Observable<MoneyCalcRs<List<SpendingSection>>> updateSpendingSection(@Header("Authorization") String token,
                                                                          @Body SpendingSectionUpdateContainer updateContainer);
 
-    @POST("/api/settings/spendingSection/delete")
+    @DELETE("/api/spendingSections/{sectionId}")
     Observable<MoneyCalcRs<List<SpendingSection>>> deleteSpendingSection(@Header("Authorization") String token,
-                                                                         @Body SpendingSectionDeleteContainer deleteContainer);
+                                                                         @Path("sectionId") Integer sectionId);
 
     /**
      * Statistics
      */
-    @GET("/api/stats/summaryBySection/get")
+    @GET("/api/stats/summaryBySection")
     Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(@Header("Authorization") String token);
 
     @POST("/api/stats/summaryBySection/getFiltered")
     Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> getFinanceSummaryBySection(@Header("Authorization") String token,
-                                                                                      @Body FinanceSummaryGetContainerLegacy getContainer);
+                                                                                      @Body FinanceSummaryFilterLegacy getContainer);
 
     /**
      * Transactions
      */
-    @POST("/api/transactions/add")
+    @POST("/api/transactions")
     Observable<MoneyCalcRs<TransactionLegacy>> addTransaction(@Header("Authorization") String token,
-                                                              @Body TransactionAddContainerLegacy transactionContainer);
+                                                              @Body TransactionLegacy transaction);
 
-    @GET("/api/transactions/get")
+    @GET("/api/transactions")
     Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions(@Header("Authorization") String token);
 
     @POST("/api/transactions/getFiltered")
     Observable<MoneyCalcRs<List<TransactionLegacy>>> getTransactions(@Header("Authorization") String token,
-                                                                     @Body TransactionsSearchContainerLegacy container);
+                                                                     @Body TransactionsSearchFilterLegacy container);
 
-    @POST("/api/transactions/update")
+    @PUT("/api/transactions")
     Observable<MoneyCalcRs<TransactionLegacy>> updateTransaction(@Header("Authorization") String token,
                                                                  @Body TransactionUpdateContainerLegacy transactionUpdateContainer);
 
-    @POST("/api/transactions/delete")
+    @DELETE("/api/transactions/{transactionId}")
     Observable<MoneyCalcRs<Void>> deleteTransaction(@Header("Authorization") String token,
-                                                    @Body TransactionDeleteContainer transactionContainer);
+                                                    @Path("transactionId") Integer transactionId);
 }
 
 

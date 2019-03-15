@@ -2,10 +2,10 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.home;
 
 import java.util.List;
 
-import ru.strcss.projects.moneycalc.dto.crudcontainers.statistics.FinanceSummaryGetContainer;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilter;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
 
 /**
  * This specifies the contract between the view and the homePresenter.
@@ -20,10 +20,12 @@ public interface HomeContract {
         void showAddTransactionActivity();
 
         void updateStatsAndSettings();
+
+        void redrawTabLogos();
     }
 
     interface Presenter extends BasePresenter<View> {
-        void requestFinanceSummary(FinanceSummaryGetContainer financeSummaryGetContainer);
+        void requestFinanceSummary(FinanceSummaryFilter financeSummaryGetContainer);
 
         void requestSettings();
 
@@ -34,12 +36,5 @@ public interface HomeContract {
         void requestSectionStatistics(String from, String to, List<Integer> sections);
 
         void showAddTransactionActivity();
-
-        //Stats
-//        void saveStatsFragmentState(int sectionId, android.view.View view);
-//
-//        void clearStatsFragmentStates();
-//
-//        void updateStatisticsSection(Integer id);
     }
 }

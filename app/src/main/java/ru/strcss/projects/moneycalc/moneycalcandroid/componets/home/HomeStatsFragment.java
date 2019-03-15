@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -10,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.FinanceSummaryBySection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION;
 
@@ -46,11 +47,29 @@ public class HomeStatsFragment extends Fragment implements HomeStatsContract.Vie
         tvSpendAll = root.findViewById(R.id.home_stats_spend);
         tvLeftAll = root.findViewById(R.id.home_stats_left);
 
-        tvDayBalance.setText(String.valueOf(financeSummary.getTodayBalance()));
-        tvSummaryBalance.setText(String.valueOf(financeSummary.getSummaryBalance()));
-        tvSpendAll.setText(String.valueOf(financeSummary.getMoneySpendAll()));
-        tvLeftAll.setText(String.valueOf(financeSummary.getMoneyLeftAll()));
+        if (financeSummary == null)
+            return root;
+
+        setBalanceValue(tvDayBalance, financeSummary.getTodayBalance(), true);
+        setBalanceValue(tvSummaryBalance, financeSummary.getSummaryBalance(), true);
+        setBalanceValue(tvSpendAll, financeSummary.getMoneySpendAll(), false);
+        setBalanceValue(tvLeftAll, financeSummary.getMoneyLeftAll(), true);
         return root;
+    }
+
+    private void setBalanceValue(TextView textView, Double value, boolean setColor){
+        textView.setText(String.valueOf(value));
+        if (setColor)
+            setBalanceColor(textView, value);
+    }
+
+    private void setBalanceColor(TextView textView, Double value){
+        if (value > 0)
+            textView.setTextColor(Color.rgb(0,150,0));
+        else if (value < 0)
+            textView.setTextColor(Color.rgb(150,0,0));
+        else
+            textView.setTextColor(Color.BLACK);
     }
 
 

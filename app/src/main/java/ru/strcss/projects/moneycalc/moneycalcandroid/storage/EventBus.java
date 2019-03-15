@@ -30,6 +30,10 @@ public class EventBus {
         spendingSectionSubject.onNext(sectionEvent);
     }
 
+    public void receivedSpendingSectionEvent(CrudEvent sectionEvent) {
+        spendingSectionSubject.onNext(sectionEvent);
+    }
+
     public Observable<CrudEvent> subscribeSpendingSectionEvent() {
         return spendingSectionSubject;
     }

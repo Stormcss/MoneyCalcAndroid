@@ -7,12 +7,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionAddContainer;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -51,7 +50,7 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
 
     @Override
     public void addSpendingSection(SpendingSection spendingSection) {
-        moneyCalcServerDAO.addSpendingSection(new SpendingSectionAddContainer(spendingSection))
+        moneyCalcServerDAO.addSpendingSection(spendingSection)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<MoneyCalcRs<List<SpendingSection>>>() {
@@ -63,9 +62,6 @@ public class AddEditSpendingSectionPresenter implements AddEditSpendingSectionCo
                     public void onError(Throwable ex) {
                         ex.printStackTrace();
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex));
-                        //                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
-//                        snackBarAction(getAppContext(), errorBodyMessage);
-//                        showErrorMessageFromException(ex, view);
                     }
 
                     @Override

@@ -25,17 +25,17 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
+import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIsoString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getPositionBySpendingSectionInnerId;
@@ -77,7 +77,7 @@ public class AddEditTransactionFragment extends DaggerFragment
         final TransactionLegacy updatedTransactionData = (TransactionLegacy) bundle.get(TRANSACTION);
         FloatingActionButton fabAddTransaction = getActivity().findViewById(R.id.fab_addEditTransaction_done);
 
-        twTransactionDate.setText(DatesUtils.formatDateToIsoString(new Date()));
+        twTransactionDate.setText(formatDateToIsoString(new Date()));
 
         isEditingTransaction = updatedTransactionData != null;
 
@@ -223,16 +223,15 @@ public class AddEditTransactionFragment extends DaggerFragment
     @Override
     public void onItemClick(View view, int position) {
         selectedSection = ssAdapter.getItem(position);
-        System.out.println("item! = " + selectedSection);
         selectedRecyclerViewItem.set(position);
         ssAdapter.notifyItemChanged(position);
     }
 
     @Override
     public void onVisibilityChanged(boolean visible) {
-        if (visible) {
+        if (visible)
             UiUtils.collapseView(rvTransactionSection, 100, 200);
-        } else
+        else
             UiUtils.expandView(rvTransactionSection, 100, 500);
     }
 }

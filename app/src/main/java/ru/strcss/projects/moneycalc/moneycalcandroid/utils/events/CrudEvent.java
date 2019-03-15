@@ -4,5 +4,6 @@ public enum CrudEvent {
     ADDED,
     EDITED,
     DELETED,
-    REQUESTED
+    REQUESTED,
+    RECEIVED
 }

@@ -19,8 +19,4 @@ public abstract class HomeModule {
     @ActivityScoped
     @Binds
     abstract HomeContract.Presenter homePresenter(HomePresenter presenter);
-
-//    @ActivityScoped
-//    @Binds
-//    abstract HomeStatsContract.Presenter homeStatsPresenter(HomeStatsPresenter presenter);
 }

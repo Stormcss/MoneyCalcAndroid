@@ -5,9 +5,10 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 
 import retrofit2.Response;
-import ru.strcss.projects.moneycalc.dto.Credentials;
-import ru.strcss.projects.moneycalc.dto.MoneyCalcRs;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -21,6 +22,9 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.Componen
 public class RegisterPresenter implements RegisterContract.Presenter {
 
     private final MoneyCalcServerDAO moneyCalcServerDAO;
+
+    @Inject
+    DataStorage dataStorage;
 
     @Nullable
     private RegisterContract.View registerView;
@@ -55,10 +59,6 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                     public void onError(Throwable ex) {
                         registerView.hideSpinner();
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex));
-                        //                        if (ex instanceof HttpException)
-//                            registerView.showErrorMessage(getErrorBodyMessage((HttpException) ex));
-//                        else
-//                            registerView.showErrorMessage(ex.getMessage());
                     }
 
                     @Override
@@ -66,7 +66,12 @@ public class RegisterPresenter implements RegisterContract.Presenter {
                         if (rs.isSuccessful()) {
                             String token = rs.headers().get("Authorization");
                             moneyCalcServerDAO.setToken(token);
+
+                            String login = credentials.getAccess().getLogin();
+                            dataStorage.getActiveUserData().setUserLogin(login);
+                            registerView.saveLoginToPreferences(login);
                             System.out.println("token = " + token);
+
                             registerView.showMainActivity();
                         } else {
                             System.out.println("rs = " + rs);

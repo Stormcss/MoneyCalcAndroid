@@ -13,8 +13,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 public abstract class BaseSpendingSectionRVAdapter<VH extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<VH> {
 
@@ -30,24 +30,6 @@ public abstract class BaseSpendingSectionRVAdapter<VH extends RecyclerView.ViewH
         colorPrimaryBright = ResourcesCompat.getColor(context.getResources(), R.color.colorPrimaryBright, null);
         colorBackground = ResourcesCompat.getColor(context.getResources(), R.color.colorBackground, null);
     }
-
-//    public int getPositionBySpendingSectionInnerId(List<SpendingSection> spendingSectionsList, int sectionInnerId) {
-//        if (spendingSectionsList != null) {
-//            for (int i = 0; i < spendingSectionsList.size(); i++) {
-//                if (spendingSectionsList.get(i).getSectionId() == sectionInnerId)
-//                    return i;
-//            }
-//        }
-//        return 0;
-//    }
-//
-//    public Integer getSpendingSectionInnerIdByPosition(List<SpendingSection> spendingSectionsList, int position) {
-//        if (spendingSectionsList != null) {
-//            if (spendingSectionsList.size() > position)
-//                return spendingSectionsList.get(position).getSectionId();
-//        }
-//        return null;
-//    }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         protected TextView sectionName;

@@ -9,6 +9,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import javax.inject.Inject;
 
@@ -20,6 +22,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
@@ -34,6 +37,9 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
 
     @Inject
     MoneyCalcServerDAO moneyCalcServerDAO;
+
+    @Inject
+    DataStorage dataStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +69,10 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
                     getSupportFragmentManager(), historyFragment, R.id.history_contentFrame);
         }
 
+        View headerView = navigationView.getHeaderView(0);
 
-        // Load previously saved state, if available.
-//        if (savedInstanceState != null) {
-//            TasksFilterType currentFiltering =
-//                    (TasksFilterType) savedInstanceState.getSerializable(CURRENT_FILTERING_KEY);
-//            mTasksPresenter.setFiltering(currentFiltering);
-//        }
+        TextView navHeaderUser = headerView.findViewById(R.id.nav_header_user);
+        navHeaderUser.setText(dataStorage.getActiveUserData().getUserLogin());
     }
 
     @Override
@@ -97,6 +100,11 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
                 startActivity(i);
                 break;
             case R.id.menu_refresh:
+                presenter.requestTransactions();
+                break;
+            case R.id.menu_logout:
+                moneyCalcServerDAO.setToken(null);
+                changeActivityOnCondition(true, this, LoginActivity.class);
                 break;
             default:
                 break;
@@ -113,10 +121,10 @@ public class HistoryActivity extends DaggerAppCompatActivity implements Navigati
         if (id == R.id.nav_home) {
             startActivity(new Intent(HistoryActivity.this, HomeActivity.class));
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        } else if (id == R.id.nav_stats) {
-
-        } else if (id == R.id.nav_finance) {
-
+//        } else if (id == R.id.nav_stats) {
+//
+//        } else if (id == R.id.nav_finance) {
+//
         } else if (id == R.id.nav_spending_sections) {
             Intent intent =
                     new Intent(HistoryActivity.this, SpendingSectionsActivity.class);

@@ -20,9 +20,9 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.addeditspendingsection.AddEditSpendingSectionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress;
 

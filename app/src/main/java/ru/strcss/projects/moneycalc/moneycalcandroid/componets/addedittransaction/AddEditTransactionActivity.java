@@ -10,8 +10,8 @@ import javax.inject.Inject;
 import dagger.Lazy;
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 

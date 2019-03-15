@@ -20,11 +20,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.setViewVisibility;
@@ -170,8 +170,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
     }
 
     private String getMergedDescription(Context context, TransactionLegacy transaction) {
-        StringBuilder stringBuilder = new StringBuilder(context.getText(R.string.transaction_delete_part1));
-        stringBuilder.append(" ")
+        StringBuilder stringBuilder = new StringBuilder(context.getText(R.string.transaction_delete_part1))
+                .append(" ")
                 .append(transaction.getSum())
                 .append(" ")
                 .append(context.getText(R.string.transaction_delete_part3));

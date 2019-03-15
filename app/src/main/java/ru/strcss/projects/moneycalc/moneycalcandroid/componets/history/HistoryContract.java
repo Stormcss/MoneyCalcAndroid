@@ -2,9 +2,9 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history;
 
 import java.util.List;
 
-import ru.strcss.projects.moneycalc.enitities.TransactionLegacy;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy;
 
 /**
  * This specifies the contract between the view and the loginPresenter.

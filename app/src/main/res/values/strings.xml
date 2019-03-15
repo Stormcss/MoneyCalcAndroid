@@ -10,6 +10,7 @@
     <!-- Menu titles -->
     <string name="menu_settings">Настройки</string>
     <string name="menu_refresh">Обновить</string>
+    <string name="menu_logout">Выйти</string>
     <string name="menu_finance">Финансы</string>
     <string name="menu_stats">Статистика</string>
     <string name="menu_history">История</string>
@@ -42,6 +43,10 @@
 
     <!-- Home Activity -->
     <string name="home_dates_range_desc">Диапазон:</string>
+    <string name="home_today_balance">Баланс сегодня:</string>
+    <string name="home_summary_balance">Баланс за период:</string>
+    <string name="home_spend_balance">Потрачено за период:</string>
+    <string name="home_left_balance">Осталось:</string>
 
     <!-- SpendingSection Activity -->
     <string name="ss_turnOff_ss">Отключить</string>
@@ -78,6 +83,7 @@
     <!-- History Activity -->
     <string name="transaction_delete_title">Удалить операцию</string>
     <string name="transaction_delete_success">Операция успешно удалена</string>
+    <string name="transaction_no_items">Ничего нет</string>
     <string name="transaction_filter">Фильтр</string>
     <string name="transaction_filter_active">Применен фильтр</string>
     <string name="transaction_filter_cancel">Снять</string>
@@ -86,13 +92,18 @@
     <string name="transaction_filter_sections_check_all">Выделить всё</string>
     <string name="transaction_filter_sections_uncheck_all">Снять всё</string>
 
-    <!-- Preferences Activity -->
+    <!-- Settings Activity -->
     <string name="preferences_period">Период расчета</string>
     <string name="preferences_period_from">Начало периода</string>
     <string name="preferences_period_to">Конец периода</string>
     <string name="settings_update_success">Настройки успешно обновлены</string>
 
-    <!--  -->
+    <!-- Application Settings Activity -->
+    <string name="appl_settings_server_address">Адрес сервера</string>
+    <string name="appl_settings_server_ip">IP адрес сервера</string>
+    <string name="appl_settings_server_port">Порт сервера</string>
+
+    <!-- Dialogs -->
     <string name="cancel">Отмена</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>

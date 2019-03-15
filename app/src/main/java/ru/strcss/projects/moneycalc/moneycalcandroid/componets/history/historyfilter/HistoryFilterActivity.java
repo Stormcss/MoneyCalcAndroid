@@ -24,8 +24,6 @@ import javax.inject.Inject;
 
 import dagger.android.support.DaggerAppCompatActivity;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
-import ru.strcss.projects.moneycalc.dto.crudcontainers.transactions.TransactionsSearchContainerLegacy;
-import ru.strcss.projects.moneycalc.enitities.SpendingSection;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVMultiChooseAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter;
@@ -33,6 +31,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivi
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy;
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIso;
@@ -56,7 +56,7 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity implements Hi
 
     private ActionBar mActionBar;
 
-    private TransactionsSearchContainerLegacy filter;
+    private TransactionsSearchFilterLegacy filter;
 
     private List<SpendingSection> spendingSectionsList = new ArrayList<>();
     private SpendingSectionRVMultiChooseAdapter ssAdapter;
@@ -104,9 +104,9 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity implements Hi
         filter = dataStorage.getTransactionsFilter();
 
         if (filter == null) {
-            filter = new TransactionsSearchContainerLegacy();
-            filter.setRangeFrom(dataStorage.getSettings().getPeriodFrom());
-            filter.setRangeTo(dataStorage.getSettings().getPeriodTo());
+            filter = new TransactionsSearchFilterLegacy();
+            filter.setDateFrom(dataStorage.getSettings().getPeriodFrom());
+            filter.setDateTo(dataStorage.getSettings().getPeriodTo());
         }
 
         setTransactionPeriodListener(filter);
@@ -162,7 +162,7 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity implements Hi
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String date = getIsoDate(year, month + 1, dayOfMonth);
             twDateFrom.setText(date);
-            filter.setRangeFrom(date);
+            filter.setDateFrom(date);
         }
     };
 
@@ -171,17 +171,17 @@ public class HistoryFilterActivity extends DaggerAppCompatActivity implements Hi
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String date = getIsoDate(year, month + 1, dayOfMonth);
             twDateTo.setText(date);
-            filter.setRangeTo(date);
+            filter.setDateTo(date);
         }
     };
 
-    private void setTransactionPeriodListener(final TransactionsSearchContainerLegacy savedFilter) {
+    private void setTransactionPeriodListener(final TransactionsSearchFilterLegacy savedFilter) {
         String dateFrom = null;
         String dateTo = null;
 
         if (savedFilter != null) {
-            dateFrom = formatDateToPretty(savedFilter.getRangeFrom());
-            dateTo = formatDateToPretty(savedFilter.getRangeTo());
+            dateFrom = formatDateToPretty(savedFilter.getDateFrom());
+            dateTo = formatDateToPretty(savedFilter.getDateTo());
             twDateFrom.setText(dateFrom);
             twDateTo.setText(dateTo);
         } else {

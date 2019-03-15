@@ -10,7 +10,7 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DatesUtilsTest {
+class DatesUtilsTest {
 
     @ParameterizedTest
     @CsvSource({"2018-10-21, 21.10.2018", "2018-01-09, 09.01.2018", "2018-12-13, 13.12.2018"})
