@@ -27,6 +27,7 @@ import dagger.android.support.DaggerFragment;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter;
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper;
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
@@ -38,7 +39,6 @@ import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToIsoString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getCalendarFromString;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.getIsoDate;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getPositionBySpendingSectionInnerId;
 import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener;
 
 public class AddEditTransactionFragment extends DaggerFragment
@@ -202,7 +202,7 @@ public class AddEditTransactionFragment extends DaggerFragment
         spendingSectionsList.addAll(spendingSections);
 
         if (isEditingTransaction) {
-            int position = getPositionBySpendingSectionInnerId(spendingSectionsList, updatedTransactionSectionId);
+            int position = ComponentsUtils.Companion.getSpendingSectionInnerIdByPosition(spendingSectionsList, updatedTransactionSectionId);
             this.onItemClick(null, position);
         }
         ssAdapter.notifyDataSetChanged();

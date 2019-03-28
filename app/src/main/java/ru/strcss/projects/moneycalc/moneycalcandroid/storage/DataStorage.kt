@@ -21,7 +21,7 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
     var settings: SettingsLegacy? = null
     var spendingSections: List<SpendingSection>? = null
     var financeSummary: List<FinanceSummaryBySection>? = null
-    var transactionList: List<TransactionLegacy>? = null
+    var transactionList: MutableList<TransactionLegacy>? = null
 
     var transactionsFilter: TransactionsSearchFilterLegacy? = null
 

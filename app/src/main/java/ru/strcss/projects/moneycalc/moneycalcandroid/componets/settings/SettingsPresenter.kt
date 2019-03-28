@@ -5,7 +5,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.Event.SETTING_UPDATED
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy
 import rx.Observer

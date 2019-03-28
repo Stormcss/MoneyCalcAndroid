@@ -8,7 +8,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getErrorBodyMessage
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
 import rx.Observer

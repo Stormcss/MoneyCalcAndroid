@@ -2,13 +2,15 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.storage;
 
 import android.util.SparseIntArray;
 
-import lombok.Getter;
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
 
 public class DrawableStorage {
 
-    @Getter
     static private SparseIntArray spendingSectionLogoStorage = new SparseIntArray(25);
+
+    public static SparseIntArray getSpendingSectionLogoStorage() {
+        return spendingSectionLogoStorage;
+    }
 
     static {
         spendingSectionLogoStorage.put(0, R.drawable.ic_empty_drawable);

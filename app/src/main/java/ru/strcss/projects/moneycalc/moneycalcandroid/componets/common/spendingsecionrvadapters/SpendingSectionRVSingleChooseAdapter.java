@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R;
+import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static android.graphics.PorterDuff.Mode;
@@ -20,27 +21,27 @@ public class SpendingSectionRVSingleChooseAdapter extends BaseSpendingSectionRVA
 
     public SpendingSectionRVSingleChooseAdapter(Context context, List<SpendingSection> spendingSections, AtomicInteger selectedPosition) {
         super(context);
-        this.spendingSectionsList = spendingSections;
-        this.inflater = LayoutInflater.from(context);
+        this.setSpendingSectionsList(spendingSections);
+        this.setInflater(LayoutInflater.from(context));
         this.selectedPosition = selectedPosition;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.addedittransaction_spendingsection_card, parent, false);
+        View view = getInflater().inflate(R.layout.addedittransaction_spendingsection_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final BaseSpendingSectionRVAdapter.ViewHolder holder, final int position) {
-        SpendingSection spendingSection = spendingSectionsList.get(position);
-        holder.sectionName.setText(spendingSection.getName());
+        SpendingSection spendingSection = getSpendingSectionsList().get(position);
+        holder.getSectionName().setText(spendingSection.getName());
         if (spendingSection.getLogoId() != null) {
-            holder.sectionLogo.setImageResource(logoStorage.get(spendingSection.getLogoId()));
+            holder.getSectionLogo().setImageResource(DrawableStorage.getSpendingSectionLogoStorage().get(spendingSection.getLogoId()));
         }
 
-        holder.sectionLayout.setOnClickListener(new View.OnClickListener() {
+        holder.getSectionLayout().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectedPosition.set(position);
@@ -50,28 +51,28 @@ public class SpendingSectionRVSingleChooseAdapter extends BaseSpendingSectionRVA
         });
 
         if (selectedPosition.get() == position) {
-            holder.sectionLayout.setBackgroundColor(colorPrimaryBright);
-            holder.sectionName.setTextColor(Color.WHITE);
-            holder.sectionLogo.setColorFilter(Color.WHITE, Mode.SRC_ATOP);
+            holder.getSectionLayout().setBackgroundColor(getColorPrimaryBright());
+            holder.getSectionName().setTextColor(Color.WHITE);
+            holder.getSectionLogo().setColorFilter(Color.WHITE, Mode.SRC_ATOP);
         } else {
-            holder.sectionLayout.setBackgroundColor(colorBackground);
-            holder.sectionName.setTextColor(Color.BLACK);
-            holder.sectionLogo.setColorFilter(null);
+            holder.getSectionLayout().setBackgroundColor(getColorBackground());
+            holder.getSectionName().setTextColor(Color.BLACK);
+            holder.getSectionLogo().setColorFilter(null);
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return spendingSectionsList.size();
+        return getSpendingSectionsList().size();
     }
 
     public SpendingSection getItem(int id) {
-        return spendingSectionsList.get(id);
+        return getSpendingSectionsList().get(id);
     }
 
     public void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
+        this.setMClickListener(itemClickListener);
     }
 }
 

@@ -39,7 +39,7 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
         get() = client!!.getFinanceSummaryBySection(token)
 
 
-    val transactions: Observable<MoneyCalcRs<List<TransactionLegacy>>>
+    val transactions: Observable<MoneyCalcRs<MutableList<TransactionLegacy>>>
         get() = client!!.getTransactions(token)
 
     init {
@@ -100,7 +100,7 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
         return client!!.addTransaction(token, transaction)
     }
 
-    fun getTransactions(container: TransactionsSearchFilterLegacy): Observable<MoneyCalcRs<List<TransactionLegacy>>> {
+    fun getTransactions(container: TransactionsSearchFilterLegacy): Observable<MoneyCalcRs<MutableList<TransactionLegacy>>> {
         return client!!.getTransactions(token, container)
     }
 
