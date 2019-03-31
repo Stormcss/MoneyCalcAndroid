@@ -22,11 +22,15 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getLogoIdBySectionId
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
 
-class HistoryAdapter(private val mContext: Context, private val historyPresenter: HistoryContract.Presenter, private val transactionList: MutableList<TransactionLegacy>, private val dataStorage: DataStorage) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> /*implements HistoryAdapter.ItemClickListener*/() {
+class HistoryAdapter(private val mContext: Context,
+                     private val historyPresenter: HistoryContract.Presenter,
+                     private val transactionList: MutableList<TransactionLegacy>,
+                     private val dataStorage: DataStorage)
+    : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder> /*implements HistoryAdapter.ItemClickListener*/() {
 
     private var checkedRvItem: View? = null
 
-    private val logoStorage = DrawableStorage.getSpendingSectionLogoStorage()
+    private val logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
         val itemView = LayoutInflater.from(parent.context)

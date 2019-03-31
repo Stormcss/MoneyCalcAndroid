@@ -18,7 +18,7 @@ abstract class BaseSpendingSectionRVAdapter<VH : RecyclerView.ViewHolder> intern
     protected var mClickListener: ItemClickListener? = null
     protected var inflater: LayoutInflater? = null
     protected var spendingSectionsList: List<SpendingSection>? = null
-    internal var logoStorage = DrawableStorage.getSpendingSectionLogoStorage()
+    internal var logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     protected var colorPrimaryBright: Int = 0
     protected var colorBackground: Int = 0
@@ -47,6 +47,6 @@ abstract class BaseSpendingSectionRVAdapter<VH : RecyclerView.ViewHolder> intern
     }
 
     interface ItemClickListener {
-        fun onItemClick(view: View, position: Int)
+        fun onItemClick(view: View?, position: Int)
     }
 }

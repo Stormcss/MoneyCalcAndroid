@@ -74,7 +74,7 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        changeActivityOnCondition(moneyCalcServerDAO!!.token == null, this@HistoryFilterActivity, LoginActivity::class.java)
+        changeActivityOnCondition(moneyCalcServerDAO.token == null, this@HistoryFilterActivity, LoginActivity::class.java)
 
         setContentView(R.layout.history_filter_activity)
         setKeyboardVisibilityListener(this, findViewById<View>(R.id.history_filter_root_view) as ViewGroup)
@@ -96,12 +96,12 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
         etDesc = findViewById(R.id.history_filter_desc)
         layoutSectionButtonsPane = findViewById(R.id.history_filter_section_buttons_pane)
 
-        filter = dataStorage!!.transactionsFilter
+        filter = dataStorage.transactionsFilter
 
         if (filter == null) {
             filter = TransactionsSearchFilterLegacy()
-            filter!!.dateFrom = dataStorage!!.settings!!.periodFrom
-            filter!!.dateTo = dataStorage!!.settings!!.periodTo
+            filter!!.dateFrom = dataStorage.settings!!.periodFrom
+            filter!!.dateTo = dataStorage.settings!!.periodTo
         }
 
         setTransactionPeriodListener(filter)
@@ -113,7 +113,7 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
         rvSections!!.adapter = ssAdapter
         rvSections!!.layoutManager = GridLayoutManager(this, 3)
 
-        presenter!!.requestSpendingSectionsList()
+        presenter.requestSpendingSectionsList()
     }
 
     private fun setSectionsCheckButtons() {
@@ -140,7 +140,7 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
                 filter!!.description = description
 
             println("filter = " + filter!!)
-            presenter!!.requestFilteredTransactions(filter!!)
+            presenter.requestFilteredTransactions(filter!!)
         }
         super.onBackPressed()
     }
@@ -188,17 +188,17 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
         return true
     }
 
-    override fun onItemClick(view: View, position: Int) {
+    override fun onItemClick(view: View?, position: Int) {
         ssAdapter!!.notifyItemChanged(position)
     }
 
     public override fun onResume() {
         super.onResume()
-        presenter!!.takeView(this)
+        presenter.takeView(this)
     }
 
     public override fun onDestroy() {
-        presenter!!.dropView()
+        presenter.dropView()
         super.onDestroy()
     }
 

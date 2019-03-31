@@ -145,11 +145,11 @@ constructor() : DaggerFragment(), AddEditSpendingSectionContract.View, SpendingS
 
     override fun onResume() {
         super.onResume()
-        presenter!!.takeView(this)
+        presenter.takeView(this)
     }
 
     override fun onDestroy() {
-        presenter!!.dropView()
+        presenter.dropView()
         super.onDestroy()
     }
 

@@ -16,7 +16,7 @@ import java.util.*
 class TabAdapter(private val listView: ListView?, private var listener: OnItemClickListener?) : BaseAdapter(), AdapterView.OnItemClickListener {
 
     val data: MutableList<TabHolder> = ArrayList()
-    private val logoStorage = DrawableStorage.getSpendingSectionLogoStorage()
+    private val logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     private var currentSelected = 0
 

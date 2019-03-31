@@ -23,7 +23,7 @@ class SpendingSectionsAdapter(private val mContext: Context,
                               private val presenter: SpendingSectionsContract.Presenter)
     : RecyclerView.Adapter<SpendingSectionsAdapter.SpendingSectionViewHolder>() {
 
-    private val logoStorage = DrawableStorage.getSpendingSectionLogoStorage()
+    private val logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     class SpendingSectionViewHolder internal constructor(view: View) : RecyclerView.ViewHolder(view) {
         internal var cv: CardView

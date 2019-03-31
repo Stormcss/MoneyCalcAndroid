@@ -4,15 +4,15 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.PorterDuff.Mode
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getSpendingSectionInnerIdByPosition
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
+import java.util.concurrent.atomic.AtomicInteger
 
-class SpendingSectionRVMultiChooseAdapter(context: Context, spendingSections: List<SpendingSection>,
-                                          private val selectedSpendingSections: MutableSet<Int?>)
+class SpendingSectionRVSingleChooseAdapter(context: Context,
+                                           spendingSections: List<SpendingSection>,
+                                           private val selectedPosition: AtomicInteger)
     : BaseSpendingSectionRVAdapter<BaseSpendingSectionRVAdapterViewHolder>(context) {
 
     init {
@@ -32,17 +32,13 @@ class SpendingSectionRVMultiChooseAdapter(context: Context, spendingSections: Li
             holder.sectionLogo.setImageResource(DrawableStorage.spendingSectionLogoStorage.get(spendingSection.logoId!!))
         }
 
-        holder.sectionLayout.setOnClickListener(View.OnClickListener { v ->
-            //                System.out.println("adapter item! = " + position);
-            val sectionId = getSpendingSectionInnerIdByPosition(spendingSectionsList, position)
-            val isPositionNew = selectedSpendingSections.add(sectionId)
-            if (!isPositionNew)
-                selectedSpendingSections.remove(sectionId)
+        holder.sectionLayout.setOnClickListener({ v ->
+            selectedPosition.set(position)
             holder.onClick(v)
             notifyDataSetChanged()
         })
 
-        if (isPositionSelectedInSet(position, spendingSectionsList, selectedSpendingSections)) {
+        if (selectedPosition.get() == position) {
             holder.sectionLayout.setBackgroundColor(colorPrimaryBright)
             holder.sectionName.setTextColor(Color.WHITE)
             holder.sectionLogo.setColorFilter(Color.WHITE, Mode.SRC_ATOP)
@@ -53,18 +49,12 @@ class SpendingSectionRVMultiChooseAdapter(context: Context, spendingSections: Li
         }
     }
 
-    private fun isPositionSelectedInSet(position: Int, sectionList: List<SpendingSection>?,
-                                        selectedSectionsIds: Set<Int?>): Boolean {
-        val sectionId = getSpendingSectionInnerIdByPosition(sectionList, position)
-        for (selectedSectionId in selectedSectionsIds) {
-            if (selectedSectionId == sectionId)
-                return true
-        }
-        return false
-    }
-
     override fun getItemCount(): Int {
         return spendingSectionsList!!.size
+    }
+
+    fun getItem(id: Int): SpendingSection {
+        return spendingSectionsList!![id]
     }
 
     fun setClickListener(itemClickListener: BaseSpendingSectionRVAdapter.ItemClickListener) {

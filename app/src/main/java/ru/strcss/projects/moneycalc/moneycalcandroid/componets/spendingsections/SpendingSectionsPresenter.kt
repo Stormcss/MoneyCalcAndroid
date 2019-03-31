@@ -61,11 +61,11 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
                         println("getSpendingSectionsRs = $getSpendingSectionsRs")
                         if (getSpendingSectionsRs.isSuccessful) {
                             dataStorage.spendingSections = getSpendingSectionsRs.payload
-                            view!!.showSpendingSections(getSpendingSectionsRs.payload)
+                            view?.showSpendingSections(getSpendingSectionsRs.payload)
                         } else {
-                            view!!.showErrorMessage(getSpendingSectionsRs.toString())
+                            view?.showErrorMessage(getSpendingSectionsRs.toString())
                         }
-                        view!!.hideSpinner()
+                        view?.hideSpinner()
                     }
                 })
     }

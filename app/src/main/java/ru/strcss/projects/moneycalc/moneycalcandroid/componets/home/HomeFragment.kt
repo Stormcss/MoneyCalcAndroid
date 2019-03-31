@@ -78,7 +78,7 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
         this.updateStatsAndSettings()
 
         //request spending sections to have copy of sections at DataStorage
-        presenter!!.requestSpendingSections()
+        presenter.requestSpendingSections()
         return root
     }
 

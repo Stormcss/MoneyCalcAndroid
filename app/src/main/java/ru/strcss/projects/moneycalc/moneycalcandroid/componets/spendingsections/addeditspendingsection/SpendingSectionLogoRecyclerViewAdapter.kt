@@ -18,7 +18,7 @@ class SpendingSectionLogoRecyclerViewAdapter(context: Context, private val selec
     : RecyclerView.Adapter<SpendingSectionLogoRecyclerViewAdapter.ViewHolder>() {
 
     private val inflater: LayoutInflater
-    private val logoStorage = DrawableStorage.getSpendingSectionLogoStorage()
+    private val logoStorage = DrawableStorage.spendingSectionLogoStorage
     private var mClickListener: ItemClickListener? = null
 
     private val colorPrimaryBright: Int
