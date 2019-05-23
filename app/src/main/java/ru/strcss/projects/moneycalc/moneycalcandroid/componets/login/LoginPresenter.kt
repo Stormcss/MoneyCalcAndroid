@@ -4,7 +4,7 @@ import retrofit2.Response
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.Access
 import rx.Observer

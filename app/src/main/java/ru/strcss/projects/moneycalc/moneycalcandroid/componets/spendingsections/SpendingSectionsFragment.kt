@@ -69,7 +69,7 @@ constructor() : DaggerFragment(), SpendingSectionsContract.View {
 
         // show available data quickly
         if (dataStorage.spendingSections != null) {
-            dataStorage.spendingSections?.let { showSpendingSections(it) }
+            dataStorage.spendingSections?.let { showSpendingSections(it.items) }
 //            showSpendingSections(dataStorage.spendingSections)
 //            showSpendingSections(dataStorage.spendingSections ?: null)
         }

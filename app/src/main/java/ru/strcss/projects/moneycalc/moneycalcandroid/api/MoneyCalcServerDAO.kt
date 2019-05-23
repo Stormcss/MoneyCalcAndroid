@@ -9,12 +9,18 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenc
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_ip
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.applicationsettings.ApplicationSettingsPreferenceKey.appl_settings_server_port
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilterLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilter
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.*
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDate
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import rx.Observable
 import javax.inject.Singleton
 
@@ -25,22 +31,30 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
             field = value
             sharedPreferences.edit().putString(appl_storage_token.name, token).apply()
         }
-    var client: MoneyCalcClient? = null
+    lateinit var client: MoneyCalcClient
 
-    val settings: Observable<MoneyCalcRs<SettingsLegacy>>
-        get() = client!!.getSettings(token)
-
-
-    val spendingSections: Observable<MoneyCalcRs<List<SpendingSection>>>
-        get() = client!!.getSpendingSections(token)
+    val settings: Observable<SettingsLegacy>
+        get() = client.getSettings(token)
 
 
-    val financeSummaryBySection: Observable<MoneyCalcRs<List<FinanceSummaryBySection>>>
-        get() = client!!.getFinanceSummaryBySection(token)
+    val spendingSections: Observable<SpendingSectionsSearchRs>
+        get() = client.getSpendingSections(token)
 
 
-    val transactions: Observable<MoneyCalcRs<MutableList<TransactionLegacy>>>
-        get() = client!!.getTransactions(token)
+//    val statsBySectionSummary: Observable<ItemsContainer<SummaryBySection>>
+//        get() = client.getStatsBySectionSummary(token)
+
+//    val statsBySectionSum: Observable<ItemsContainer<SumBySection>>
+//        get() = client.getStatsBySectionSum(token)
+//
+//    val statsByDateSum: Observable<ItemsContainer<SumByDate>>
+//        get() = client.getStatsByDateSum(token)
+//
+//    val statsByDateSumBySection: Observable<ItemsContainer<SumByDateSection>>
+//        get() = client.getStatsByDateSumBySection(token, )
+
+    val transactions: Observable<TransactionsSearchLegacyRs>
+        get() = client.getTransactions(token)
 
     init {
         val serverIp = sharedPreferences.getString(appl_settings_server_ip.name, null)
@@ -58,59 +72,61 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
         client = retrofit.create(MoneyCalcClient::class.java)
     }
 
-//    fun setToken(token: String) {
-//        this.token = token
-//        sharedPreferences.edit().putString(appl_storage_token.name, token).apply()
-//    }
-
-    fun registerPerson(credentials: Credentials): Observable<MoneyCalcRs<Void>> {
-        return client!!.registerPerson(credentials)
+    fun registerPerson(credentials: Credentials): Observable<Person> {
+        return client.registerPerson(credentials)
     }
 
     fun login(access: Access): Observable<Response<Void>> {
-        return client!!.login(access)
+        return client.login(access)
     }
 
-    fun updateSettings(settings: SettingsLegacy): Observable<MoneyCalcRs<SettingsLegacy>> {
-        return client!!.updateSettings(token, settings)
+    fun updateSettings(settings: SettingsLegacy): Observable<SettingsLegacy> {
+        return client.updateSettings(token, settings)
+    }
+
+    fun addSpendingSection(spendingSection: SpendingSection): Observable<SpendingSectionsSearchRs> {
+        return client.addSpendingSection(token, spendingSection)
+    }
+
+    fun updateSpendingSection(updateContainer: SpendingSectionUpdateContainer): Observable<SpendingSectionsSearchRs> {
+        return client.updateSpendingSection(token, updateContainer)
+    }
+
+    fun deleteSpendingSection(deleteId: Int?): Observable<SpendingSectionsSearchRs> {
+        return client.deleteSpendingSection(token, deleteId)
+    }
+
+    fun getStatsBySectionSummary(): Observable<ItemsContainer<SummaryBySection>> {
+        return client.getStatsBySectionSummary(token)
+    }
+
+    fun getStatsBySectionSum(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumBySection>> {
+        return client.getStatsBySectionSum(token, statisticsFilter)
+    }
+
+    fun getStatsByDateSum(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumByDate>> {
+        return client.getStatsByDateSum(token, statisticsFilter)
+    }
+
+    fun getStatsByDateSection(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumByDateSection>> {
+        return client.getStatsByDateSumBySection(token, statisticsFilter)
+    }
+
+    fun addTransaction(transaction: TransactionLegacy): Observable<TransactionLegacy> {
+        return client.addTransaction(token, transaction)
+    }
+
+    fun getTransactions(container: TransactionsSearchFilterLegacy): Observable<TransactionsSearchLegacyRs> {
+        return client.getTransactions(token, container)
     }
 
 
-    fun addSpendingSection(spendingSection: SpendingSection): Observable<MoneyCalcRs<List<SpendingSection>>> {
-        return client!!.addSpendingSection(token, spendingSection)
+    fun deleteTransaction(transactionId: Int?): Observable<Void> {
+        return client.deleteTransaction(token, transactionId)
     }
 
 
-    fun updateSpendingSection(updateContainer: SpendingSectionUpdateContainer): Observable<MoneyCalcRs<List<SpendingSection>>> {
-        return client!!.updateSpendingSection(token, updateContainer)
-    }
-
-
-    fun deleteSpendingSection(deleteId: Int?): Observable<MoneyCalcRs<List<SpendingSection>>> {
-        return client!!.deleteSpendingSection(token, deleteId)
-    }
-
-
-    fun getFinanceSummaryBySection(getContainer: FinanceSummaryFilterLegacy): Observable<MoneyCalcRs<List<FinanceSummaryBySection>>> {
-        return client!!.getFinanceSummaryBySection(token, getContainer)
-    }
-
-
-    fun addTransaction(transaction: TransactionLegacy): Observable<MoneyCalcRs<TransactionLegacy>> {
-        return client!!.addTransaction(token, transaction)
-    }
-
-    fun getTransactions(container: TransactionsSearchFilterLegacy): Observable<MoneyCalcRs<MutableList<TransactionLegacy>>> {
-        return client!!.getTransactions(token, container)
-    }
-
-
-    fun deleteTransaction(transactionId: Int?): Observable<MoneyCalcRs<Void>> {
-        return client!!.deleteTransaction(token, transactionId)
-    }
-
-
-    fun updateTransaction(transactionUpdateContainer: TransactionUpdateContainerLegacy): Observable<MoneyCalcRs<TransactionLegacy>> {
-        return client!!.updateTransaction(token, transactionUpdateContainer)
+    fun updateTransaction(transactionUpdateContainer: TransactionUpdateContainerLegacy): Observable<TransactionLegacy> {
+        return client.updateTransaction(token, transactionUpdateContainer)
     }
 }

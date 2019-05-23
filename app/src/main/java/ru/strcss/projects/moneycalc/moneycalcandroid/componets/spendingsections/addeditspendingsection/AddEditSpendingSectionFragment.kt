@@ -14,7 +14,7 @@ import dagger.android.support.DaggerFragment
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.SPENDING_SECTION
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsContract
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.hideSoftKeyboard
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
 import java.util.concurrent.atomic.AtomicInteger
@@ -56,7 +56,6 @@ constructor() : DaggerFragment(), AddEditSpendingSectionContract.View, SpendingS
         }
 
         if (isEditingSpendingSection) {
-//            setUpdatedSpendingSectionData(updatedSectionData)
             updatedSectionData?.let {
                 setUpdatedSpendingSectionData(it)
                 fabAddSpendingSection.setImageResource(R.drawable.ic_edit_white_24dp)

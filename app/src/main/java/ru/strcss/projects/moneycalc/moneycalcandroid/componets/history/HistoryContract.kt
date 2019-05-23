@@ -10,7 +10,7 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
 interface HistoryContract {
     interface View : BaseView<Presenter> {
 
-        fun showTransactions(transactions: MutableList<TransactionLegacy>?)
+        fun showTransactions(transactions: List<TransactionLegacy>?)
 
         fun showDeleteSuccess()
 

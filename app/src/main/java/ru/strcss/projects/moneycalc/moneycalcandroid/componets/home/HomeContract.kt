@@ -2,8 +2,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.home
 
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.FinanceSummaryFilter
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 
 /**
  * This specifies the contract between the view and the homePresenter.
@@ -13,7 +12,7 @@ interface HomeContract {
 
         fun showDatesRange(from: String, to: String)
 
-        fun showStatisticsSections(financeSummary: List<FinanceSummaryBySection>?)
+        fun showStatisticsSections(financeSummary: List<SummaryBySection>?)
 
         fun showAddTransactionActivity()
 
@@ -23,15 +22,13 @@ interface HomeContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun requestFinanceSummary(financeSummaryGetContainer: FinanceSummaryFilter)
-
         fun requestSettings()
 
         fun requestSpendingSections()
 
-        fun requestSectionStatistics()
+        fun requestStatsBySectionSummary()
 
-        fun requestSectionStatistics(from: String, to: String, sections: List<Int>)
+//        fun requestSectionStatistics(from: String, to: String, sections: List<Int>)
 
         fun showAddTransactionActivity()
     }

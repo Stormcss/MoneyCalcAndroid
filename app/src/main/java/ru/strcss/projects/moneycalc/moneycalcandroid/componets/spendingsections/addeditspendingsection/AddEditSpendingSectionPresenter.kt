@@ -3,12 +3,12 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
@@ -34,22 +34,23 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
         moneyCalcServerDAO.addSpendingSection(spendingSection)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<List<SpendingSection>>> {
+                .subscribe(object : Observer<SpendingSectionsSearchRs> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
                         ex.printStackTrace()
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex))
+                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(addSectionRs: MoneyCalcRs<List<SpendingSection>>) {
-                        if (addSectionRs.isSuccessful) {
+                    override fun onNext(addSectionRs: SpendingSectionsSearchRs) {
+//                        if (addSectionRs.isSuccessful) {
                             eventBus.addSpendingSectionEvent(ADDED)
                             //                            view.showAddSuccess();
-                        } else {
-                            eventBus.addErrorEvent(addSectionRs.message)
+//                        } else {
+//                            eventBus.addErrorEvent(addSectionRs.message)
                             //                            view.showErrorMessage(addSectionRs.getMessage());
-                        }
+//                        }
                     }
                 })
     }
@@ -58,22 +59,23 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
         moneyCalcServerDAO.updateSpendingSection(SpendingSectionUpdateContainer(id, spendingSection))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<List<SpendingSection>>> {
+                .subscribe(object : Observer<SpendingSectionsSearchRs> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
                         ex.printStackTrace()
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex))
+                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(editSectionRs: MoneyCalcRs<List<SpendingSection>>) {
-                        if (editSectionRs.isSuccessful) {
+                    override fun onNext(editSectionRs: SpendingSectionsSearchRs) {
+//                        if (editSectionRs.isSuccessful) {
                             eventBus.addSpendingSectionEvent(EDITED)
                             //                            view.showEditSuccess();
-                        } else {
-                            eventBus.addErrorEvent(editSectionRs.message)
+//                        } else {
+//                            eventBus.addErrorEvent(editSectionRs.message)
                             //                            view.showErrorMessage(editSectionRs.getMessage());
-                        }
+//                        }
                     }
                 })
     }

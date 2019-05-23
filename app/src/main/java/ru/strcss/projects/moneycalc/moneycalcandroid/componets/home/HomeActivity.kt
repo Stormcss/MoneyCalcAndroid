@@ -20,8 +20,10 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.Settings
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivityOnCondition
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.showAboutPopup
 import javax.inject.Inject
+
 
 class HomeActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,6 +43,7 @@ class HomeActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
         setSupportActionBar(toolbar)
 
         changeActivityOnCondition(moneyCalcServerDAO.token == null, this@HomeActivity, LoginActivity::class.java)
@@ -88,7 +91,10 @@ class HomeActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             R.id.menu_settings -> startActivity(Intent(this, SettingsActivity::class.java))
             R.id.menu_refresh -> {
                 homePresenter.requestSettings()
-                homePresenter.requestSectionStatistics()
+                homePresenter.requestStatsBySectionSummary()
+            }
+            R.id.menu_about -> {
+                showAboutPopup(this)
             }
             R.id.menu_logout -> {
                 moneyCalcServerDAO.token = null

@@ -1,15 +1,16 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic
 
 import retrofit2.HttpException
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import java.io.IOException
 import java.util.regex.Pattern
 
 class ComponentsUtils {
 
     companion object {
-        private val messageRegex = "\"message\":\"(.*?)\""
+        private val messageRegex = "\"userMessage\":\"(.*?)\""
         private val messageGetterPattern = Pattern.compile(messageRegex)
 
         fun getSpendingSectionByInnerId(spendingSections: List<SpendingSection>?, id: Int): SpendingSection? {
@@ -41,11 +42,13 @@ class ComponentsUtils {
         }
 
         fun getLogoIdBySectionId(spendingSections: List<SpendingSection>?, sectionId: Int?): Int? {
+            val s = SpendingSectionsSearchRs();
+
             val spendingSection = getSpendingSectionByInnerId(spendingSections, sectionId!!)
             return spendingSection?.logoId
         }
 
-        fun getFinanceSummaryBySectionById(financeList: List<FinanceSummaryBySection>, id: Int): FinanceSummaryBySection? {
+        fun getStatsSummaryBySectionById(financeList: List<SummaryBySection>, id: Int): SummaryBySection? {
             for (financeSummaryBySection in financeList) {
                 if (financeSummaryBySection.sectionId == id)
                     return financeSummaryBySection

@@ -5,11 +5,12 @@ import lombok.Getter
 import lombok.Setter
 import ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_login
 import ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_username
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import javax.inject.Singleton
 
 @Getter
@@ -19,9 +20,9 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
     val activeUserData = ActiveUserData()
 
     var settings: SettingsLegacy? = null
-    var spendingSections: List<SpendingSection>? = null
-    var financeSummary: List<FinanceSummaryBySection>? = null
-    var transactionList: MutableList<TransactionLegacy>? = null
+    var spendingSections: SpendingSectionsSearchRs? = null
+    var statsBySectionSummary: ItemsContainer<SummaryBySection>? = null
+    var transactions: TransactionsSearchLegacyRs? = null
 
     var transactionsFilter: TransactionsSearchFilterLegacy? = null
 
@@ -32,8 +33,8 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
     fun clearStorage() {
         this.settings = null
         this.spendingSections = null
-        this.financeSummary = null
-        this.transactionList = null
+        this.statsBySectionSummary = null
+        this.transactions = null
         this.transactionsFilter = null
         this.activeUserData.clearData()
     }
@@ -54,14 +55,6 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
                 field = value
                 sharedPreferences.edit().putString(appl_storage_username.name, userName).apply()
             }
-
-//        fun setUserLogin(userLogin: String) {
-//            this.userLogin = userLogin
-//            sharedPreferences.edit().putString(appl_storage_login.name, userLogin).apply()
-//        }
-//        fun setUserName(userName: String) {
-//            this.userName = userName
-//        }
 
         fun clearData() {
             this.userLogin = null

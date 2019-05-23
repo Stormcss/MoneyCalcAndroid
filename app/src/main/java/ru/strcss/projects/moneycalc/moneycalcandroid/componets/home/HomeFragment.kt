@@ -18,9 +18,9 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.sectiontabs.
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.sectiontabs.TabHolder
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToPretty
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getFinanceSummaryBySectionById
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getLogoIdBySectionId
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getStatsSummaryBySectionById
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import javax.inject.Inject
 
 class HomeFragment @Inject
@@ -71,8 +71,8 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
             val periodTo = dataStorage.settings!!.periodTo
             showDatesRange(periodFrom, periodTo)
         }
-        if (dataStorage.financeSummary != null) {
-            showStatisticsSections(dataStorage.financeSummary)
+        if (dataStorage.statsBySectionSummary != null) {
+            showStatisticsSections(dataStorage.statsBySectionSummary?.items)
         }
 
         this.updateStatsAndSettings()
@@ -90,7 +90,7 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
         tvDatesRange!!.text = String.format("%s - %s", formatDateToPretty(from), formatDateToPretty(to))
     }
 
-    override fun showStatisticsSections(financeSummaryList: List<FinanceSummaryBySection>?) {
+    override fun showStatisticsSections(financeSummaryList: List<SummaryBySection>?) {
         adapter!!.clearFragments()
         tabAdapter!!.data.clear()
 
@@ -100,7 +100,7 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
                 adapter!!.addFrag(fView, finSumBySec.sectionName)
                 val tabHolder = TabHolder(finSumBySec.sectionId, null, finSumBySec.sectionName)
                 if (dataStorage.spendingSections != null) {
-                    tabHolder.logoId = getLogoIdBySectionId(dataStorage.spendingSections, finSumBySec.sectionId)
+                    tabHolder.logoId = getLogoIdBySectionId(dataStorage.spendingSections?.items, finSumBySec.sectionId)
                     areTabLogosShown = true
                 }
                 tabAdapter!!.data.add(tabHolder)
@@ -114,10 +114,10 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
 
         for (fragment in fragmentManager!!.fragments) {
             if (fragment.javaClass == HomeStatsFragment::class.java) {
-                val oldSBS = fragment.arguments!!.getSerializable(FINANCE_SUMMARY_BY_SECTION) as FinanceSummaryBySection
+                val oldSBS = fragment.arguments!!.getSerializable(FINANCE_SUMMARY_BY_SECTION) as SummaryBySection
 
                 fragment.arguments!!.putSerializable(FINANCE_SUMMARY_BY_SECTION,
-                        getFinanceSummaryBySectionById(financeSummaryList, oldSBS.sectionId))
+                        getStatsSummaryBySectionById(financeSummaryList, oldSBS.sectionId))
                 fragmentManager.beginTransaction().detach(fragment).attach(fragment).commitAllowingStateLoss()
             }
         }
@@ -130,12 +130,12 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
 
     override fun updateStatsAndSettings() {
         presenter.requestSettings()
-        presenter.requestSectionStatistics()
+        presenter.requestStatsBySectionSummary()
     }
 
     override fun redrawTabLogos() {
-        if (!areTabLogosShown && dataStorage.financeSummary != null) {
-            showStatisticsSections(dataStorage.financeSummary)
+        if (!areTabLogosShown && dataStorage.statsBySectionSummary != null) {
+            showStatisticsSections(dataStorage.statsBySectionSummary?.items)
         }
     }
 

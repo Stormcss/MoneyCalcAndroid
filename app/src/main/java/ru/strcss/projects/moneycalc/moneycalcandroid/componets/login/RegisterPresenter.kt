@@ -4,7 +4,7 @@ import retrofit2.Response
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials
 import rx.Observer
@@ -25,11 +25,11 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO) : Regis
                 .subscribeOn(Schedulers.io())
                 .flatMap { loginRs ->
                     println("loginRs = $loginRs")
-                    if (loginRs.isSuccessful) {
-                        moneyCalcServerDAO.login(credentials.access)
-                    } else {
-                        throw RuntimeException(loginRs.message)
-                    }
+//                    if (loginRs.isSuccessful) {
+                    moneyCalcServerDAO.login(credentials.access)
+//                    } else {
+//                        throw RuntimeException(loginRs.message)
+//                    }
                 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Response<Void>> {

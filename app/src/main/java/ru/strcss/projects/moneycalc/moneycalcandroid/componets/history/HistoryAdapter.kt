@@ -17,7 +17,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.setViewVisibility
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.setViewVisibility
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getLogoIdBySectionId
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
@@ -46,7 +46,7 @@ class HistoryAdapter(private val mContext: Context,
         holder.date.text = DatesUtils.formatDateToPretty(transaction.date)
         holder.sum.text = transaction.sum.toString()
 
-        val sectionLogoId = getLogoIdBySectionId(dataStorage.spendingSections, transaction.sectionId)
+        val sectionLogoId = getLogoIdBySectionId(dataStorage.spendingSections?.items, transaction.sectionId)
         if (sectionLogoId != null) {
             holder.logo.setImageResource(logoStorage.get(sectionLogoId))
         }

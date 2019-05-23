@@ -137,11 +137,11 @@ constructor() : DaggerFragment(), HistoryContract.View {
         }
     }
 
-    override fun showTransactions(transactions: MutableList<TransactionLegacy>?) {
+    override fun showTransactions(transactions: List<TransactionLegacy>?) {
         if (transactions!!.isEmpty())
-            noItemsBlock!!.visibility = View.VISIBLE
+            noItemsBlock?.visibility = View.VISIBLE
         else
-            noItemsBlock!!.visibility = View.GONE
+            noItemsBlock?.visibility = View.GONE
         adapter!!.updateList(transactions)
     }
 
@@ -173,11 +173,11 @@ constructor() : DaggerFragment(), HistoryContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter!!.takeView(this)
+        presenter.takeView(this)
     }
 
     override fun onDestroy() {
-        presenter!!.dropView()
+        presenter.dropView()
         super.onDestroy()
     }
 

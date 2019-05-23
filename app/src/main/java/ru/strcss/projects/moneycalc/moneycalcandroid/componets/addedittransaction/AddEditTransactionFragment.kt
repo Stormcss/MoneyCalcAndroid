@@ -17,8 +17,8 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.BaseSpendingSectionRVAdapter
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingsecionrvadapters.SpendingSectionRVSingleChooseAdapter
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.hideSoftKeyboard
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.hideSoftKeyboard
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.*
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper

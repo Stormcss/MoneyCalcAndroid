@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.FINANCE_SUMMARY_BY_SECTION
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.FinanceSummaryBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 
 class HomeStatsFragment : Fragment(), HomeStatsContract.View {
 
@@ -23,7 +23,7 @@ class HomeStatsFragment : Fragment(), HomeStatsContract.View {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.home_stats_frag, container, false)
 
-        val financeSummary = arguments!!.getSerializable(FINANCE_SUMMARY_BY_SECTION) as FinanceSummaryBySection
+        val financeSummary = arguments!!.getSerializable(FINANCE_SUMMARY_BY_SECTION) as SummaryBySection
 
         tvDayBalance = root.findViewById(R.id.home_stats_day_balance)
         tvSummaryBalance = root.findViewById(R.id.home_stats_summaryBalance)
@@ -63,11 +63,11 @@ class HomeStatsFragment : Fragment(), HomeStatsContract.View {
 
     companion object {
 
-        fun newInstance(financeSummary: FinanceSummaryBySection): HomeStatsFragment {
+        fun newInstance(summaryBySection: SummaryBySection): HomeStatsFragment {
             val fragment = HomeStatsFragment()
 
             val args = Bundle()
-            args.putSerializable(FINANCE_SUMMARY_BY_SECTION, financeSummary)
+            args.putSerializable(FINANCE_SUMMARY_BY_SECTION, summaryBySection)
             fragment.arguments = args
 
             return fragment

@@ -20,7 +20,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivi
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivityOnCondition
 import javax.inject.Inject
 
 class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -92,6 +92,9 @@ class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNav
                 startActivity(i)
             }
             R.id.menu_refresh -> presenter.requestSpendingSections()
+            R.id.menu_about -> {
+                ActivityUtils.showAboutPopup(this)
+            }
             R.id.menu_logout -> {
                 moneyCalcServerDAO.token = null
                 changeActivityOnCondition(true, this, LoginActivity::class.java)

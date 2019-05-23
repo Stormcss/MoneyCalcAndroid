@@ -3,11 +3,11 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransacti
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.ADDED
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.EDITED
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
@@ -36,7 +36,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
         moneyCalcServerDAO.addTransaction(transaction)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<TransactionLegacy>> {
+                .subscribe(object : Observer<TransactionLegacy> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
@@ -46,19 +46,18 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
                         //                        String errorBodyMessage = getErrorBodyMessage((HttpException) ex);
                         //                        System.err.println("showAddTransactionActivity onErro: " + errorBodyMessage);
                         //                        view.showErrorMessage(errorBodyMessage);
+                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(transactionRs: MoneyCalcRs<TransactionLegacy>) {
-                        if (transactionRs.isSuccessful) {
-                            eventBus.addTransactionEvent(ADDED)
-                            if (view != null) {
-                                view!!.showAddSuccess()
-                            }
-                        } else {
-                            eventBus.addErrorEvent(transactionRs.message)
-                            //                            System.err.println(transactionRs);
-                            //                            view.showErrorMessage(transactionRs.toString());
-                        }
+                    override fun onNext(transactionRs: TransactionLegacy) {
+//                        if (transactionRs.isSuccessful) {
+                        eventBus.addTransactionEvent(ADDED)
+                        view?.showAddSuccess()
+//                        } else {
+//                        eventBus.addErrorEvent(transactionRs.message)
+                        //                            System.err.println(transactionRs);
+                        //                            view.showErrorMessage(transactionRs.toString());
+//                        }
                     }
                 })
     }
@@ -68,7 +67,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
         moneyCalcServerDAO.updateTransaction(container)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<TransactionLegacy>> {
+                .subscribe(object : Observer<TransactionLegacy> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
@@ -76,19 +75,18 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
                         //                        showErrorMessageFromException(ex, view);
                         //                        view.showErrorMessage(ex.getMessage());
                         //                        ex.printStackTrace();
+                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(transactionRs: MoneyCalcRs<TransactionLegacy>) {
-                        if (transactionRs.isSuccessful) {
-                            eventBus.addTransactionEvent(EDITED)
-                            if (view != null) {
-                                view!!.showEditSuccess()
-                            }
-                        } else {
-                            eventBus.addErrorEvent(transactionRs.message)
-                            //                            System.err.println(transactionRs);
-                            //                            view.showErrorMessage(transactionRs.toString());
-                        }
+                    override fun onNext(transactionRs: TransactionLegacy) {
+//                        if (transactionRs.isSuccessful) {
+                        eventBus.addTransactionEvent(EDITED)
+                        view?.showEditSuccess()
+//                        } else {
+//                            eventBus.addErrorEvent(transactionRs.message)
+                        //                            System.err.println(transactionRs);
+                        //                            view.showErrorMessage(transactionRs.toString());
+//                        }
                     }
                 })
 
@@ -98,7 +96,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
         moneyCalcServerDAO.spendingSections
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<List<SpendingSection>>> {
+                .subscribe(object : Observer<SpendingSectionsSearchRs> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
@@ -106,15 +104,16 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private
                         //                        showErrorMessageFromException(ex, view);
                         //                        view.showErrorMessage(ex.getMessage());
                         //                        ex.printStackTrace();
+                        view?.showErrorMessage(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(sectionsRs: MoneyCalcRs<List<SpendingSection>>) {
-                        if (sectionsRs.isSuccessful) {
-                            view!!.showSpendingSections(sectionsRs.payload)
+                    override fun onNext(sectionsRs: SpendingSectionsSearchRs) {
+//                        if (sectionsRs.isSuccessful) {
+                        view?.showSpendingSections(sectionsRs.items)
                             //                            view.showSpendingSections(sortSpendingSectionListById(sectionsRs.getPayload()));
-                        } else {
-                            view!!.showErrorMessage(sectionsRs.toString())
-                        }
+//                        } else {
+//                            view!!.showErrorMessage(sectionsRs.toString())
+//                        }
                     }
                 })
     }

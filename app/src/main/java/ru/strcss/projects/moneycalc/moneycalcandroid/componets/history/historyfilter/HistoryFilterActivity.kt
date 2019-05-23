@@ -20,7 +20,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.common.spendingse
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.OnKeyboardVisibilityListener
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.changeActivityOnCondition
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivityOnCondition
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.*
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.setKeyboardVisibilityListener

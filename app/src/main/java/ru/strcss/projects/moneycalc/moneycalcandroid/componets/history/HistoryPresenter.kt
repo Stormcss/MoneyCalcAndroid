@@ -4,11 +4,10 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus
-import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.events.CrudEvent.*
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.MoneyCalcRs
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -35,7 +34,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
         eventBus.subscribeTransactionEvent()
                 .subscribe { transactionEvent ->
                     if (transactionEvent == REQUESTED) {
-                        view?.showTransactions(dataStorage.transactionList)
+                        view?.showTransactions(dataStorage.transactions?.items)
                         view?.showFilterWindow()
 
                     }
@@ -54,54 +53,54 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
         moneyCalcServerDAO.transactions
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<MutableList<TransactionLegacy>>> {
+                .subscribe(object : Observer<TransactionsSearchLegacyRs> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
                         println("requestTransactions onError!!!!! " + ex.message)
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex))
                         //                        view.showErrorMessage(ex.getMessage());
+
+                        println("getErrorBodyMessage(ex) - " + getErrorBodyMessage(ex))
+                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
                     }
 
-                    override fun onNext(transactionsListRs: MoneyCalcRs<MutableList<TransactionLegacy>>) {
-                        println("requestTransactions. transactionsListRs = $transactionsListRs")
-                        if (transactionsListRs.isSuccessful) {
-                            dataStorage.transactionList = transactionsListRs.payload
-                            view?.showTransactions(transactionsListRs.payload)
-                        } else {
-                            eventBus.addErrorEvent(transactionsListRs.message)
-                            //                            view.showErrorMessage(transactionsListRs.getMessage());
-                        }
+                    override fun onNext(transactionsSearchRs: TransactionsSearchLegacyRs) {
+                        println("requestTransactions. transactionsListRs = $transactionsSearchRs")
+//                        if (transactionsListRs.isSuccessful) {
+                        dataStorage.transactions = transactionsSearchRs
+                        view?.showTransactions(transactionsSearchRs.items)
+//                        } else {
+//                            eventBus.addErrorEvent(transactionsListRs.message)
+//                        }
                         view?.hideSpinner()
                     }
                 })
     }
 
     override fun deleteTransaction(id: Int?) {
-
         moneyCalcServerDAO.deleteTransaction(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<MoneyCalcRs<Void>> {
+                .subscribe(object : Observer<Void> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
-                        println("requestTransactions onError!!!!! " + ex.message)
+                        println("deleteTransaction onError!!!!! " + ex.message)
                         snackBarAction(getAppContext(), getErrorBodyMessage(ex))
                         //                        view.showErrorMessage(ex.getMessage());
                     }
 
-                    override fun onNext(rs: MoneyCalcRs<Void>) {
-                        println("requestTransactions. rs = $rs")
-                        if (rs.isSuccessful) {
-                            dataStorage.transactionList!!.clear()
-                            eventBus.addTransactionEvent(DELETED)
-                            view!!.showDeleteSuccess()
-                            //                            view.showDeleteSuccess(getContext().getString(R.string.transaction_delete_success));
-                        } else {
-                            view!!.showErrorMessage(rs.message)
-                        }
-                        view!!.hideSpinner()
+                    override fun onNext(rs: Void?) {
+//                        if (rs.isSuccessful) {
+                        dataStorage.transactions?.items?.clear()
+                        eventBus.addTransactionEvent(DELETED)
+                        view?.showDeleteSuccess()
+                        //                            view.showDeleteSuccess(getContext().getString(R.string.transaction_delete_success));
+//                        } else {
+//                            view!!.showErrorMessage(rs.message)
+//                        }
+                        view?.hideSpinner()
                     }
                 })
 

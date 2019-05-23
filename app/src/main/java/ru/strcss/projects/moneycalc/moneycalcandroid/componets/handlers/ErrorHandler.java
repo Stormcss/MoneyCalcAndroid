@@ -4,9 +4,9 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils;
 import rx.functions.Action1;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
 
 @Singleton
 public class ErrorHandler {
@@ -19,7 +19,7 @@ public class ErrorHandler {
         eventBus.subscribeErrorEvent().subscribe(new Action1<String>() {
             @Override
             public void call(String errorMsg) {
-                snackBarAction(errorMsg);
+                ActivityUtils.Companion.snackBarAction(errorMsg);
             }
         });
     }
