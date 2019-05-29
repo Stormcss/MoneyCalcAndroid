@@ -18,6 +18,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryAc
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.StatisticsActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivityOnCondition
@@ -117,10 +118,10 @@ class HomeActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemS
             val intent = Intent(this@HomeActivity, HistoryActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
-            //        } else if (id == R.id.nav_stats) {
-            //
-            //        } else if (id == R.id.nav_finance) {
-            //
+        } else if (id == R.id.nav_stats) {
+            val intent = Intent(this@HomeActivity, StatisticsActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         } else if (id == R.id.nav_spending_sections) {
             val intent = Intent(this@HomeActivity, SpendingSectionsActivity::class.java)
             startActivity(intent)

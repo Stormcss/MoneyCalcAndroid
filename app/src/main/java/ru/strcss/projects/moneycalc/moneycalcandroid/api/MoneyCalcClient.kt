@@ -6,13 +6,13 @@ import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilter
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.*
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDate
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSectionLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import rx.Observable
@@ -58,18 +58,18 @@ interface MoneyCalcClient {
 
     @POST("/api/stats/bySection/sum")
     fun getStatsBySectionSum(@Header("Authorization") token: String?,
-                             @Body getContainer: StatisticsFilter): Observable<ItemsContainer<SumBySection>>
+                             @Body getContainer: StatisticsFilterLegacy): Observable<ItemsContainer<SumBySection>>
 
     /**
      * Statistics By Date
      */
     @POST("/api/stats/byDate/sum")
     fun getStatsByDateSum(@Header("Authorization") token: String?,
-                          @Body getContainer: StatisticsFilter): Observable<ItemsContainer<SumByDate>>
+                          @Body getContainer: StatisticsFilterLegacy): Observable<ItemsContainer<SumByDateLegacy>>
 
     @POST("/api/stats/byDate/sumBySection")
     fun getStatsByDateSumBySection(@Header("Authorization") token: String?,
-                                   @Body getContainer: StatisticsFilter): Observable<ItemsContainer<SumByDateSection>>
+                                   @Body getContainer: StatisticsFilterLegacy): Observable<ItemsContainer<SumByDateSectionLegacy>>
 
     /**
      * Transactions

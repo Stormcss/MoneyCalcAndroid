@@ -1,5 +1,6 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history
 
+import retrofit2.HttpException
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
@@ -58,21 +59,24 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
 
                     override fun onError(ex: Throwable) {
                         println("requestTransactions onError!!!!! " + ex.message)
-                        snackBarAction(getAppContext(), getErrorBodyMessage(ex))
-                        //                        view.showErrorMessage(ex.getMessage());
+                        val message = getErrorBodyMessage(ex)
+                        snackBarAction(getAppContext(), message)
+                        println("getErrorBodyMessage(ex) - " + message)
 
-                        println("getErrorBodyMessage(ex) - " + getErrorBodyMessage(ex))
-                        eventBus.addErrorEvent(getErrorBodyMessage(ex))
+                        eventBus.addErrorEvent(message)
+
+                        if (ex is HttpException && ex.code() == 403) {
+                            moneyCalcServerDAO.token = null
+                            view?.navigateToLoginActivity()
+                        }
+
                     }
 
                     override fun onNext(transactionsSearchRs: TransactionsSearchLegacyRs) {
                         println("requestTransactions. transactionsListRs = $transactionsSearchRs")
-//                        if (transactionsListRs.isSuccessful) {
+
                         dataStorage.transactions = transactionsSearchRs
                         view?.showTransactions(transactionsSearchRs.items)
-//                        } else {
-//                            eventBus.addErrorEvent(transactionsListRs.message)
-//                        }
                         view?.hideSpinner()
                     }
                 })

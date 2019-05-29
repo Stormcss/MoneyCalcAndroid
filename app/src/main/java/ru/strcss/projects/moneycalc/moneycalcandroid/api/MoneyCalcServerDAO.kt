@@ -12,13 +12,13 @@ import ru.strcss.projects.moneycalc.moneycalcdto.dto.Credentials
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.settings.SpendingSectionUpdateContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilter
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionUpdateContainerLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.*
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDate
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSectionLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import rx.Observable
@@ -100,15 +100,15 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
         return client.getStatsBySectionSummary(token)
     }
 
-    fun getStatsBySectionSum(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumBySection>> {
+    fun getStatsBySectionSum(statisticsFilter: StatisticsFilterLegacy): Observable<ItemsContainer<SumBySection>> {
         return client.getStatsBySectionSum(token, statisticsFilter)
     }
 
-    fun getStatsByDateSum(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumByDate>> {
+    fun getStatsByDateSum(statisticsFilter: StatisticsFilterLegacy): Observable<ItemsContainer<SumByDateLegacy>> {
         return client.getStatsByDateSum(token, statisticsFilter)
     }
 
-    fun getStatsByDateSection(statisticsFilter: StatisticsFilter): Observable<ItemsContainer<SumByDateSection>> {
+    fun getStatsByDateSection(statisticsFilter: StatisticsFilterLegacy): Observable<ItemsContainer<SumByDateSectionLegacy>> {
         return client.getStatsByDateSumBySection(token, statisticsFilter)
     }
 

@@ -21,7 +21,9 @@ import dagger.android.support.DaggerFragment
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.addedittransaction.AddEditTransactionActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyfilter.HistoryFilterActivity
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
 import java.util.*
@@ -169,6 +171,10 @@ constructor() : DaggerFragment(), HistoryContract.View {
 
     override fun hideFilterWindow() {
         filterWindow!!.visibility = View.GONE
+    }
+
+    override fun navigateToLoginActivity() {
+        changeActivity(context!!, LoginActivity::class.java)
     }
 
     override fun onResume() {

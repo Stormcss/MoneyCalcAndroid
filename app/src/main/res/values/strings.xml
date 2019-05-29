@@ -99,6 +99,12 @@
     <string name="preferences_period_to">Конец периода</string>
     <string name="settings_update_success">Настройки успешно обновлены</string>
 
+    <!-- Statistics Activity -->
+    <string name="stats_by_section_sum">Сумма по секциям</string>
+    <string name="stats_by_date_sum">Сумма по дням</string>
+    <string name="stats_by_date_section_sum">Сумма по дням и секциям</string>
+
+
     <!-- Application Settings Activity -->
     <string name="appl_settings_server_address">Адрес сервера</string>
     <string name="appl_settings_server_ip">IP адрес сервера</string>

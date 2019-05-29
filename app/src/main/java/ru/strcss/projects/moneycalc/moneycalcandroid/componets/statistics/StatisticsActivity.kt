@@ -1,16 +1,17 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.TabLayout
 import android.support.v4.view.GravityCompat
+import android.support.v4.view.ViewPager
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import dagger.Lazy
 import dagger.android.support.DaggerAppCompatActivity
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
@@ -18,19 +19,17 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.HistoryAc
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.home.HomeActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.settings.SettingsActivity
-import ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.StatisticsActivity
+import ru.strcss.projects.moneycalc.moneycalcandroid.componets.spendingsections.SpendingSectionsActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivityOnCondition
 import javax.inject.Inject
 
-class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
-    @Inject
-    lateinit var presenter: SpendingSectionsPresenter
-
-    @Inject
-    lateinit var spendingSectionsFragmentProvider: Lazy<SpendingSectionsFragment>
+/**
+ * Created by Stormcss
+ * Date: 28.05.2019
+ */
+class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
@@ -40,33 +39,45 @@ class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNav
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.spendingsections_activity)
+        setContentView(R.layout.stats_activity)
+
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        toolbar.setTitle(R.string.menu_spending_sections)
+        toolbar.setTitle(R.string.menu_stats)
         setSupportActionBar(toolbar)
 
-        changeActivityOnCondition(moneyCalcServerDAO.token == null, this@SpendingSectionsActivity, LoginActivity::class.java)
-
         val drawer = findViewById<DrawerLayout>(R.id.drawer_layout)
-        val toggle = ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        val toggle = ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer.addDrawerListener(toggle)
         toggle.syncState()
 
         val navigationView = findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
-        var spendingSectionsFragment: SpendingSectionsFragment? =
-                supportFragmentManager.findFragmentById(R.id.spendingSections_contentFrame) as? SpendingSectionsFragment
-        if (spendingSectionsFragment == null) {
-            // Get the fragment from dagger
-            spendingSectionsFragment = spendingSectionsFragmentProvider.get()
-            ActivityUtils.addFragmentToActivity(
-                    supportFragmentManager, spendingSectionsFragment!!, R.id.spendingSections_contentFrame)
-        }
+        //fragments setup
+        val tabLayout = findViewById<TabLayout>(R.id.stats_tabLayout)
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.stats_by_section_sum)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.stats_by_date_sum)))
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.stats_by_date_section_sum)))
+        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+
+        val viewPager = findViewById<ViewPager>(R.id.stats_viewPager)
+        val adapter = StatisticsPagerAdapter(supportFragmentManager, tabLayout.tabCount)
+        viewPager.adapter = adapter
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+            }
+        })
 
         val headerView = navigationView.getHeaderView(0)
-
         val navHeaderUser = headerView.findViewById<TextView>(R.id.nav_header_user)
         navHeaderUser.text = dataStorage.activeUserData.userLogin
     }
@@ -92,7 +103,8 @@ class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNav
                 val i = Intent(this, SettingsActivity::class.java)
                 startActivity(i)
             }
-            R.id.menu_refresh -> presenter.requestSpendingSections()
+            R.id.menu_refresh -> {
+            }
             R.id.menu_about -> {
                 ActivityUtils.showAboutPopup(this)
             }
@@ -107,17 +119,19 @@ class SpendingSectionsActivity : DaggerAppCompatActivity(), NavigationView.OnNav
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        // Handle navigation view item clicks here.
         val id = item.itemId
 
         if (id == R.id.nav_home) {
-            startActivity(Intent(this@SpendingSectionsActivity, HomeActivity::class.java))
+            startActivity(Intent(this@StatisticsActivity, HomeActivity::class.java))
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         } else if (id == R.id.nav_history) {
-            val intent = Intent(this@SpendingSectionsActivity, HistoryActivity::class.java)
+            val intent = Intent(this@StatisticsActivity, HistoryActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         } else if (id == R.id.nav_stats) {
-            val intent = Intent(this@SpendingSectionsActivity, StatisticsActivity::class.java)
+        } else if (id == R.id.nav_spending_sections) {
+            val intent = Intent(this@StatisticsActivity, SpendingSectionsActivity::class.java)
             startActivity(intent)
             overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out)
         }

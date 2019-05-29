@@ -1,17 +1,19 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic
 
 import retrofit2.HttpException
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
 import java.io.IOException
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class ComponentsUtils {
 
     companion object {
         private val messageRegex = "\"userMessage\":\"(.*?)\""
+        private val messageHtmlRegex = "<title>(.*?)</title>"
         private val messageGetterPattern = Pattern.compile(messageRegex)
+        private val messageHtmlGetterPattern = Pattern.compile(messageHtmlRegex)
 
         fun getSpendingSectionByInnerId(spendingSections: List<SpendingSection>?, id: Int): SpendingSection? {
             if (spendingSections == null)
@@ -42,10 +44,15 @@ class ComponentsUtils {
         }
 
         fun getLogoIdBySectionId(spendingSections: List<SpendingSection>?, sectionId: Int?): Int? {
-            val s = SpendingSectionsSearchRs();
-
             val spendingSection = getSpendingSectionByInnerId(spendingSections, sectionId!!)
             return spendingSection?.logoId
+        }
+
+        fun getLogoIdByName(spendingSections: List<SpendingSection>?, name: String?): Int? {
+            return spendingSections
+                    ?.filter { spendingSection -> spendingSection.name == name }
+                    ?.map { spendingSection -> spendingSection.logoId }
+                    ?.firstOrNull()
         }
 
         fun getStatsSummaryBySectionById(financeList: List<SummaryBySection>, id: Int): SummaryBySection? {
@@ -65,9 +72,18 @@ class ComponentsUtils {
 
         fun getErrorBodyMessage(ex: HttpException): String {
             return try {
-                val errorJSON = ex.response().errorBody()!!.string()
+                val errorBody = ex.response().errorBody()
+                val errorJSON = errorBody!!.string()
+
                 System.err.println("errorJSON = $errorJSON")
-                val messageMatcher = messageGetterPattern.matcher(errorJSON)
+                var messageMatcher: Matcher?
+
+                if (errorBody.contentType()?.type().equals("text")) {
+                    messageMatcher = messageHtmlGetterPattern.matcher(errorJSON)
+                } else {
+                    messageMatcher = messageGetterPattern.matcher(errorJSON)
+                }
+
 
                 if (messageMatcher.find()) {
                     messageMatcher.group(1)

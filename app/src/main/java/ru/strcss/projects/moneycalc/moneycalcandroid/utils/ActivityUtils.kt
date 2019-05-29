@@ -35,6 +35,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import dagger.internal.Preconditions.checkNotNull
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
+import retrofit2.HttpException
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.SnackbarWrapper
 
@@ -106,6 +107,22 @@ class ActivityUtils {
                 intent.flags = intent.flags or FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
                 context.startActivity(intent)
             }
+        }
+
+        fun changeActivity(context: Context, targetActivity: Class<*>) {
+            val intent = Intent(context, targetActivity)
+            intent.flags = intent.flags or FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+            context.startActivity(intent)
+        }
+
+        fun changeActivityOnHttpExceptionCode(throwable: Throwable, code: Int, context: Context, targetActivity: Class<*>): Boolean {
+            if (throwable is HttpException && throwable.code() == code) {
+                val intent = Intent(context, targetActivity)
+                intent.flags = intent.flags or FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+                context.startActivity(intent)
+                return true
+            }
+            return false
         }
 
         fun setViewVisibility(view: View?, isShowed: Boolean) {

@@ -21,6 +21,8 @@ interface HistoryContract {
         fun showFilterWindow()
 
         fun hideFilterWindow()
+
+        fun navigateToLoginActivity()
     }
 
     interface Presenter : BasePresenter<View> {
