@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.bysectionsum
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbydate
 
 import retrofit2.HttpException
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
@@ -8,7 +8,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Compani
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLegacy
 import rx.Observer
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -17,16 +17,17 @@ import javax.inject.Singleton
 
 /**
  * Created by Stormcss
- * Date: 29.05.2019
+ * Date: 30.05.2019
  */
 @Singleton
-class StatisticsBySectionSumPresenter @Inject
+class StatisticsSumByDatePresenter @Inject
 internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
-                     private val dataStorage: DataStorage) : StatisticsSumBySectionContract.Presenter {
+                     private val dataStorage: DataStorage) : StatisticsSumByDateContract.Presenter {
+    private var view: StatisticsSumByDateContract.View? = null
 
-    private var view: StatisticsSumBySectionContract.View? = null
+    private val filter: StatisticsFilterLegacy = StatisticsFilterLegacy()
 
-    override fun takeView(view: StatisticsSumBySectionContract.View) {
+    override fun takeView(view: StatisticsSumByDateContract.View) {
         this.view = view
     }
 
@@ -34,16 +35,25 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
         view = null
     }
 
-    override fun requestStatsBySectionSum(filter: StatisticsFilterLegacy) {
-        moneyCalcServerDAO.getStatsBySectionSum(filter)
+    override fun setFilter(filter: StatisticsFilterLegacy, isStatsUpdateRequired: Boolean) {
+        this.filter.dateFrom = filter.dateFrom
+        this.filter.dateTo = filter.dateTo
+        this.filter.sectionIds = filter.sectionIds
+
+        if (isStatsUpdateRequired)
+            requestStatsByDateSum()
+    }
+
+    override fun requestStatsByDateSum() {
+        moneyCalcServerDAO.getStatsByDateSum(filter)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ItemsContainer<SumBySection>> {
+                .subscribe(object : Observer<ItemsContainer<SumByDateLegacy>> {
                     override fun onCompleted() {}
 
                     override fun onError(ex: Throwable) {
 
-                        println("requestStatsBySectionSum onError!!!!! " + ex.message)
+                        println("requestStatsByDateSum onError!!!!! " + ex.message)
                         val message = getErrorBodyMessage(ex)
                         snackBarAction(getAppContext(), message)
                         println("getErrorBodyMessage(ex) - " + message)
@@ -54,10 +64,10 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
                         }
                     }
 
-                    override fun onNext(statsItems: ItemsContainer<SumBySection>) {
+                    override fun onNext(statsItems: ItemsContainer<SumByDateLegacy>) {
                         println("requestStatsBySectionSum. statsItems = $statsItems")
 
-                        view?.showStatsBySectionSum(statsItems)
+                        view?.showStatsSumByDate(statsItems)
                         view?.hideSpinner()
                     }
                 })

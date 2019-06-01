@@ -7,6 +7,7 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenc
 import ru.strcss.projects.moneycalc.moneycalcandroid.ApplicationStoragePreferenceKey.appl_storage_username
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.spendingsections.SpendingSectionsSearchRs
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy
@@ -25,6 +26,7 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
     var transactions: TransactionsSearchLegacyRs? = null
 
     var transactionsFilter: TransactionsSearchFilterLegacy? = null
+    var statisticsFilter: StatisticsFilterLegacy? = null
 
     init {
         fillUserDataFromSharedPreferences()
@@ -36,6 +38,7 @@ class DataStorage(val sharedPreferences: SharedPreferences) {
         this.statsBySectionSummary = null
         this.transactions = null
         this.transactionsFilter = null
+        this.statisticsFilter = null
         this.activeUserData.clearData()
     }
 

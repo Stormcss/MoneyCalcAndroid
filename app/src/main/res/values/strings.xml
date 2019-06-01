@@ -100,9 +100,9 @@
     <string name="settings_update_success">Настройки успешно обновлены</string>
 
     <!-- Statistics Activity -->
-    <string name="stats_by_section_sum">Сумма по секциям</string>
-    <string name="stats_by_date_sum">Сумма по дням</string>
-    <string name="stats_by_date_section_sum">Сумма по дням и секциям</string>
+    <string name="stats_by_section_sum">Σ по статьям</string>
+    <string name="stats_by_date_sum">Σ по дням</string>
+    <string name="stats_by_date_section_sum">Σ по дням и статьям</string>
 
 
     <!-- Application Settings Activity -->

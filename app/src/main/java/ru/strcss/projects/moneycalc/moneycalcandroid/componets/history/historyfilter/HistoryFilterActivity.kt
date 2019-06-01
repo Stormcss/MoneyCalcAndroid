@@ -33,6 +33,15 @@ class HistoryFilterActivity @Inject
 constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
         BaseSpendingSectionRVAdapter.ItemClickListener, OnKeyboardVisibilityListener {
 
+    @Inject
+    lateinit var presenter: HistoryFilterContract.Presenter
+
+    @Inject
+    lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
+
+    @Inject
+    lateinit var dataStorage: DataStorage
+
     private var twDateFrom: TextView? = null
     private var twDateTo: TextView? = null
     private var rvSections: RecyclerView? = null
@@ -50,27 +59,17 @@ constructor() : DaggerAppCompatActivity(), HistoryFilterContract.View,
     private var ssAdapter: SpendingSectionRVMultiChooseAdapter? = null
     private val selectedRecyclerViewItems = HashSet<Int?>()
 
-    @Inject
-    lateinit var presenter: HistoryFilterContract.Presenter
-
-    @Inject
-    lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
-
-    @Inject
-    lateinit var dataStorage: DataStorage
-
-    internal val onDateFromSetListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+    private val onDateFromSetListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
         val date = getIsoDate(year, month + 1, dayOfMonth)
         twDateFrom!!.text = date
         filter!!.dateFrom = date
     }
 
-    internal val onDateToSetListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+    private val onDateToSetListener: DatePickerDialog.OnDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
         val date = getIsoDate(year, month + 1, dayOfMonth)
         twDateTo!!.text = date
         filter!!.dateTo = date
     }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

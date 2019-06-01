@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.bysectionsum
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbysection
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -13,7 +13,6 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
-import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.BaseStatistics
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
 import javax.inject.Inject
@@ -39,12 +38,12 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
     private var statsItems: ItemsContainer<SumBySection>? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val root = inflater.inflate(R.layout.stats_by_section_sum_frag, container, false)
+        val root = inflater.inflate(R.layout.stats_sum_by_section_frag, container, false)
 
         statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
         // Set up the login form.
 
-        rvStatsItems = root.findViewById(R.id.rv_stats_by_section_sum)
+        rvStatsItems = root.findViewById(R.id.rv_stats_sum_by_section)
 
         adapter = StatsSumBySectionAdapter(context!!, presenter, statsItems!!, dataStorage)
 
@@ -53,7 +52,8 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
         rvStatsItems!!.itemAnimator = DefaultItemAnimator()
         rvStatsItems!!.adapter = adapter
 
-        presenter.requestStatsBySectionSum(StatisticsFilterLegacy("2018-01-01", "2019-09-01", emptyList()))
+        presenter.requestStatsSumBySection()
+//        presenter.requestStatsSumBySection(StatisticsFilterLegacy("2018-01-01", "2019-09-01", emptyList()))
 
         return root
     }
@@ -68,8 +68,8 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
         super.onDestroy()
     }
 
-    override fun showStatsBySectionSum(statsItems: ItemsContainer<SumBySection>) {
-        adapter!!.updateStats(statsItems)
+    override fun showStatsSumBySection(statsItems: ItemsContainer<SumBySection>) {
+        adapter?.updateStats(statsItems)
     }
 
     override fun showErrorMessage(msg: String) {

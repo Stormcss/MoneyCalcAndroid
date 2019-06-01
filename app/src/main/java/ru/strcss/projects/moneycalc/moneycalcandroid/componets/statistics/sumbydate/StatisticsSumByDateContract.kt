@@ -1,19 +1,19 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.bysectionsum
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbydate
 
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLegacy
 
 /**
  * Created by Stormcss
  * Date: 29.05.2019
  */
-interface StatisticsSumBySectionContract {
+interface StatisticsSumByDateContract {
     interface View : BaseView<Presenter> {
 
-        fun showStatsBySectionSum(statsItems: ItemsContainer<SumBySection>)
+        fun showStatsSumByDate(statsItems: ItemsContainer<SumByDateLegacy>)
 
         fun showSpinner()
 
@@ -23,10 +23,8 @@ interface StatisticsSumBySectionContract {
     }
 
     interface Presenter : BasePresenter<View> {
-        fun requestStatsBySectionSum(filter: StatisticsFilterLegacy)
+        fun requestStatsByDateSum()
 
-//        fun requestStatsByDateSum()
-//
-//        fun requestStatsByDateSumBySection()
+        fun setFilter(filter: StatisticsFilterLegacy, isStatsUpdateRequired: Boolean)
     }
 }

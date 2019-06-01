@@ -1,4 +1,4 @@
-package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.bysectionsum
+package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbysection
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
@@ -24,13 +24,11 @@ class StatsSumBySectionAdapter(private val mContext: Context,
                                private val dataStorage: DataStorage)
     : RecyclerView.Adapter<StatsSumBySectionAdapter.StatsBySectionSumViewHolder>() {
 
-    private var checkedRvItem: View? = null
-
     private val logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatsBySectionSumViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.stats_by_section_sum_item, parent, false)
+                .inflate(R.layout.stats_sum_by_section_item, parent, false)
 
         return StatsBySectionSumViewHolder(itemView)
     }
@@ -64,9 +62,9 @@ class StatsSumBySectionAdapter(private val mContext: Context,
         internal var sum: TextView
 
         init {
-            logo = view.findViewById(R.id.stats_by_section_sum_logo)
-            name = view.findViewById(R.id.stats_by_section_sum_name)
-            sum = view.findViewById(R.id.stats_by_section_sum_sum)
+            logo = view.findViewById(R.id.stats_sum_by_section_logo)
+            name = view.findViewById(R.id.stats_sum_by_section_name)
+            sum = view.findViewById(R.id.stats_sum_by_section_sum)
         }
     }
 }

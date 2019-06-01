@@ -61,7 +61,7 @@ constructor() : DaggerFragment(), AddEditTransactionContract.View,
         val updatedTransactionData = bundle!!.get(TRANSACTION) as? TransactionLegacy
         val fabAddTransaction = activity!!.findViewById<FloatingActionButton>(R.id.fab_addEditTransaction_done)
 
-        twTransactionDate!!.text = formatDateToIsoString(Date())
+        twTransactionDate!!.text = formatDateToPretty(formatDateToIsoString(Date()))
 
         isEditingTransaction = updatedTransactionData != null
 
@@ -92,7 +92,8 @@ constructor() : DaggerFragment(), AddEditTransactionContract.View,
 
         val onDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             val date = getIsoDate(year, month + 1, dayOfMonth)
-            twTransactionDate!!.text = date
+            twTransactionDate!!.text = formatDateToPretty(date)
+//            twTransactionDate!!.text = date
             transactionDate = date
         }
 
@@ -136,7 +137,7 @@ constructor() : DaggerFragment(), AddEditTransactionContract.View,
         etTransactionSum!!.setText(transaction?.sum.toString())
         etTransactionTitle!!.setText(transaction?.title)
         etTransactionDesc!!.setText(transaction?.description)
-        twTransactionDate!!.text = transaction?.date
+        twTransactionDate!!.text = formatDateToPretty(transaction?.date)
 
         updatedTransactionSectionId = transaction?.sectionId!!
     }
