@@ -13,10 +13,8 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/indigo300"
-            android:paddingEnd="20dp"
-            android:paddingStart="20dp">
+            android:layout_height="25dp"
+            android:background="@color/indigo300">
 
             <TextView
                 android:layout_width="0dp"
@@ -31,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center"
-                android:text="Дата"
+                android:text="@string/stats_date"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp" />
 
@@ -40,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="4"
                 android:gravity="center_vertical"
-                android:text="Имя"
+                android:text="@string/stats_name"
                 android:textColor="@color/colorWhite"
                 android:textSize="16sp" />
 
@@ -49,7 +47,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:gravity="center_vertical"
-                android:text="Сумма"
+                android:text="@string/stats_sum"
                 android:textColor="@color/colorWhite" />
         </LinearLayout>
 

@@ -10,6 +10,7 @@ import android.widget.TextView
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils.Companion.formatNumberToPretty
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getLogoIdByName
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
@@ -36,7 +37,7 @@ class StatsSumBySectionAdapter(private val mContext: Context,
     override fun onBindViewHolder(holder: StatsBySectionSumViewHolder, position: Int) {
         val sumBySection = statsItemsList.items[position]
         holder.name.text = sumBySection.name
-        holder.sum.text = sumBySection.sum.toPlainString()
+        holder.sum.text = formatNumberToPretty(sumBySection.sum)
 
         val sectionLogoId = getLogoIdByName(dataStorage.spendingSections?.items, sumBySection.name)
         if (sectionLogoId != null) {

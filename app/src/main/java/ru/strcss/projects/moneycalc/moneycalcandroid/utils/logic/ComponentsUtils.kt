@@ -10,8 +10,8 @@ import java.util.regex.Pattern
 class ComponentsUtils {
 
     companion object {
-        private val messageRegex = "\"userMessage\":\"(.*?)\""
-        private val messageHtmlRegex = "<title>(.*?)</title>"
+        private const val messageRegex = "\"userMessage\":\"(.*?)\""
+        private const val messageHtmlRegex = "<title>(.*?)</title>"
         private val messageGetterPattern = Pattern.compile(messageRegex)
         private val messageHtmlGetterPattern = Pattern.compile(messageHtmlRegex)
 
@@ -76,14 +76,13 @@ class ComponentsUtils {
                 val errorJSON = errorBody!!.string()
 
                 System.err.println("errorJSON = $errorJSON")
-                var messageMatcher: Matcher?
+                val messageMatcher: Matcher?
 
                 if (errorBody.contentType()?.type().equals("text")) {
                     messageMatcher = messageHtmlGetterPattern.matcher(errorJSON)
                 } else {
                     messageMatcher = messageGetterPattern.matcher(errorJSON)
                 }
-
 
                 if (messageMatcher.find()) {
                     messageMatcher.group(1)
@@ -94,7 +93,6 @@ class ComponentsUtils {
                 e1.printStackTrace()
                 ex.message ?: ""
             }
-
         }
     }
 }

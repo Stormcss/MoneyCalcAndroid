@@ -11,6 +11,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToPretty
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getLogoIdByName
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateSectionLegacy
@@ -35,12 +36,12 @@ class StatsSumByDateSectionAdapter(private val mContext: Context,
     }
 
     override fun onBindViewHolder(holder: StatsBySectionSumViewHolder, position: Int) {
-        val sumBySection = statsItemsList.items[position]
-        holder.name.text = sumBySection.name
-        holder.date.text = formatDateToPretty(sumBySection.date)
-        holder.sum.text = sumBySection.sum.toPlainString()
+        val sumByDateSection = statsItemsList.items[position]
+        holder.name.text = sumByDateSection.name
+        holder.date.text = formatDateToPretty(sumByDateSection.date)
+        holder.sum.text = NumberUtils.formatNumberToPretty(sumByDateSection.sum)
 
-        val sectionLogoId = getLogoIdByName(dataStorage.spendingSections?.items, sumBySection.name)
+        val sectionLogoId = getLogoIdByName(dataStorage.spendingSections?.items, sumByDateSection.name)
         if (sectionLogoId != null) {
             holder.logo.setImageResource(logoStorage.get(sectionLogoId))
         }

@@ -103,6 +103,9 @@
     <string name="stats_by_section_sum">Σ по статьям</string>
     <string name="stats_by_date_sum">Σ по дням</string>
     <string name="stats_by_date_section_sum">Σ по дням и статьям</string>
+    <string name="stats_name">Имя</string>
+    <string name="stats_sum">Сумма</string>
+    <string name="stats_date">Дата</string>
 
 
     <!-- Application Settings Activity -->

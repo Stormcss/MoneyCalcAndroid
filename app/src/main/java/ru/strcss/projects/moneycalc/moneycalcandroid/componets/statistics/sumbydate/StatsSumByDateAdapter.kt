@@ -10,6 +10,7 @@ import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToPretty
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils.Companion.formatNumberToPretty
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLegacy
 
@@ -33,9 +34,9 @@ class StatsSumByDateAdapter(private val mContext: Context,
     }
 
     override fun onBindViewHolder(holder: StatsSumByDateViewHolder, position: Int) {
-        val sumBySection = statsItemsList.items[position]
-        holder.date.text = formatDateToPretty(sumBySection.date)
-        holder.sum.text = sumBySection.sum.toPlainString()
+        val sumByDate = statsItemsList.items[position]
+        holder.date.text = formatDateToPretty(sumByDate.date)
+        holder.sum.text = formatNumberToPretty(sumByDate.sum)
     }
 
     fun updateStats(statsItems: ItemsContainer<SumByDateLegacy>) {

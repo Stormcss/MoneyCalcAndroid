@@ -32,29 +32,25 @@ constructor() : DaggerFragment(), StatisticsSumByDateSectionContract.View {
     lateinit var dataStorage: DataStorage
 
     // UI references
-    private var rvStatsItems: RecyclerView? = null
-    private var adapter: StatsSumByDateSectionAdapter? = null
+    private lateinit var rvStatsItems: RecyclerView
+    private lateinit var adapter: StatsSumByDateSectionAdapter
 
-    private var statsItems: ItemsContainer<SumByDateSectionLegacy>? = null
+    private lateinit var statsItems: ItemsContainer<SumByDateSectionLegacy>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.stats_sum_by_date_section_frag, container, false)
 
         statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
-        // Set up the login form.
+        adapter = StatsSumByDateSectionAdapter(context!!, presenter, statsItems, dataStorage)
 
         rvStatsItems = root.findViewById(R.id.rv_stats_sum_by_date_section)
 
-        adapter = StatsSumByDateSectionAdapter(context!!, presenter, statsItems!!, dataStorage)
-
         val mLayoutManager = GridLayoutManager(context, 1)
-        rvStatsItems!!.layoutManager = mLayoutManager
-        rvStatsItems!!.itemAnimator = DefaultItemAnimator()
-        rvStatsItems!!.adapter = adapter
+        rvStatsItems.layoutManager = mLayoutManager
+        rvStatsItems.itemAnimator = DefaultItemAnimator()
+        rvStatsItems.adapter = adapter
 
         presenter.requestStatsSumByDateSection()
-//        presenter.requestStatsSumByDateSection(StatisticsFilterLegacy("2018-01-01", "2019-09-01", emptyList()))
-
         return root
     }
 
@@ -69,7 +65,7 @@ constructor() : DaggerFragment(), StatisticsSumByDateSectionContract.View {
     }
 
     override fun showStatsSumByDateSection(statsItems: ItemsContainer<SumByDateSectionLegacy>) {
-        adapter?.updateStats(statsItems)
+        adapter.updateStats(statsItems)
     }
 
     override fun showErrorMessage(msg: String) {
@@ -77,13 +73,9 @@ constructor() : DaggerFragment(), StatisticsSumByDateSectionContract.View {
     }
 
     override fun showSpinner() {
-//        val animTime = resources.getInteger(android.R.integer.config_mediumAnimTime)
-//        showProgress(true, mLoginFormView, progressView, animTime)
     }
 
     override fun hideSpinner() {
-//        val animTime = resources.getInteger(android.R.integer.config_mediumAnimTime)
-//        showProgress(false, mLoginFormView, progressView, animTime)
     }
 
     override fun navigateToLoginActivity() {

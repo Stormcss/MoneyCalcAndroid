@@ -8,10 +8,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import dagger.android.support.DaggerFragment
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.di.ActivityScoped
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils.Companion.formatNumberToPretty
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.BaseStatistics
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySection
@@ -32,28 +34,28 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
     lateinit var dataStorage: DataStorage
 
     // UI references
-    private var rvStatsItems: RecyclerView? = null
-    private var adapter: StatsSumBySectionAdapter? = null
+    private lateinit var tvStatsSum: TextView
+    private lateinit var rvStatsItems: RecyclerView
+    private lateinit var adapter: StatsSumBySectionAdapter
 
-    private var statsItems: ItemsContainer<SumBySection>? = null
+    private lateinit var statsItems: ItemsContainer<SumBySection>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.stats_sum_by_section_frag, container, false)
 
-        statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
-        // Set up the login form.
-
+        tvStatsSum = activity!!.findViewById(R.id.stats_sum_tv)
         rvStatsItems = root.findViewById(R.id.rv_stats_sum_by_section)
 
-        adapter = StatsSumBySectionAdapter(context!!, presenter, statsItems!!, dataStorage)
+        statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
+
+        adapter = StatsSumBySectionAdapter(context!!, presenter, statsItems, dataStorage)
 
         val mLayoutManager = GridLayoutManager(context, 1)
-        rvStatsItems!!.layoutManager = mLayoutManager
-        rvStatsItems!!.itemAnimator = DefaultItemAnimator()
-        rvStatsItems!!.adapter = adapter
+        rvStatsItems.layoutManager = mLayoutManager
+        rvStatsItems.itemAnimator = DefaultItemAnimator()
+        rvStatsItems.adapter = adapter
 
         presenter.requestStatsSumBySection()
-//        presenter.requestStatsSumBySection(StatisticsFilterLegacy("2018-01-01", "2019-09-01", emptyList()))
 
         return root
     }
@@ -69,7 +71,8 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
     }
 
     override fun showStatsSumBySection(statsItems: ItemsContainer<SumBySection>) {
-        adapter?.updateStats(statsItems)
+        tvStatsSum.text = formatNumberToPretty(statsItems.stats.total)
+        adapter.updateStats(statsItems)
     }
 
     override fun showErrorMessage(msg: String) {
@@ -77,13 +80,9 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
     }
 
     override fun showSpinner() {
-//        val animTime = resources.getInteger(android.R.integer.config_mediumAnimTime)
-//        showProgress(true, mLoginFormView, progressView, animTime)
     }
 
     override fun hideSpinner() {
-//        val animTime = resources.getInteger(android.R.integer.config_mediumAnimTime)
-//        showProgress(false, mLoginFormView, progressView, animTime)
     }
 
     override fun navigateToLoginActivity() {
