@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">MoneyCalc</string>
     <string name="app_version">v1.1.0</string>
-    <string name="app_date">02.06.2019</string>
+    <string name="app_date">03.06.2019</string>
     <string name="backend_version">v1.1.x</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
