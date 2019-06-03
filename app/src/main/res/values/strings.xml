@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MoneyCalc</string>
+    <string name="app_version">v1.1.0</string>
+    <string name="app_date">03.06.2019</string>
+    <string name="backend_version">v1.1.x</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Android Studio</string>
@@ -9,6 +13,7 @@
 
     <!-- Menu titles -->
     <string name="menu_settings">Настройки</string>
+    <string name="menu_about">О приложении</string>
     <string name="menu_refresh">Обновить</string>
     <string name="menu_logout">Выйти</string>
     <string name="menu_finance">Финансы</string>
@@ -97,6 +102,15 @@
     <string name="preferences_period_from">Начало периода</string>
     <string name="preferences_period_to">Конец периода</string>
     <string name="settings_update_success">Настройки успешно обновлены</string>
+
+    <!-- Statistics Activity -->
+    <string name="stats_by_section_sum">Σ по статьям</string>
+    <string name="stats_by_date_sum">Σ по дням</string>
+    <string name="stats_by_date_section_sum">Σ по дням и статьям</string>
+    <string name="stats_name">Имя</string>
+    <string name="stats_sum">Сумма</string>
+    <string name="stats_date">Дата</string>
+
 
     <!-- Application Settings Activity -->
     <string name="appl_settings_server_address">Адрес сервера</string>

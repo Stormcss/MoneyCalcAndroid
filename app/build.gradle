@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: "de.mannodermaus.android-junit5"
 
 android {
@@ -7,8 +8,8 @@ android {
         applicationId "moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc"
         minSdkVersion 21
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
@@ -23,6 +24,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig getSigningConfig()
+            applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "MoneyCalc_${variant.buildType.name}_${defaultConfig.versionName}.apk"
+                }
+            }
         }
     }
 }
@@ -42,7 +49,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
 
     // MoneyCalcServer
-    implementation('ru.strcss.projects.moneycalc.moneycalcdto:MoneyCalcDTO:1.0.0-20190113.192558-2')
+    implementation('ru.strcss.projects.moneycalc.moneycalcdto:MoneyCalcDTO:1.0.1-20190531.200712-3')
+//    implementation('ru.strcss.projects.moneycalc.moneycalcdto:MoneyCalcDTO:1.0.1-SNAPSHOT')
 
     // Dagger
     implementation 'com.google.dagger:dagger-android:2.11'
@@ -52,8 +60,8 @@ dependencies {
 
     // General
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.0'
-    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
@@ -64,10 +72,14 @@ dependencies {
 
     // ======   DESIGN  =======
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:cardview-v7:27.1.0'
-    implementation 'com.android.support:design:27.1.0'
-    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
 
     //FAB with sheet menu
     implementation 'com.gordonwong:material-sheet-fab:1.2.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }

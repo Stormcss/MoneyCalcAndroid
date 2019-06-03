@@ -47,6 +47,9 @@
         <activity
             android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyfilter.HistoryFilterActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.StatisticsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
