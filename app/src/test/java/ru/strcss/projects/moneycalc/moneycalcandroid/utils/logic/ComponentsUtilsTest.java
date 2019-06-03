@@ -9,10 +9,6 @@ import java.util.List;
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SpendingSection;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getLogoIdBySectionId;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getPositionBySpendingSectionInnerId;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionByInnerId;
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.getSpendingSectionInnerIdByPosition;
 
 /**
  * Created by Stormcss
@@ -36,29 +32,29 @@ class ComponentsUtilsTest {
 
     @Test
     void shouldGetSpendingSectionByInnerId() {
-        assertEquals(1L, (long) getSpendingSectionByInnerId(sectionArrayList, 2).getId(), "Not equal!");
-        assertEquals(2L, (long) getSpendingSectionByInnerId(sectionArrayList, 4).getId(), "Not equal!");
-        assertEquals(3L, (long) getSpendingSectionByInnerId(sectionArrayList, 6).getId(), "Not equal!");
+        assertEquals(1L, (long) ComponentsUtils.Companion.getSpendingSectionByInnerId(sectionArrayList, 2).getId(), "Not equal!");
+        assertEquals(2L, (long) ComponentsUtils.Companion.getSpendingSectionByInnerId(sectionArrayList, 4).getId(), "Not equal!");
+        assertEquals(3L, (long) ComponentsUtils.Companion.getSpendingSectionByInnerId(sectionArrayList, 6).getId(), "Not equal!");
     }
 
     @Test
     void shouldGetPositionBySpendingSectionInnerId() {
-        assertEquals(0L, getPositionBySpendingSectionInnerId(sectionArrayList, 2), "Not equal!");
-        assertEquals(1L, getPositionBySpendingSectionInnerId(sectionArrayList, 4), "Not equal!");
-        assertEquals(2L, getPositionBySpendingSectionInnerId(sectionArrayList, 6), "Not equal!");
+        assertEquals(0L, ComponentsUtils.Companion.getPositionBySpendingSectionInnerId(sectionArrayList, 2), "Not equal!");
+        assertEquals(1L, ComponentsUtils.Companion.getPositionBySpendingSectionInnerId(sectionArrayList, 4), "Not equal!");
+        assertEquals(2L, ComponentsUtils.Companion.getPositionBySpendingSectionInnerId(sectionArrayList, 6), "Not equal!");
     }
 
     @Test
     void shouldGetSpendingSectionInnerIdByPosition() {
-        assertEquals(2L, (int) getSpendingSectionInnerIdByPosition(sectionArrayList, 0), "Not equal!");
-        assertEquals(4L, (int) getSpendingSectionInnerIdByPosition(sectionArrayList, 1), "Not equal!");
-        assertEquals(6L, (int) getSpendingSectionInnerIdByPosition(sectionArrayList, 2), "Not equal!");
+        assertEquals(2L, (int) ComponentsUtils.Companion.getSpendingSectionInnerIdByPosition(sectionArrayList, 0), "Not equal!");
+        assertEquals(4L, (int) ComponentsUtils.Companion.getSpendingSectionInnerIdByPosition(sectionArrayList, 1), "Not equal!");
+        assertEquals(6L, (int) ComponentsUtils.Companion.getSpendingSectionInnerIdByPosition(sectionArrayList, 2), "Not equal!");
     }
 
     @Test
     void shouldGetLogoIdBySectionId() {
-        assertEquals(Integer.valueOf(10), getLogoIdBySectionId(sectionArrayList, 2), "Not equal!");
-        assertEquals(Integer.valueOf(20), getLogoIdBySectionId(sectionArrayList, 4), "Not equal!");
-        assertEquals(Integer.valueOf(30), getLogoIdBySectionId(sectionArrayList, 6), "Not equal!");
+        assertEquals(Integer.valueOf(10), ComponentsUtils.Companion.getLogoIdBySectionId(sectionArrayList, 2), "Not equal!");
+        assertEquals(Integer.valueOf(20), ComponentsUtils.Companion.getLogoIdBySectionId(sectionArrayList, 4), "Not equal!");
+        assertEquals(Integer.valueOf(30), ComponentsUtils.Companion.getLogoIdBySectionId(sectionArrayList, 6), "Not equal!");
     }
 }

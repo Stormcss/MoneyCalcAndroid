@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import static ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.snackBarAction;
-
 public class DatesUtils {
     private static DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
@@ -71,7 +69,7 @@ public class DatesUtils {
             return serverDateFormat.parse(date);
         } catch (ParseException e) {
             e.printStackTrace();
-            snackBarAction(e.getMessage());
+            ActivityUtils.Companion.snackBarAction(e.getMessage());
             return new Date();
         }
     }

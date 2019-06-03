@@ -9,7 +9,6 @@ import dagger.Provides;
 import ru.strcss.projects.moneycalc.moneycalcandroid.App;
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage;
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage;
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.EventBus;
 
 @Module
@@ -32,10 +31,10 @@ public class AppModule {
         return new EventBus();
     }
 
-    @Provides
-    @Singleton
-    public DrawableStorage provideDrawableStorage() {
-        return new DrawableStorage();
-    }
+//    @Provides
+//    @Singleton
+//    public DrawableStorage provideDrawableStorage() {
+//        return new DrawableStorage();
+//    }
 
 }
