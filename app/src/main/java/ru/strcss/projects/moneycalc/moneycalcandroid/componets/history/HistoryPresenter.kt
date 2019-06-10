@@ -35,7 +35,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
         eventBus.subscribeTransactionEvent()
                 .subscribe { transactionEvent ->
                     if (transactionEvent == REQUESTED) {
-                        view?.showTransactions(dataStorage.transactions?.items)
+                        view?.showTransactions(dataStorage.transactions)
                         view?.showFilterWindow()
 
                     }
@@ -76,7 +76,7 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
                         println("requestTransactions. transactionsListRs = $transactionsSearchRs")
 
                         dataStorage.transactions = transactionsSearchRs
-                        view?.showTransactions(transactionsSearchRs.items)
+                        view?.showTransactions(transactionsSearchRs)
                         view?.hideSpinner()
                     }
                 })

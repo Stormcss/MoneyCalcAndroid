@@ -24,7 +24,9 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.componets.history.historyfi
 import ru.strcss.projects.moneycalc.moneycalcandroid.componets.login.LoginActivity
 import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.changeActivity
+import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils.Companion.formatNumberToPretty
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.view.UiUtils.showProgress
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
 import java.util.*
 import javax.inject.Inject
@@ -39,15 +41,16 @@ constructor() : DaggerFragment(), HistoryContract.View {
     lateinit var dataStorage: DataStorage
 
     // UI references
-    private var historyFab: HistoryFab? = null
-    private var sheetView: View? = null
-    private var rvTransactions: RecyclerView? = null
-    private var adapter: HistoryAdapter? = null
-    private var progressView: ProgressBar? = null
-    private var materialSheetFab: MaterialSheetFab<*>? = null
-    private var filterWindow: RelativeLayout? = null
-    private var filterWindowCancel: TextView? = null
-    private var noItemsBlock: LinearLayout? = null
+    private lateinit var historyFab: HistoryFab
+    private lateinit var sheetView: View
+    private lateinit var rvTransactions: RecyclerView
+    private lateinit var adapter: HistoryAdapter
+    private lateinit var progressView: ProgressBar
+    private lateinit var materialSheetFab: MaterialSheetFab<*>
+    private lateinit var filterWindow: RelativeLayout
+    private lateinit var filterWindowCancel: TextView
+    private lateinit var transactionsSumTv: TextView
+    private lateinit var noItemsBlock: LinearLayout
 
     private var statusBarColor: Int = 0
     private var transactionList: MutableList<TransactionLegacy>? = null
@@ -63,29 +66,33 @@ constructor() : DaggerFragment(), HistoryContract.View {
         progressView = root.findViewById(R.id.history_progress)
         sheetView = root.findViewById(R.id.history_fab_sheet)
         noItemsBlock = root.findViewById(R.id.history_empty_block)
+        transactionsSumTv = root.findViewById(R.id.history_sum_tv)
 
         transactionList = ArrayList()
         adapter = HistoryAdapter(context!!, presenter, transactionList!!, dataStorage)
 
         val mLayoutManager = GridLayoutManager(context, 1)
-        rvTransactions!!.layoutManager = mLayoutManager
-        rvTransactions!!.itemAnimator = DefaultItemAnimator()
-        rvTransactions!!.adapter = adapter
+        rvTransactions.layoutManager = mLayoutManager
+        rvTransactions.itemAnimator = DefaultItemAnimator()
+        rvTransactions.adapter = adapter
 
         presenter.requestTransactions()
 
         setupFab(root)
 
-        rvTransactions!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        rvTransactions.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                if (dy > 0 && sheetView!!.visibility == INVISIBLE)
-                    historyFab!!.hide()
-                else if (dy < 0 && sheetView!!.visibility == INVISIBLE)
-                    historyFab!!.show()
+                if (dy > 0 && sheetView.visibility == INVISIBLE){
+                    historyFab.hide()
+                }
+                else if (dy < 0 && sheetView.visibility == INVISIBLE) {
+
+                    historyFab.show()
+                }
             }
         })
 
-        filterWindowCancel!!.setOnClickListener {
+        filterWindowCancel.setOnClickListener {
             presenter.requestTransactions()
             hideFilterWindow()
             dataStorage.transactionsFilter = null
@@ -93,7 +100,6 @@ constructor() : DaggerFragment(), HistoryContract.View {
 
         return root
     }
-
 
     /**
      * Sets up the Floating action button.
@@ -109,11 +115,11 @@ constructor() : DaggerFragment(), HistoryContract.View {
         val fabColor = resources.getColor(R.color.colorPrimaryBright)
 
         // Initialize material sheet FAB
-        materialSheetFab = MaterialSheetFab(historyFab!!, sheetView!!, overlay,
+        materialSheetFab = MaterialSheetFab(historyFab, sheetView, overlay,
                 sheetColor, fabColor)
 
         // Set material sheet event listener
-        materialSheetFab!!.setEventListener(object : MaterialSheetFabEventListener() {
+        materialSheetFab.setEventListener(object : MaterialSheetFabEventListener() {
             override fun onShowSheet() {
                 // Save current status bar color
                 statusBarColor = getStatusBarColor()
@@ -130,21 +136,22 @@ constructor() : DaggerFragment(), HistoryContract.View {
         root.findViewById<View>(R.id.history_fab_sheet_item_filter).setOnClickListener {
             val intent = Intent(context, HistoryFilterActivity::class.java)
             startActivityForResult(intent, 0)
-            materialSheetFab!!.hideSheet()
+            materialSheetFab.hideSheet()
         }
         root.findViewById<View>(R.id.history_fab_sheet_item_add_transaction).setOnClickListener {
             val intent = Intent(context, AddEditTransactionActivity::class.java)
             startActivityForResult(intent, 0)
-            materialSheetFab!!.hideSheet()
+            materialSheetFab.hideSheet()
         }
     }
 
-    override fun showTransactions(transactions: List<TransactionLegacy>?) {
-        if (transactions!!.isEmpty())
-            noItemsBlock?.visibility = View.VISIBLE
+    override fun showTransactions(transactions: TransactionsSearchLegacyRs?) {
+        if (transactions?.items!!.isEmpty())
+            noItemsBlock.visibility = View.VISIBLE
         else
-            noItemsBlock?.visibility = View.GONE
-        adapter!!.updateList(transactions)
+            noItemsBlock.visibility = View.GONE
+        adapter.updateList(transactions.items)
+        transactionsSumTv.text = formatNumberToPretty(transactions.stats.sum)
     }
 
     override fun showErrorMessage(msg: String) {
@@ -157,7 +164,6 @@ constructor() : DaggerFragment(), HistoryContract.View {
     }
 
     override fun showSpinner() {
-
     }
 
     override fun hideSpinner() {
@@ -166,11 +172,11 @@ constructor() : DaggerFragment(), HistoryContract.View {
     }
 
     override fun showFilterWindow() {
-        filterWindow!!.visibility = View.VISIBLE
+        filterWindow.visibility = View.VISIBLE
     }
 
     override fun hideFilterWindow() {
-        filterWindow!!.visibility = View.GONE
+        filterWindow.visibility = View.GONE
     }
 
     override fun navigateToLoginActivity() {

@@ -2,7 +2,7 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.history
 
 import ru.strcss.projects.moneycalc.moneycalcandroid.BasePresenter
 import ru.strcss.projects.moneycalc.moneycalcandroid.BaseView
-import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 
 /**
  * This specifies the contract between the view and the loginPresenter.
@@ -10,7 +10,7 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.TransactionLegacy
 interface HistoryContract {
     interface View : BaseView<Presenter> {
 
-        fun showTransactions(transactions: List<TransactionLegacy>?)
+        fun showTransactions(transactions: TransactionsSearchLegacyRs?)
 
         fun showDeleteSuccess()
 

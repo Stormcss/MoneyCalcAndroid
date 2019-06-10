@@ -35,8 +35,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
     @Inject
     lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
 
-    var context: Context? = null
-        @get:JvmName("getContext_") get //fixme WTF?
+     var localContext: Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +95,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
 
     override fun onAttach(context: Context) {
         AndroidInjection.inject(this)
-        this.context = context
+        this.localContext = context
         super.onAttach(context)
     }
 
@@ -105,12 +104,12 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
     }
 
     override fun showUpdateSuccess() {
-        val snackbarWrapper = SnackbarWrapper.make(context!!,
-                context!!.getText(R.string.settings_update_success), 3000)
+        val snackbarWrapper = SnackbarWrapper.make(localContext!!,
+                localContext!!.getText(R.string.settings_update_success), 3000)
 
-        snackbarWrapper.setAction(context!!.getText(R.string.cancel)
+        snackbarWrapper.setAction(localContext!!.getText(R.string.cancel)
         ) {
-            Toast.makeText(context, "CANCEL!!!",
+            Toast.makeText(localContext, "CANCEL!!!",
                     Toast.LENGTH_SHORT).show()
         }
 
