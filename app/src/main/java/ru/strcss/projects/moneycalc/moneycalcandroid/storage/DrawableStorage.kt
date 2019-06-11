@@ -30,5 +30,11 @@ object DrawableStorage {
         spendingSectionLogoStorage.put(18, R.drawable.ic_fitness_center_black_24dp)
         spendingSectionLogoStorage.put(19, R.drawable.ic_home_black_24dp)
         spendingSectionLogoStorage.put(20, R.drawable.ic_local_parking_black_24dp)
+        spendingSectionLogoStorage.put(21, R.drawable.ic_clothes_hanger_hook)
+        spendingSectionLogoStorage.put(22, R.drawable.ic_gift)
+        spendingSectionLogoStorage.put(23, R.drawable.ic_hairdresser)
+        spendingSectionLogoStorage.put(24, R.drawable.ic_baby_stroller)
+        spendingSectionLogoStorage.put(25, R.drawable.ic_question_mark)
+        spendingSectionLogoStorage.put(26, R.drawable.ic_credit_card)
     }
 }
