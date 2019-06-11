@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import dagger.android.support.DaggerFragment
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.SPENDING_SECTION
@@ -114,32 +113,14 @@ constructor() : DaggerFragment(), AddEditSpendingSectionContract.View, SpendingS
         spendingSectionsPresenter.requestSpendingSections()
 
         val context = activity!!.applicationContext
-        val snackbarWrapper = SnackbarWrapper.make(context,
-                getContext()!!.getText(R.string.transaction_added), 3000)
-
-        snackbarWrapper.setAction(getContext()!!.getText(R.string.cancel)
-        ) {
-            Toast.makeText(context, "CANCEL!!!",
-                    Toast.LENGTH_SHORT).show()
-        }
-
-        snackbarWrapper.show()
+        SnackbarWrapper.make(context, getContext()!!.getText(R.string.transaction_added), 3000).show()
     }
 
     override fun showEditSuccess() {
         spendingSectionsPresenter.requestSpendingSections()
 
         val context = activity!!.applicationContext
-        val snackbarWrapper = SnackbarWrapper.make(context,
-                getContext()!!.getText(R.string.spending_section_edit_success), 3000)
-
-        snackbarWrapper.setAction(getContext()!!.getText(R.string.cancel)
-        ) {
-            Toast.makeText(context, "CANCEL!!!",
-                    Toast.LENGTH_SHORT).show()
-        }
-
-        snackbarWrapper.show()
+        SnackbarWrapper.make(context, getContext()!!.getText(R.string.spending_section_edit_success), 3000).show()
     }
 
     override fun onResume() {
@@ -158,15 +139,4 @@ constructor() : DaggerFragment(), AddEditSpendingSectionContract.View, SpendingS
         selectedRecyclerViewItem.set(position)
         sectionLogoAdapter!!.notifyItemChanged(position)
     }
-
-
-    //    /**
-    //     * Hides the soft keyboard
-    //     */
-    //    public void hideSoftKeyboard() {
-    //        if (getActivity().getCurrentFocus() != null) {
-    //            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
-    //            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-    //        }
-    //    }
 }

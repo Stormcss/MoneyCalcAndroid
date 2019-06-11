@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.preference.*
-import android.widget.Toast
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -104,16 +103,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
     }
 
     override fun showUpdateSuccess() {
-        val snackbarWrapper = SnackbarWrapper.make(localContext!!,
-                localContext!!.getText(R.string.settings_update_success), 3000)
-
-        snackbarWrapper.setAction(localContext!!.getText(R.string.cancel)
-        ) {
-            Toast.makeText(localContext, "CANCEL!!!",
-                    Toast.LENGTH_SHORT).show()
-        }
-
-        snackbarWrapper.show()
+        SnackbarWrapper.make(localContext!!, localContext!!.getText(R.string.settings_update_success), 3000).show()
     }
 
     override fun showErrorMessage(msg: String) {}

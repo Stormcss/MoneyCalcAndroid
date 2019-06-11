@@ -40,19 +40,6 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
     val spendingSections: Observable<SpendingSectionsSearchRs>
         get() = client.getSpendingSections(token)
 
-
-//    val statsBySectionSummary: Observable<ItemsContainer<SummaryBySection>>
-//        get() = client.getStatsBySectionSummary(token)
-
-//    val statsBySectionSum: Observable<ItemsContainer<SumBySection>>
-//        get() = client.getStatsBySectionSum(token)
-//
-//    val statsByDateSum: Observable<ItemsContainer<SumByDate>>
-//        get() = client.getStatsByDateSum(token)
-//
-//    val statsByDateSumBySection: Observable<ItemsContainer<SumByDateSection>>
-//        get() = client.getStatsByDateSumBySection(token, )
-
     val transactions: Observable<TransactionsSearchLegacyRs>
         get() = client.getTransactions(token)
 
@@ -120,6 +107,9 @@ class MoneyCalcServerDAO(private val sharedPreferences: SharedPreferences) {
         return client.getTransactions(token, container)
     }
 
+    fun getTransactionsFiltered(container: TransactionsSearchFilterLegacy): Observable<TransactionsSearchLegacyRs> {
+        return client.getTransactionsFiltered(token, container)
+    }
 
     fun deleteTransaction(transactionId: Int?): Observable<Void> {
         return client.deleteTransaction(token, transactionId)

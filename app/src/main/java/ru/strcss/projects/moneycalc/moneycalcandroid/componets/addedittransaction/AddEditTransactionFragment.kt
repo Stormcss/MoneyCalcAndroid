@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
-import android.widget.Toast
 import dagger.android.support.DaggerFragment
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
 import ru.strcss.projects.moneycalc.moneycalcandroid.AppConstants.TRANSACTION
@@ -72,7 +71,7 @@ constructor() : DaggerFragment(), AddEditTransactionContract.View,
             val title = etTransactionTitle!!.text.toString()
             val description = etTransactionDesc!!.text.toString()
 
-            if (!sum.isEmpty() && selectedSection != null) {
+            if (sum.isNotEmpty() && selectedSection != null) {
                 val transaction = TransactionLegacy.builder()
                         .date(transactionDate)
                         .sum(Integer.parseInt(sum))
@@ -153,16 +152,7 @@ constructor() : DaggerFragment(), AddEditTransactionContract.View,
 
     override fun showEditSuccess() {
         val context = activity!!.applicationContext
-        val snackbarWrapper = SnackbarWrapper.make(context,
-                getContext()!!.getText(R.string.transaction_edited), 3000)
-
-        snackbarWrapper.setAction(getContext()!!.getText(R.string.transaction_cancel)
-        ) {
-            Toast.makeText(context, "CANCEL!!!",
-                    Toast.LENGTH_SHORT).show()
-        }
-
-        snackbarWrapper.show()
+        SnackbarWrapper.make(context, getContext()!!.getText(R.string.transaction_edited), 3000).show()
     }
 
     override fun showSpendingSections(spendingSections: List<SpendingSection>) {
