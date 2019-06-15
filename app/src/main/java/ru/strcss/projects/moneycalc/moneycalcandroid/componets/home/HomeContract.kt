@@ -28,8 +28,6 @@ interface HomeContract {
 
         fun requestStatsBySectionSummary()
 
-//        fun requestSectionStatistics(from: String, to: String, sections: List<Int>)
-
         fun showAddTransactionActivity()
     }
 }

@@ -39,8 +39,6 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
         homeView = null
     }
 
-//    override fun requestFinanceSummary(financeSummaryGetContainer: FinanceSummaryFilter) {}
-
     override fun requestSettings() {
         moneyCalcServerDAO.settings
                 .subscribeOn(Schedulers.io())
@@ -56,13 +54,8 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
                     }
 
                     override fun onNext(settingsRs: SettingsLegacy) {
-//                        if (settingsRs.isSuccessful) {
                         dataStorage.settings = settingsRs
                         homeView?.showDatesRange(settingsRs.periodFrom, settingsRs.periodTo)
-//                        } else {
-//                            eventBus.addErrorEvent(settingsRs.message)
-//                                                        homeView.showErrorMessage(settingsRs.toString());
-//                        }
                     }
                 })
     }
