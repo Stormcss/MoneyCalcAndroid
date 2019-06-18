@@ -18,7 +18,9 @@ class NumberUtils {
             formatter.decimalFormatSymbols = symbols
         }
 
-        fun formatNumberToPretty(number: BigDecimal): String {
+        fun formatNumberToPretty(number: BigDecimal?): String {
+            if (number == null)
+                return "0"
             return formatter.format(number)
         }
     }

@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
 import android.preference.*
-import android.widget.Toast
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -35,8 +34,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
     @Inject
     lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
 
-    var context: Context? = null
-        @get:JvmName("getContext_") get //fixme WTF?
+     var localContext: Context? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +94,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
 
     override fun onAttach(context: Context) {
         AndroidInjection.inject(this)
-        this.context = context
+        this.localContext = context
         super.onAttach(context)
     }
 
@@ -105,16 +103,7 @@ constructor() : PreferenceFragment(), HasFragmentInjector, ApplicationSettingsCo
     }
 
     override fun showUpdateSuccess() {
-        val snackbarWrapper = SnackbarWrapper.make(context!!,
-                context!!.getText(R.string.settings_update_success), 3000)
-
-        snackbarWrapper.setAction(context!!.getText(R.string.cancel)
-        ) {
-            Toast.makeText(context, "CANCEL!!!",
-                    Toast.LENGTH_SHORT).show()
-        }
-
-        snackbarWrapper.show()
+        SnackbarWrapper.make(localContext!!, localContext!!.getText(R.string.settings_update_success), 3000).show()
     }
 
     override fun showErrorMessage(msg: String) {}

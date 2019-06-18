@@ -77,6 +77,10 @@ interface MoneyCalcClient {
     @GET("/api/transactions")
     fun getTransactions(@Header("Authorization") token: String?): Observable<TransactionsSearchLegacyRs>
 
+    @POST("/api/transactions/getFiltered")
+    fun getTransactionsFiltered(@Header("Authorization") token: String?,
+                                @Body container: TransactionsSearchFilterLegacy): Observable<TransactionsSearchLegacyRs>
+
     @POST("/api/transactions")
     fun addTransaction(@Header("Authorization") token: String?,
                        @Body transaction: TransactionLegacy): Observable<TransactionLegacy>

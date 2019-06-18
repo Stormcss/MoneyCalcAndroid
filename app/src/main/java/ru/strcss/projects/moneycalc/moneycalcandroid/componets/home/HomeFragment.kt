@@ -155,8 +155,6 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
 
     override fun onPageSelected(position: Int) {
         tabAdapter?.setCurrentSelected(position)
-//        if (tabAdapter != null) {
-//        }
     }
 
     override fun onPageScrollStateChanged(state: Int) {
