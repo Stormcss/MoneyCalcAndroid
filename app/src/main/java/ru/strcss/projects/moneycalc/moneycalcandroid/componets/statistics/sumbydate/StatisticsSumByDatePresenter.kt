@@ -3,7 +3,6 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumby
 import retrofit2.HttpException
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
@@ -21,8 +20,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class StatisticsSumByDatePresenter @Inject
-internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
-                     private val dataStorage: DataStorage) : StatisticsSumByDateContract.Presenter {
+internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO) : StatisticsSumByDateContract.Presenter {
     private var view: StatisticsSumByDateContract.View? = null
 
     private val filter: StatisticsFilterLegacy = StatisticsFilterLegacy()
@@ -45,31 +43,32 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
     }
 
     override fun requestStatsByDateSum() {
-        moneyCalcServerDAO.getStatsByDateSum(filter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ItemsContainer<SumByDateLegacy>> {
-                    override fun onCompleted() {}
+        if (filter.isValid.isValidated)
+            moneyCalcServerDAO.getStatsByDateSum(filter)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<ItemsContainer<SumByDateLegacy>> {
+                        override fun onCompleted() {}
 
-                    override fun onError(ex: Throwable) {
+                        override fun onError(ex: Throwable) {
 
-                        println("requestStatsByDateSum onError!!!!! " + ex.message)
-                        val message = getErrorBodyMessage(ex)
-                        snackBarAction(getAppContext(), message)
-                        println("getErrorBodyMessage(ex) - " + message)
+                            println("requestStatsByDateSum onError!!!!! " + ex.message)
+                            val message = getErrorBodyMessage(ex)
+                            snackBarAction(getAppContext(), message)
+                            println("getErrorBodyMessage(ex) - " + message)
 
-                        if (ex is HttpException && ex.code() == 403) {
-                            moneyCalcServerDAO.token = null
-                            view?.navigateToLoginActivity()
+                            if (ex is HttpException && ex.code() == 403) {
+                                moneyCalcServerDAO.token = null
+                                view?.navigateToLoginActivity()
+                            }
                         }
-                    }
 
-                    override fun onNext(statsItems: ItemsContainer<SumByDateLegacy>) {
-                        println("requestStatsBySectionSum. statsItems = $statsItems")
+                        override fun onNext(statsItems: ItemsContainer<SumByDateLegacy>) {
+                            println("requestStatsBySectionSum. statsItems = $statsItems")
 
-                        view?.showStatsSumByDate(statsItems)
-                        view?.hideSpinner()
-                    }
-                })
+                            view?.showStatsSumByDate(statsItems)
+                            view?.hideSpinner()
+                        }
+                    })
     }
 }

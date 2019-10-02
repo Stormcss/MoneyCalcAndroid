@@ -12,16 +12,32 @@ import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.transactions.TransactionsSearchLegacyRs
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy
 import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SummaryBySection
+import java.util.concurrent.atomic.AtomicInteger
 import javax.inject.Singleton
 
 @Getter
 @Setter
 @Singleton
 class DataStorage(val sharedPreferences: SharedPreferences) {
+    private val aiSettings: AtomicInteger = AtomicInteger()
+    private val aiSpendingSection: AtomicInteger = AtomicInteger()
+
     val activeUserData = ActiveUserData()
 
     var settings: SettingsLegacy? = null
+        get() {
+            return if (aiSettings.getAndIncrement() > 0)
+                field
+            else
+                null
+        }
     var spendingSections: SpendingSectionsSearchRs? = null
+        get() {
+            return if (aiSpendingSection.getAndIncrement() > 0)
+                field
+            else
+                null
+        }
     var statsBySectionSummary: ItemsContainer<SummaryBySection>? = null
     var transactions: TransactionsSearchLegacyRs? = null
 

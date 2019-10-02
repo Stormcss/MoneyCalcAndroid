@@ -44,7 +44,7 @@ constructor() : DaggerFragment(), StatisticsSumByDateContract.View {
         val root = inflater.inflate(R.layout.stats_sum_by_date_frag, container, false)
 
         statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
-        adapter = StatsSumByDateAdapter(context!!, presenter, statsItems, dataStorage)
+        adapter = StatsSumByDateAdapter(statsItems)
 
         tvStatsSum = activity!!.findViewById(R.id.stats_sum_tv)
         rvStatsItems = root.findViewById(R.id.rv_stats_sum_by_date)

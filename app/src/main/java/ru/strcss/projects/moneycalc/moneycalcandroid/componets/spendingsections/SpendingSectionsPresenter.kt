@@ -18,7 +18,9 @@ import javax.inject.Singleton
 
 @Singleton
 class SpendingSectionsPresenter @Inject
-internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO, private val dataStorage: DataStorage, private val eventBus: EventBus) : SpendingSectionsContract.Presenter {
+internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
+                     private val dataStorage: DataStorage,
+                     private val eventBus: EventBus) : SpendingSectionsContract.Presenter {
 
     private var view: SpendingSectionsContract.View? = null
 

@@ -1,6 +1,5 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbysection
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +18,7 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumBySectio
  * Created by Stormcss
  * Date: 29.05.2019
  */
-class StatsSumBySectionAdapter(private val mContext: Context,
-                               private val statsPresenter: StatisticsSumBySectionContract.Presenter,
-                               private var statsItemsList: ItemsContainer<SumBySection>,
+class StatsSumBySectionAdapter(private var statsItemsList: ItemsContainer<SumBySection>,
                                private val dataStorage: DataStorage)
     : RecyclerView.Adapter<StatsSumBySectionAdapter.StatsBySectionSumViewHolder>() {
 

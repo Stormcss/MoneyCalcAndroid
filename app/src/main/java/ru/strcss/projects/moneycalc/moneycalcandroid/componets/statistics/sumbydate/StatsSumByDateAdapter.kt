@@ -1,14 +1,11 @@
 package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumbydate
 
-import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import moneycalcandroid.moneycalc.projects.strcss.ru.moneycalc.R
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DrawableStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.formatDateToPretty
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.NumberUtils.Companion.formatNumberToPretty
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
@@ -18,13 +15,8 @@ import ru.strcss.projects.moneycalc.moneycalcdto.entities.statistics.SumByDateLe
  * Created by Stormcss
  * Date: 29.05.2019
  */
-class StatsSumByDateAdapter(private val mContext: Context,
-                            private val statsPresenter: StatisticsSumByDateContract.Presenter,
-                            private var statsItemsList: ItemsContainer<SumByDateLegacy>,
-                            private val dataStorage: DataStorage)
+class StatsSumByDateAdapter(private var statsItemsList: ItemsContainer<SumByDateLegacy>)
     : RecyclerView.Adapter<StatsSumByDateAdapter.StatsSumByDateViewHolder>() {
-
-    private val logoStorage = DrawableStorage.spendingSectionLogoStorage
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StatsSumByDateViewHolder {
         val itemView = LayoutInflater.from(parent.context)

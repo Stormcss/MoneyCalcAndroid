@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DatesUtils {
-    private static DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
+    private static final DateFormat serverDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 
     /**
      * Format date from ISO8601 to pretty view.

@@ -3,7 +3,6 @@ package ru.strcss.projects.moneycalc.moneycalcandroid.componets.statistics.sumby
 import retrofit2.HttpException
 import ru.strcss.projects.moneycalc.moneycalcandroid.App.getAppContext
 import ru.strcss.projects.moneycalc.moneycalcandroid.api.MoneyCalcServerDAO
-import ru.strcss.projects.moneycalc.moneycalcandroid.storage.DataStorage
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Companion.snackBarAction
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.logic.ComponentsUtils.Companion.getErrorBodyMessage
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.ItemsContainer
@@ -21,8 +20,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class StatisticsSumBySectionPresenter @Inject
-internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
-                     private val dataStorage: DataStorage) : StatisticsSumBySectionContract.Presenter {
+internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO) : StatisticsSumBySectionContract.Presenter {
     private var view: StatisticsSumBySectionContract.View? = null
 
     private val filter: StatisticsFilterLegacy = StatisticsFilterLegacy()
@@ -45,60 +43,32 @@ internal constructor(private val moneyCalcServerDAO: MoneyCalcServerDAO,
     }
 
     override fun requestStatsSumBySection() {
-        moneyCalcServerDAO.getStatsBySectionSum(filter)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ItemsContainer<SumBySection>> {
-                    override fun onCompleted() {}
+        if (filter.isValid.isValidated)
+            moneyCalcServerDAO.getStatsBySectionSum(filter)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<ItemsContainer<SumBySection>> {
+                        override fun onCompleted() {}
 
-                    override fun onError(ex: Throwable) {
+                        override fun onError(ex: Throwable) {
 
-                        println("requestStatsBySectionSum onError!!!!! " + ex.message)
-                        val message = getErrorBodyMessage(ex)
-                        snackBarAction(getAppContext(), message)
-                        println("getErrorBodyMessage(ex) - " + message)
+                            println("requestStatsBySectionSum onError!!!!! " + ex.message)
+                            val message = getErrorBodyMessage(ex)
+                            snackBarAction(getAppContext(), message)
+                            println("getErrorBodyMessage(ex) - " + message)
 
-                        if (ex is HttpException && ex.code() == 403) {
-                            moneyCalcServerDAO.token = null
-                            view?.navigateToLoginActivity()
+                            if (ex is HttpException && ex.code() == 403) {
+                                moneyCalcServerDAO.token = null
+                                view?.navigateToLoginActivity()
+                            }
                         }
-                    }
 
-                    override fun onNext(statsItems: ItemsContainer<SumBySection>) {
-                        println("requestStatsBySectionSum. statsItems = $statsItems")
+                        override fun onNext(statsItems: ItemsContainer<SumBySection>) {
+                            println("requestStatsBySectionSum. statsItems = $statsItems")
 
-                        view?.showStatsSumBySection(statsItems)
-                        view?.hideSpinner()
-                    }
-                })
+                            view?.showStatsSumBySection(statsItems)
+                            view?.hideSpinner()
+                        }
+                    })
     }
-
-//    override fun requestStatsSumBySection(filter: StatisticsFilterLegacy) {
-//        moneyCalcServerDAO.getStatsBySectionSum(filter)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(object : Observer<ItemsContainer<SumBySection>> {
-//                    override fun onCompleted() {}
-//
-//                    override fun onError(ex: Throwable) {
-//
-//                        println("requestStatsBySectionSum onError!!!!! " + ex.message)
-//                        val message = getErrorBodyMessage(ex)
-//                        snackBarAction(getAppContext(), message)
-//                        println("getErrorBodyMessage(ex) - " + message)
-//
-//                        if (ex is HttpException && ex.code() == 403) {
-//                            moneyCalcServerDAO.token = null
-//                            view?.navigateToLoginActivity()
-//                        }
-//                    }
-//
-//                    override fun onNext(statsItems: ItemsContainer<SumBySection>) {
-//                        println("requestStatsBySectionSum. statsItems = $statsItems")
-//
-//                        view?.showStatsSumBySection(statsItems)
-//                        view?.hideSpinner()
-//                    }
-//                })
-//    }
 }

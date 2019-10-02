@@ -94,13 +94,14 @@ constructor() : DaggerFragment(), HomeContract.View, TabAdapter.OnItemClickListe
         adapter!!.clearFragments()
         tabAdapter!!.data.clear()
 
+        val spendingSections = dataStorage.spendingSections
         for (finSumBySec in financeSummaryList!!) {
             val fView = HomeStatsFragment.newInstance(finSumBySec)
             if (!fView.isAdded) {
                 adapter!!.addFrag(fView, finSumBySec.sectionName)
                 val tabHolder = TabHolder(finSumBySec.sectionId, null, finSumBySec.sectionName)
-                if (dataStorage.spendingSections != null) {
-                    tabHolder.logoId = getLogoIdBySectionId(dataStorage.spendingSections?.items, finSumBySec.sectionId)
+                if (spendingSections != null) {
+                    tabHolder.logoId = getLogoIdBySectionId(spendingSections.items, finSumBySec.sectionId)
                     areTabLogosShown = true
                 }
                 tabAdapter!!.data.add(tabHolder)

@@ -35,6 +35,10 @@ public abstract class StatisticsModule {
 
     @ActivityScoped
     @Binds
+    abstract StatisticsContract.Presenter statisticsPresenter(StatisticsPresenter presenter);
+
+    @ActivityScoped
+    @Binds
     abstract StatisticsSumBySectionContract.Presenter statsSumBySectionPresenter(StatisticsSumBySectionPresenter presenter);
 
     @ActivityScoped

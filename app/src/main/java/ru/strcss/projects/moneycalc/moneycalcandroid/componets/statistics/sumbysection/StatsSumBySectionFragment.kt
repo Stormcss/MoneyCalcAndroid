@@ -48,7 +48,7 @@ constructor() : DaggerFragment(), StatisticsSumBySectionContract.View {
 
         statsItems = ItemsContainer(0L, BaseStatistics.buildEmpty(), emptyList())
 
-        adapter = StatsSumBySectionAdapter(context!!, presenter, statsItems, dataStorage)
+        adapter = StatsSumBySectionAdapter(statsItems, dataStorage)
 
         val mLayoutManager = GridLayoutManager(context, 1)
         rvStatsItems.layoutManager = mLayoutManager

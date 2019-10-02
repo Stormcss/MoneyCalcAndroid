@@ -30,21 +30,25 @@ import ru.strcss.projects.moneycalc.moneycalcandroid.utils.ActivityUtils.Compani
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils
 import ru.strcss.projects.moneycalc.moneycalcandroid.utils.DatesUtils.*
 import ru.strcss.projects.moneycalc.moneycalcdto.dto.crudcontainers.statistics.StatisticsFilterLegacy
+import ru.strcss.projects.moneycalc.moneycalcdto.entities.SettingsLegacy
 import java.util.*
 import javax.inject.Inject
+
 
 /**
  * Created by Stormcss
  * Date: 28.05.2019
  */
-class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
-
+class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
+        StatisticsContract.View {
     @Inject
     lateinit var moneyCalcServerDAO: MoneyCalcServerDAO
 
     @Inject
     lateinit var dataStorage: DataStorage
 
+    @Inject
+    lateinit var statisticsPresenter: StatisticsContract.Presenter
     @Inject
     lateinit var sumBySectionPresenter: StatisticsSumBySectionContract.Presenter
     @Inject
@@ -97,9 +101,15 @@ class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigatio
         twDateTo = findViewById(R.id.stats_date_to)
 
         //filter and period buttons listener setup
-        filter = setUpFilter()
-        addFilterToPresenters()
-        setUpStatisticsPeriodListeners(filter)
+        val storedSettings = dataStorage.settings
+        if (storedSettings != null) {
+            setUpStatisticsPeriodData(storedSettings)
+        } else {
+            statisticsPresenter.requestSettings()
+        }
+//        filter = setUpFilter(dataStorage.settings)
+//        addFilterToPresenters()
+//        setUpStatisticsPeriodListeners(filter)
 
         //fragments setup
         val tabLayout = findViewById<TabLayout>(R.id.stats_tabLayout)
@@ -127,20 +137,43 @@ class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigatio
         setUpNavigationViewLogin(navigationView)
     }
 
-    private fun addFilterToPresenters() {
-        sumBySectionPresenter.setFilter(filter, false)
-        sumByDatePresenter.setFilter(filter, false)
-        sumByDateSectionPresenter.setFilter(filter, false)
+    /**
+     * Two different threads call this method. First when settings is received,
+     * second when spendingSections is received.
+     */
+    override fun drawStatisticsFragments() {
+        if (dataStorage.settings != null && dataStorage.spendingSections != null)
+            addFilterToPresenters(true)
     }
 
-    private fun setUpFilter(): StatisticsFilterLegacy {
-        val statisticsFilter = dataStorage.statisticsFilter
-        return if (statisticsFilter != null)
-            statisticsFilter
-        else {
-            val settings = dataStorage.settings
-            StatisticsFilterLegacy(settings?.periodFrom, settings?.periodTo, null)
-        }
+    override fun showSpinner() {
+        TODO("not implemented")
+    }
+
+    override fun hideSpinner() {
+        TODO("not implemented")
+    }
+
+    override fun showErrorMessage(msg: String) {
+        TODO("not implemented")
+    }
+
+    override fun setUpStatisticsPeriodData(settingsLegacy: SettingsLegacy) {
+        filter = setUpFilter(settingsLegacy)
+        addFilterToPresenters(false)
+        setUpStatisticsPeriodListeners(filter)
+    }
+
+    private fun addFilterToPresenters(isStatsUpdateRequired: Boolean) {
+        sumBySectionPresenter.setFilter(filter, isStatsUpdateRequired)
+        sumByDatePresenter.setFilter(filter, isStatsUpdateRequired)
+        sumByDateSectionPresenter.setFilter(filter, isStatsUpdateRequired)
+    }
+
+    private fun setUpFilter(settings: SettingsLegacy): StatisticsFilterLegacy {
+        return StatisticsFilterLegacy(settings.periodFrom, settings.periodTo, null)
+//        return dataStorage.statisticsFilter
+//                ?: StatisticsFilterLegacy(settings?.periodFrom, settings?.periodTo, null)
     }
 
     private fun setUpStatisticsPeriodListeners(savedFilter: StatisticsFilterLegacy?) {
@@ -189,6 +222,11 @@ class StatisticsActivity : DaggerAppCompatActivity(), NavigationView.OnNavigatio
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onResume() {
+        super.onResume()
+        statisticsPresenter.takeView(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
